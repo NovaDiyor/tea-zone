@@ -1,6 +1,7 @@
+from datetime import date
 from django.shortcuts import render, redirect
 from .models import *
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 
 
@@ -11,11 +12,13 @@ def login_view(request):
         number = request.POST.get('number')
         if number is None:
             number = 1
-        print(name, password, number)
         user = User.objects.filter(first_name=name)
+        for i in user:
+            print(i.first_name, name, password)
         if user.count() > 0:
             print(2)
-            usr = authenticate(first_name=name, password=password)
+            usr = authenticate(username=name, password=password)
+            print(usr)
             if usr is not None:
                 login(request, usr)
                 return redirect('dashboard')
@@ -31,18 +34,14 @@ def login_view(request):
                     return redirect('dashboard')
                 else:
                     return redirect('404')
-            else:
-                user = User.objects.filter(username=name)
-                if user.count() > 0:
-                    print(3)
-                    usr = authenticate(username=name, password=password)
-                    if usr:
-                        login(request, usr)
-                        return redirect('dashboard')
-                    else:
-                        return redirect('404')
             return redirect('login')
     return render(request, 'login.html')
+
+
+@login_required(login_url='login')
+def logout_view(request):
+    logout(request)
+    return redirect('login')
 
 
 def error_view(request):
@@ -53,7 +52,21 @@ def error_view(request):
 def dashboard_waiter(request):
     usr = request.user
     if usr.role == 2:
-        return render(request, 'dashboard/dashboard-waiter.html')
+        day = date.today()
+        order = Order.objects.filter(done=True, date__day=day.day, user=usr)
+        month = Order.objects.filter(done=True, date__month=day.month, user=usr)
+        proces = Order.objects.filter(done=False, date__day=day.day, user=usr)
+        total = 0
+        for i in order:
+            item = OrderItem.objects.get(order=i)
+            total += item.quantity * item.price % 8
+        context = {
+            'total': total,
+            'done': order.count(),
+            'in_proces': proces.count(),
+            'month': month.count(),
+        }
+        return render(request, 'dashboard/dashboard-waiter.html', context)
     else:
         return redirect('dashboard')
 

@@ -5,6 +5,7 @@ from .add_view import *
 
 urlpatterns = [
     path('', login_view, name='login'),
+    path('logout/', logout_view, name='logout'),
     path('error/role', error_view, name='404'),
     path('dashboard/director/', dashboard, name='dashboard'),
     path('dashboard/manager/', dashboard_manager, name='dashboard-m'),

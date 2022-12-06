@@ -16,30 +16,11 @@ def add_staff(request):
                 number = request.POST.get('number')
                 status = request.POST.get('status')
                 if confirm_password == password:
-                    if status == 2:
-                        User.objects.create_user(
-                            first_name=name, last_name=last_name,
-                            password=password, number=number,
-                            status=status)
-                        return redirect('staff')
-                    elif status == 3:
-                        User.objects.create_user(
-                            first_name=name, last_name=last_name,
-                            password=password,number=number,
-                            status=status)
-                        return redirect('staff')
-                    elif status == 4:
-                        User.objects.create_user(
-                            first_name=name, last_name=last_name,
-                            password=password, number=number,
-                            status=status)
-                        return redirect('staff')
-                    elif status == 5:
-                        User.objects.create_user(
-                            first_name=name, last_name=last_name,
-                            password=password, number=number,
-                            status=status)
-                        return redirect('staff')
+                    User.objects.create_user(
+                        first_name=name, last_name=last_name,
+                        password=password, number=number,
+                        status=status)
+                    return redirect('staff')
             else:
                 return redirect('dashboard')
         elif usr.role == 3:
@@ -51,30 +32,11 @@ def add_staff(request):
                 number = request.POST.get('number')
                 status = request.POST.get('status')
                 if confirm_password == password:
-                    if status == 2:
-                        User.objects.create_user(
-                            first_name=name, last_name=last_name,
-                            password=password, number=number,
-                            status=status)
-                        return redirect('staff')
-                    elif status == 3:
-                        User.objects.create_user(
-                            first_name=name, last_name=last_name,
-                            password=password,number=number,
-                            status=status)
-                        return redirect('staff')
-                    elif status == 4:
-                        User.objects.create_user(
-                            first_name=name, last_name=last_name,
-                            password=password, number=number,
-                            status=status)
-                        return redirect('staff')
-                    elif status == 5:
-                        User.objects.create_user(
-                            first_name=name, last_name=last_name,
-                            password=password, number=number,
-                            status=status)
-                        return redirect('staff')
+                    User.objects.create_user(
+                        first_name=name, last_name=last_name,
+                        password=password, number=number,
+                        status=status)
+                    return redirect('staff')
             else:
                 return redirect('dashboard')
         return render(request, 'add-staff.html')
