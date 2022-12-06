@@ -48,6 +48,7 @@ class Product(models.Model):
     name = models.CharField(max_length=210)
     price = models.IntegerField()
     quantity = models.IntegerField()
+    category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, blank=True)
     available = models.BooleanField(default=True)
 
     def save(self, *args, **kwargs):

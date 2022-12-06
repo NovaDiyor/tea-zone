@@ -65,14 +65,15 @@ def delete_product(request, pk):
         return redirect('product')
     elif usr.role == 4:
         pro = Product.objects.get(id=pk)
-        pro.available = True
+        pro.quantity = 0
+        pro.available = False
         pro.save()
         return redirect('product')
     else:
         return redirect('404')
 
 
-def delete_order(request, pk):
+def change_order(request, pk):
     usr = request.user
     if usr.role == 2:
         order = Order.objects.get(id=pk)
