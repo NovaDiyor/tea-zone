@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "dashboard/base-waiter.html" %}
 {% load static %}
 {% block content %}
 <div class="main-content app-content mt-0">
@@ -22,7 +22,7 @@
                                     <div class="d-flex">
                                         <div class="mt-2">
                                             <h6 class="">Total Clients</h6>
-                                            <h2 class="mb-0 number-font">{% client %}</h2>
+                                            <h2 class="mb-0 number-font"></h2>
                                         </div>
                                         <div class="ms-auto">
                                             <div class="chart-wrapper mt-1">
@@ -44,7 +44,7 @@
                                     <div class="d-flex">
                                         <div class="mt-2">
                                             <h6 class="">Total Staff</h6>
-                                            <h2 class="mb-0 number-font">{% staff %}</h2>
+                                            <h2 class="mb-0 number-font"></h2>
                                         </div>
                                         <div class="ms-auto">
                                             <div class="chart-wrapper mt-1">
@@ -66,7 +66,7 @@
                                     <div class="d-flex">
                                         <div class="mt-2">
                                             <h6 class="">Total Expenses</h6>
-                                            <h2 class="mb-0 number-font">${% total %}</h2>
+                                            <h2 class="mb-0 number-font">$</h2>
                                         </div>
                                         <div class="ms-auto">
                                             <div class="chart-wrapper mt-1">
@@ -88,7 +88,7 @@
                                     <div class="d-flex">
                                         <div class="mt-2">
                                             <h6 class="">Total Revenue</h6>
-                                            <h2 class="mb-0 number-font">${% revenue %}</h2>
+                                            <h2 class="mb-0 number-font">$</h2>
                                         </div>
                                         <div class="ms-auto">
                                             <div class="chart-wrapper mt-1">

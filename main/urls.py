@@ -4,8 +4,13 @@ from .change_view import *
 from .add_view import *
 
 urlpatterns = [
-    path('login/', login_view, name='login'),
+    path('', login_view, name='login'),
     path('error/role', error_view, name='404'),
+    path('dashboard/director/', dashboard, name='dashboard'),
+    path('dashboard/manager/', dashboard_manager, name='dashboard-m'),
+    path('dashboard/waiter/', dashboard_waiter, name='dashboard-w'),
+    path('dashboard/cooker/', dashboard_cooker, name='dashboard-c'),
+    path('dashboard/call-center/', dashboard_call_center, name='dashboard-call'),
     path('product/', product_view, name='product'),
     path('waiters/', waiters_view, name='waiter'),
     path('waiters/add/', add_staff, name='add-staff'),

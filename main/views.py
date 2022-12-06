@@ -8,29 +8,41 @@ def login_view(request):
     if request.method == 'POST':
         name = request.POST.get('name')
         password = request.POST.get('password')
-        user = User.objects.filter(name=name)
-        if user.count > 0:
-            usr = authenticate(name=name, password=password)
+        number = request.POST.get('number')
+        if number is None:
+            number = 1
+        print(name, password, number)
+        user = User.objects.filter(first_name=name)
+        if user.count() > 0:
+            print(2)
+            usr = authenticate(first_name=name, password=password)
             if usr is not None:
                 login(request, usr)
-                if usr.role == 1:
+                return redirect('dashboard')
+            else:
+                return redirect('404')
+        else:
+            user = User.objects.filter(number=number)
+            if user.count() > 0:
+                print(1)
+                usr = authenticate(number=number, password=password)
+                if usr:
+                    login(request, usr)
                     return redirect('dashboard')
-                elif usr.role == 2:
-                    return redirect('dashboard-w')
-                elif usr.role == 3:
-                    return redirect('dashboard-m')
-                elif usr.role == 4:
-                    return redirect('dashboard-c')
-                elif usr.role == 5:
-                    return redirect('dashboard-call')
                 else:
                     return redirect('404')
             else:
-                return redirect('login')
-        else:
+                user = User.objects.filter(username=name)
+                if user.count() > 0:
+                    print(3)
+                    usr = authenticate(username=name, password=password)
+                    if usr:
+                        login(request, usr)
+                        return redirect('dashboard')
+                    else:
+                        return redirect('404')
             return redirect('login')
-    else:
-        return render(request, 'login.html')
+    return render(request, 'login.html')
 
 
 @login_required(login_url='login')
@@ -72,3 +84,57 @@ def waiters_view(request):
 
 def error_view(request):
     return render(request, '404.html')
+
+
+@login_required(login_url='login')
+def dashboard_waiter(request):
+    usr = request.user
+    if usr.role == 2:
+        return render(request, 'dashboard/dashboard-waiter.html')
+    else:
+        return redirect('dashboard')
+
+
+@login_required(login_url='login')
+def dashboard_manager(request):
+    usr = request.user
+    if usr.role == 3:
+        return render(request, 'dashboard/dashboard-manager.html')
+    else:
+        return redirect('dashboard')
+
+
+@login_required(login_url='login')
+def dashboard_cooker(request):
+    usr = request.user
+    if usr.role == 4:
+        return render(request, 'dashboard/dashboard-cooker.html')
+    else:
+        return redirect('dashboard')
+
+
+@login_required(login_url='login')
+def dashboard_call_center(request):
+    usr = request.user
+    if usr.role == 5:
+        return render(request, 'dashboard/dashboard-call.html')
+    else:
+        return redirect('dashboard')
+
+
+@login_required(login_url='login')
+def dashboard(request):
+    usr = request.user
+    if usr.role == 1:
+        return render(request, 'dashboard/dashboard.html')
+    elif usr.role == 2:
+        return redirect('dashboard-w')
+    elif usr.role == 3:
+        return redirect('dashboard-m')
+    elif usr.role == 4:
+        return redirect('dashboard-c')
+    elif usr.role == 5:
+        return redirect('dashboard-call')
+    else:
+        return redirect('404')
+
