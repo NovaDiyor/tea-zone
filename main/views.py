@@ -45,43 +45,6 @@ def login_view(request):
     return render(request, 'login.html')
 
 
-@login_required(login_url='login')
-def product_view(request):
-    usr = request.user
-    if usr.role == 1:
-        pro = Product.objects.all()
-        for i in pro:
-            if i.quantity <= 0:
-                i.available = False
-            else:
-                i.available = True
-    elif usr.role == 3:
-        pro = Product.objects.all()
-        for i in pro:
-            if i.quantity <= 0:
-                i.available = False
-            else:
-                i.available = True
-        return render(request, 'product.html', pro)
-    else:
-        return redirect('404')
-
-
-@login_required(login_url='login')
-def waiters_view(request):
-    user = request.user
-    if user.role == 1:
-        waiters = User.objects.filter(role=2)
-    elif user.role == 3:
-        waiters = User.objects.filter(role=2)
-    else:
-        return redirect('404')
-    context = {
-        'waiters': waiters
-    }
-    return render(request, 'waiter.html', context)
-
-
 def error_view(request):
     return render(request, '404.html')
 
@@ -138,3 +101,97 @@ def dashboard(request):
     else:
         return redirect('404')
 
+
+@login_required(login_url='login')
+def manager_view(request):
+    usr = request.user
+    if usr.role == 1:
+        context = {
+            'manager': User.objects.filter(role=3)
+        }
+        return render(request, 'staff/manager.html', context)
+    elif usr.role == 3:
+        context = {
+            'manager': User.objects.filter(role=3)
+        }
+        return render(request, 'staff/manager.html', context)
+    else:
+        return redirect('404')
+
+
+@login_required(login_url='login')
+def cooker_view(request):
+    usr = request.user
+    if usr.role == 1:
+        cookers = User.objects.filter(role=4)
+        context = {
+            'cooker': cookers
+        }
+        return render(request, 'staff/cooker.html', context)
+    elif usr.role == 3:
+        cookers = User.objects.filter(role=4)
+        context = {
+            'cooker': cookers
+        }
+        return render(request, 'staff/cooker.html', context)
+    else:
+        return redirect('404')
+
+
+@login_required(login_url='login')
+def waiters_view(request):
+    user = request.user
+    if user.role == 1:
+        waiters = User.objects.filter(role=2)
+        context = {
+            'waiters': waiters
+        }
+        return render(request, 'staff/waiter.html', context)
+    elif user.role == 3:
+        waiters = User.objects.filter(role=2)
+        context = {
+            'waiters': waiters
+        }
+        return render(request, 'staff/waiter.html', context)
+    else:
+        return redirect('404')
+
+
+@login_required(login_url='login')
+def call_center_view(request):
+    usr = request.user
+    if usr.role == 1:
+        context = {
+            'call_canter': User.objects.filter(role=5)
+        }
+        return render(request, 'staff/call-canter.html', context)
+    elif usr.role == 3:
+        context = {
+            'call_center': User.objects.filter(role=5)
+        }
+        return render(request, 'staff/call-canter.html', context)
+    else:
+        return redirect('404')
+
+
+@login_required(login_url='login')
+def product_view(request):
+    usr = request.user
+    if usr.role == 1:
+        pro = Product.objects.all()
+        for i in pro:
+            if i.quantity <= 0:
+                i.available = False
+            else:
+                i.available = True
+        return render(request, 'product/product.html', pro)
+    elif usr.role == 3:
+        pro = Product.objects.all()
+        for i in pro:
+            if i.quantity <= 0:
+                i.available = False
+            else:
+                i.available = True
+        return render(request, 'product/product.html', pro)
+    else:
+        return redirect('404')
