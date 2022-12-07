@@ -148,5 +148,11 @@ def add_order(request):
             else:
                 room = None
             Client.objects.create(name=owner, phone=phone)
-
-
+    elif usr.role == 2:
+        if request.method == 'POST':
+            room = request.POST.get('room')
+            owner = request.POST.get('owner')
+            phone = request.POST.get('phone')
+            date = request.POST.get('date')
+            Client.objects.create(name=owner, phone=phone)
+            Order.objects.create()

@@ -30,7 +30,7 @@ class Rooms(models.Model):
 
 class Client(models.Model):
     name = models.CharField(max_length=1212)
-    phone = models.BigIntegerField()
+    phone = models.BigIntegerField(null=True, blank=True)
 
 
 class Category(models.Model):
@@ -64,7 +64,8 @@ class Order(models.Model):
     user = models.ForeignKey(User,  on_delete=models.CASCADE, null=True, blank=True)
     room = models.ForeignKey(Rooms, on_delete=models.CASCADE, null=True, blank=True)
     delivery = models.BooleanField(default=False)
-    owner = models.ForeignKey(Client, on_delete=models.CASCADE)
+    owner = models.CharField(max_length=210)
+    phone = models.CharField(max_length=210)
     address = models.CharField(max_length=210, null=True, blank=True)
     date = models.DateField()
     delivery_date = models.DateTimeField(null=True, blank=True)
