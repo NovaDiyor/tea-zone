@@ -61,13 +61,13 @@ class Product(models.Model):
 
 
 class Order(models.Model):
-    user = models.ForeignKey(User,  on_delete=models.CASCADE, null=True,blank=True)
+    user = models.ForeignKey(User,  on_delete=models.CASCADE, null=True, blank=True)
     room = models.ForeignKey(Rooms, on_delete=models.CASCADE, null=True, blank=True)
     delivery = models.BooleanField(default=False)
     owner = models.ForeignKey(Client, on_delete=models.CASCADE)
-    address = models.CharField(max_length=23232)
+    address = models.CharField(max_length=210, null=True, blank=True)
     date = models.DateField()
-    delivery_date = models.DateTimeField()
+    delivery_date = models.DateTimeField(null=True, blank=True)
     done = models.BooleanField(default=False)
 
 

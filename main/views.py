@@ -193,9 +193,25 @@ def waiters_view(request):
         }
         return render(request, 'staff/waiter.html', context)
     elif user.role == 3:
-        waiters = User.objects.filter(role=2)
+        day = date.today()
+        waiter = User.objects.filter(status=2)
+        month = 0
+        for i in waiter:
+            order = Order.objects.filter(done=True, date__day=day.day, user=i)
+            for x in order:
+                item = OrderItem.objects.get(order=x)
+                for n in item:
+                    if n.product:
+                        i.salary += n.quantity * n.product.price % 8
+                    else:
+                        i.salary += n.quantity * n.food.price % 8
+                    month += i.salary
+                    if i.date__day > day.day:
+                        i.salary = 0
+                    i.save()
         context = {
-            'waiters': waiters
+            'month': month,
+            'waiters': waiter,
         }
         return render(request, 'staff/waiter.html', context)
     else:

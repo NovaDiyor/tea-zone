@@ -39,7 +39,7 @@ def add_staff(request):
                     return redirect('staff')
             else:
                 return redirect('dashboard')
-        return render(request, 'add-staff.html')
+        return render(request, 'staff/staff.html')
     except Exception as err:
         print(err)
 
@@ -52,13 +52,13 @@ def add_room(request):
             number = request.POST.get('number')
             place = request.POST.get('place')
             Rooms.objects.create(number=number, places=place)
-            return redirect('add-room')
+            return redirect('room')
     elif usr.role == 3:
         if request.method == 'POST':
             number = request.POST.get('number')
             place = request.POST.get('place')
             Rooms.objects.create(number=number, places=place)
-            return redirect('add-room')
+            return redirect('room')
     else:
         return redirect('404')
 
@@ -90,7 +90,7 @@ def add_food(request):
             category = request.POST.get('category')
             available = request.POST.get('available')
             Product.objects.create(name=name, price=price, category=category, available=available)
-            return redirect('product')
+            return redirect('food')
     elif usr.role == 3:
         if request.method == 'POST':
             name = request.POST.get('name')
@@ -98,6 +98,55 @@ def add_food(request):
             category = request.POST.get('category')
             available = request.POST.get('available')
             Product.objects.create(name=name, price=price, category=category, available=available)
+            return redirect('food')
+    else:
+        return redirect('404')
+
+
+@login_required(login_url='login')
+def add_product(request):
+    user = request.user
+    if user.role == 1:
+        if request.method == 'POST':
+            name = request.POST.get('name')
+            price = request.POST.get('price')
+            quantity = request.POST.get('quantity')
+            category = request.POST.get('category')
+            available = request.POST.get('available')
+            Product.objects.create(name=name, price=price, quantity=quantity, category=category, available=available)
+            return redirect('product')
+    elif user.role == 3:
+        if request.method == 'POST':
+            name = request.POST.get('name')
+            price = request.POST.get('price')
+            quantity = request.POST.get('quantity')
+            category = request.POST.get('category')
+            available = request.POST.get('available')
+            Product.objects.create(name=name, price=price, quantity=quantity, category=category, available=available)
             return redirect('product')
     else:
         return redirect('404')
+
+
+@login_required(login_url='login')
+def add_order(request):
+    usr = request.user
+    if usr.role == 5:
+        if request.method == 'POST':
+            user = request.POST.get('user')
+            room = request.POST.get('room')
+            owner = request.POST.get('owner')
+            phone = request.POST.get('phone')
+            address = request.POST.get('address')
+            date = request.POST.get('date')
+            delivery_date = request.POST.get('delivery-date')
+            delivery = request.POST.get('delivery')
+            if delivery is None:
+                delivery = False
+                delivery_date = None
+                address = None
+            else:
+                room = None
+            Client.objects.create(name=owner, phone=phone)
+
+

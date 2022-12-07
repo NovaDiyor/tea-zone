@@ -48,7 +48,7 @@ def change_food(request, pk):
         return redirect('food')
     elif usr.role == 4:
         food = Food.objects.get(id=pk)
-        food.available = True
+        food.available = False
         food.save()
         return redirect('food')
     else:
