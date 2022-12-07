@@ -79,11 +79,14 @@ def change_order(request, pk):
         order = Order.objects.get(id=pk)
         order.done = True
         item = OrderItem.objects.filer(order=order)
-        total = 0
         for i in item:
-            total += i.food.price * i.quantity
-        bill = total
-        return render(request, 'order.html', bill)
+            order.bill += i.food.price * i.quantity
+        order.save()
+        context = {
+            'order': order,
+            'item': item,
+        }
+        return render(request, 'order.html', context)
     elif usr.role == 5:
         Order.objects.get(id=pk).delete()
         return redirect('order')

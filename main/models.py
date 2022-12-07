@@ -11,16 +11,6 @@ class User(AbstractUser):
         (5, 'call-center'),
     ), null=True, blank=True)
     number = models.BigIntegerField(null=True, blank=True)
-    img = models.ImageField(upload_to='users/', null=True, blank=True)
-    salary = models.IntegerField(default=0, null=True, blank=True)
-    is_waiter = models.BooleanField()
-    
-    def save(self, *args, **kwargs):
-        if self.role == 2:
-            self.is_waiter = True
-        else:
-            self.is_waiter = False
-        super(User, self).save(*args, **kwargs)
 
 
 class Rooms(models.Model):
@@ -70,10 +60,12 @@ class Order(models.Model):
     date = models.DateField()
     delivery_date = models.DateTimeField(null=True, blank=True)
     done = models.BooleanField(default=False)
+    bill = models.IntegerField()
 
 
 class OrderItem(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE)
-    food = models.ForeignKey(Food, on_delete=models.CASCADE)
+    food = models.ForeignKey(Food, on_delete=models.CASCADE, null=True, blank=True)
     product = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True, blank=True)
     quantity = models.IntegerField()
+

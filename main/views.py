@@ -17,7 +17,7 @@ def login_view(request):
             print(i.first_name, name, password)
         if user.count() > 0:
             print(2)
-            usr = authenticate(username=name, password=password)
+            usr = authenticate(first_name=name, password=password)
             print(usr)
             if usr is not None:
                 login(request, usr)
@@ -75,7 +75,7 @@ def dashboard_waiter(request):
 def dashboard_manager(request):
     usr = request.user
     if usr.role == 3:
-        return render(request, 'dashboard/dashboard-manager.html', context)
+        return render(request, 'dashboard/dashboard-manager.html')
     else:
         return redirect('dashboard')
 
@@ -104,7 +104,7 @@ def dashboard(request):
     if usr.role == 1:
         client = Client.objects.all()
         staff = User.objects.all()
-        order = Order.objects.all(done=True)
+        order = Order.objects.filter(done=True)
         total = 0
         revenue = 0
         for i in order:
@@ -171,24 +171,8 @@ def cooker_view(request):
 def waiters_view(request):
     user = request.user
     if user.role == 1:
-        day = date.today()
         waiter = User.objects.filter(status=2)
-        month = 0
-        for i in waiter:
-            order = Order.objects.filter(done=True, date__day=day.day, user=i)
-            for x in order:
-                item = OrderItem.objects.get(order=x)
-                for n in item:
-                    if n.product:
-                        i.salary += n.quantity * n.product.price % 8
-                    else:
-                        i.salary += n.quantity * n.food.price % 8
-                    month += i.salary
-                    if i.date__day > day.day:
-                        i.salary = 0
-                    i.save()
         context = {
-            'month': month,
             'waiters': waiter,
         }
         return render(request, 'staff/waiter.html', context)
