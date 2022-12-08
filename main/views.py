@@ -44,6 +44,50 @@ def error_view(request):
 
 
 @login_required(login_url='login')
+def add_staff(request):
+    usr = request.user
+    try:
+        if usr.role == 1:
+            if request.method == 'POST':
+                username = request.POST.get('username')
+                name = request.POST.get('name')
+                last_name = request.POST.get('last-name')
+                password = request.POST.get('password')
+                confirm_password = request.POST.get('cp')
+                number = request.POST.get('number')
+                status = request.POST.get('status')
+                if confirm_password == password:
+                    User.objects.create_user(
+                        username=username, first_name=name,
+                        last_name=last_name, password=password,
+                        number=number, role=status)
+                    return redirect('add-staff')
+            else:
+                return render(request, 'staff/add-staff.html')
+        elif usr.role == 3:
+            if request.method == 'POST':
+                username = request.POST.get('username')
+                name = request.POST.get('name')
+                last_name = request.POST.get('last-name')
+                password = request.POST.get('password')
+                cp = request.POST.get('cp')
+                number = request.POST.get('number')
+                status = request.POST.get('status')
+                if cp == password:
+                    print('hello')
+                    User.objects.create_user(
+                        username=username, first_name=name,
+                        last_name=last_name, password=password,
+                        number=number, role=status)
+                    return redirect('add-staff')
+            else:
+                return render(request, 'staff/add-staff.html')
+        return redirect('404')
+    except Exception as err:
+        print(err)
+
+
+@login_required(login_url='login')
 def dashboard_waiter(request):
     usr = request.user
     if usr.role == 2:
@@ -234,7 +278,6 @@ def product_view(request):
         price = request.POST.get('price')
         quantity = request.POST.get('quantity')
         category = request.POST.get('category')
-        print(category)
         if int(quantity) > 0:
             available = True
         elif int(quantity) <= 0:
@@ -266,7 +309,6 @@ def food_view(request):
         name = request.POST.get('name')
         price = request.POST.get('price')
         category = request.POST.get('category')
-        print(category)
         available = request.POST.get('available')
         if available is None:
             available = False
@@ -274,3 +316,65 @@ def food_view(request):
             name=name, price=price, category_id=category, available=available)
         return redirect('food')
     return render(request, 'product/food.html', context)
+
+
+@login_required(login_url='login')
+def room_view(request):
+    context = {
+        'room': Rooms.objects.all()
+    }
+    if request.method == 'POST':
+        number = request.POST.get('number')
+        place = request.POST.get('place')
+        Rooms.objects.create(number=number, places=place)
+        return redirect('room')
+    return render(request, 'product/room.html', context)
+
+
+@login_required(login_url='login')
+def order_view(request):
+    context = {
+        'order': Order.objects.all()
+    }
+    if request.method == 'POST':
+        user = request.POST.get('user')
+        room = request.POST.get('room')
+        owner = request.POST.get('owner')
+        phone = request.POST.get('phone')
+        address = request.POST.get('address')
+        day = request.POST.get('date')
+        delivery_date = request.POST.get('delivery-date')
+        delivery = request.POST.get('delivery')
+        if delivery is None:
+            delivery = False
+            delivery_date = None
+            address = None
+        else:
+            room = None
+        Client.objects.create(name=owner, phone=phone)
+        client = Client.objects.last()
+        Order.objects.create(user_id=user, room_id=room, address=address, date=day, delivery_date=delivery_date,
+                             owner=client, delivery=delivery)
+        return redirect('order')
+    return render(request, 'product/order.html', context)
+
+
+@login_required(login_url='login')
+def order_item_view(request):
+    day = date.today()
+    context = {
+        'order': Order.objects.filter(date__day=day.day),
+        'item': OrderItem.objects.all()
+    }
+    if request.method == 'POST':
+        order = request.POST.get('order')
+        food = request.POST.get('food')
+        product = request.POST.get('product')
+        quantity = request.POST.get('quantity')
+        if food:
+            product = None
+        elif product:
+            food = None
+        OrderItem.objects.create(order_id=order, food_id=food, product_id=product, quantity=quantity)
+        return redirect('order-item')
+    return render(request, 'product/order-item.html', context)

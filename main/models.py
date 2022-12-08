@@ -55,7 +55,6 @@ class Order(models.Model):
     room = models.ForeignKey(Rooms, on_delete=models.CASCADE, null=True, blank=True)
     delivery = models.BooleanField(default=False)
     owner = models.CharField(max_length=210)
-    phone = models.CharField(max_length=210, null=True, blank=True)
     address = models.CharField(max_length=210, null=True, blank=True)
     date = models.DateField()
     delivery_date = models.DateTimeField(null=True, blank=True)
