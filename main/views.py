@@ -166,18 +166,17 @@ def cooker_view(request):
 def director_view(request):
     user = request.user
     if user.role == 1:
-        director = User.objects.filter(status=2)
         context = {
-            'director': director,
+            'total': User.objects.filter(role=1).count(),
+            'director': User.objects.filter(role=1),
         }
         return render(request, 'staff/director.html', context)
     elif user.role == 3:
-        if user.role == 1:
-            director = User.objects.filter(status=2)
-            context = {
-                'director': director,
-            }
-            return render(request, 'staff/director.html', context)
+        context = {
+            'total': User.objects.filter(role=1).count(),
+            'director': User.objects.filter(role=1),
+        }
+        return render(request, 'staff/director.html', context)
     else:
         return redirect('404')
 

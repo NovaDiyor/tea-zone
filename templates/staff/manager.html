@@ -47,9 +47,15 @@
                                                     <td class="text-nowrap align-middle">{{ i.number  }}</td>
                                                     <td class="text-nowrap align-middle"><span>{{ i.date_joined  }}</span></td>
                                                     <td class="text-center align-middle">
-                                                        <div class="btn-group align-top">
-                                                            <a class="modal-effect d-grid mb-3" data-bs-effect="effect-flip-vertical" data-bs-toggle="modal" href="#delete_manager"><button class="btn btn-sm btn-danger badge" type="button"><i class="fe fe-log-out"></i></button></a>
-                                                        </div>
+                                                        {% if user.role == 1 %}
+                                                            <div class="btn-group align-top">
+                                                                <a class="modal-effect d-grid mb-3" data-bs-effect="effect-flip-vertical" data-bs-toggle="modal" href="#delete_manager"><button class="btn btn-sm btn-danger badge" type="button"><i class="fe fe-log-out"></i></button></a>
+                                                            </div>
+                                                        {% elif user == i %}
+                                                            You cant fire out your self
+                                                        {% else  %}
+                                                            You cant fire out cause of your status
+                                                        {% endif %}
                                                     </td>
                                                     <div class="modal fade" id="delete_manager">
                                                         <div class="modal-dialog modal-dialog-centered text-center" role="document">
