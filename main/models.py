@@ -55,7 +55,7 @@ class Order(models.Model):
     room = models.ForeignKey(Rooms, on_delete=models.CASCADE, null=True, blank=True)
     delivery = models.BooleanField(default=False)
     owner = models.CharField(max_length=210)
-    phone = models.CharField(max_length=210)
+    phone = models.CharField(max_length=210, null=True, blank=True)
     address = models.CharField(max_length=210, null=True, blank=True)
     date = models.DateField()
     delivery_date = models.DateTimeField(null=True, blank=True)
@@ -69,3 +69,9 @@ class OrderItem(models.Model):
     product = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True, blank=True)
     quantity = models.IntegerField()
 
+
+class Message(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='from_user')
+    to = models.ForeignKey(User, on_delete=models.CASCADE, related_name='to_user')
+    message = models.TextField()
+    see = models.BooleanField(default=True)

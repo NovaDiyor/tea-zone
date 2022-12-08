@@ -12,13 +12,9 @@ def login_view(request):
         number = request.POST.get('number')
         if number is None:
             number = 1
-        user = User.objects.filter(first_name=name)
-        for i in user:
-            print(i.first_name, name, password)
+        user = User.objects.filter(username=name)
         if user.count() > 0:
-            print(2)
-            usr = authenticate(first_name=name, password=password)
-            print(usr)
+            usr = authenticate(username=name, password=password)
             if usr is not None:
                 login(request, usr)
                 return redirect('dashboard')
@@ -27,7 +23,6 @@ def login_view(request):
         else:
             user = User.objects.filter(number=number)
             if user.count() > 0:
-                print(1)
                 usr = authenticate(number=number, password=password)
                 if usr:
                     login(request, usr)
@@ -163,6 +158,26 @@ def cooker_view(request):
             'cooker': cookers
         }
         return render(request, 'staff/cooker.html', context)
+    else:
+        return redirect('404')
+
+
+@login_required(login_url='login')
+def director_view(request):
+    user = request.user
+    if user.role == 1:
+        director = User.objects.filter(status=2)
+        context = {
+            'director': director,
+        }
+        return render(request, 'staff/director.html', context)
+    elif user.role == 3:
+        if user.role == 1:
+            director = User.objects.filter(status=2)
+            context = {
+                'director': director,
+            }
+            return render(request, 'staff/director.html', context)
     else:
         return redirect('404')
 
