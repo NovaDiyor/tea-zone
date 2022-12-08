@@ -185,14 +185,14 @@ def director_view(request):
 def waiters_view(request):
     user = request.user
     if user.role == 1:
-        waiter = User.objects.filter(status=2)
+        waiter = User.objects.filter(role=2)
         context = {
             'waiters': waiter,
         }
         return render(request, 'staff/waiter.html', context)
     elif user.role == 3:
         day = date.today()
-        waiter = User.objects.filter(status=2)
+        waiter = User.objects.filter(role=2)
         month = 0
         for i in waiter:
             order = Order.objects.filter(done=True, date__day=day.day, user=i)
