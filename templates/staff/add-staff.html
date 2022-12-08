@@ -1,15 +1,58 @@
 {% extends "dashboard/base.html" %}
 {% load static %}
 {% block content %}
-    <div class="col-xl-6 col-lg-12">
-        <div class="card">
-            <div class="card-body">
-                <p>Set heights using classes like <code class="highlighter-rouge">.form-control-lg</code> and <code class="highlighter-rouge">.form-control-sm</code>.</p>
-                <div class="row row-sm">
-                    <div class="col-lg">
-                        <input class="form-control form-control-sm mb-4" placeholder="from-control-sm" type="text">
-                        <input class="form-control  mb-4" placeholder=" Default from-control" type="text">
-                        <input class="form-control form-control-lg" placeholder="from-control-lg" type="text">
+    <div class="main-content app-content">
+        <div class="side-app">
+            <div class="main-container container-fluid">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row row-sm">
+                            <div class="col-lg-12">
+                                <form class="form-group" action="{% url 'add-staff' %}" method="post">
+                                    {% csrf_token %}
+                                        <input class="form-control  mb-4" name="username" placeholder="Username" type="text" required>
+                                        <input class="form-control  mb-4" name="password" placeholder="Password" type="password" required>
+                                        <input class="form-control  mb-4" name="cp" placeholder="Confirm Password" type="password" required>
+                                        <input class="form-control  mb-4" name="name" placeholder="Name" type="text" required>
+                                        <input class="form-control  mb-4" name="last-name" placeholder="Last Name" type="text" required>
+                                        <input class="form-control  mb-4" name="number" placeholder="Number" type="number" required>
+                                    <div class="mb-4">
+                                        {% if user.role == 1 %}
+                                            <select class="form-control select2 form-select mb-4" data-placeholder="Choose one">
+                                                <option value="2">Waiter</option>
+                                                <option value="5">Call Center</option>
+                                                <option value="4">Cooker</option>
+                                                <option value="3">Manager</option>
+                                                <option value="1">Director</option>
+                                            </select>
+                                        {% elif user.role == 3 %}
+                                            <select class="form-control select2 form-select" data-placeholder="Choose one">
+                                                <option value="2">Waiter</option>
+                                                <option value="5">Call Center</option>
+                                                <option value="4">Cooker</option>
+                                                <option value="3">Manager</option>
+                                            </select>
+                                        {% endif %}
+                                    </div>
+                                        <button class="btn btn-success mb-0">Add</button>
+                                </form>
+                            {% if true %}
+                                <div class="modal fade active" id="modaldemo">
+                                    <div class="modal-dialog modal-dialog-centered text-center" role="document">
+                                        <div class="modal-content modal-content-demo">
+                                            <div class="modal-header">
+                                                <h6 class="modal-title">Staff Added Successful</h6><button aria-label="Close" class="btn-close" data-bs-dismiss="modal"><span aria-hidden="true">&times;</span></button>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button class="btn btn-danger">Fire Out</button>
+                                                <button class="btn btn-success" data-bs-dismiss="modal">Close</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endif %}
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

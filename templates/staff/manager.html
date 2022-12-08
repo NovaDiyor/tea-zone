@@ -51,10 +51,14 @@
                                                             <div class="btn-group align-top">
                                                                 <a class="modal-effect d-grid mb-3" data-bs-effect="effect-flip-vertical" data-bs-toggle="modal" href="#delete_manager"><button class="btn btn-sm btn-danger badge" type="button"><i class="fe fe-log-out"></i></button></a>
                                                             </div>
+                                                        {% elif user.role == 3 %}
+                                                            <div class="btn-group align-top">
+                                                                <a class="modal-effect d-grid mb-3" data-bs-effect="effect-flip-vertical" data-bs-toggle="modal" href="#delete_manager"><button class="btn btn-sm btn-danger badge" type="button"><i class="fe fe-log-out"></i></button></a>
+                                                            </div>
                                                         {% elif user == i %}
                                                             You cant fire out your self
-                                                        {% else  %}
-                                                            You cant fire out cause of your status
+                                                        {% else %}
+                                                            You cant fire out cause of your role
                                                         {% endif %}
                                                     </td>
                                                     <div class="modal fade" id="delete_manager">

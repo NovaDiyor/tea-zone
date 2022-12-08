@@ -6,40 +6,46 @@ from .models import *
 @login_required(login_url='login')
 def add_staff(request):
     usr = request.user
+    print(usr)
     try:
         if usr.role == 1:
             if request.method == 'POST':
+                username = request.POST.get('username')
                 name = request.POST.get('name')
                 last_name = request.POST.get('last-name')
                 password = request.POST.get('password')
-                confirm_password = request.POST.get('confirm-password')
+                confirm_password = request.POST.get('cp')
                 number = request.POST.get('number')
                 status = request.POST.get('status')
                 if confirm_password == password:
                     User.objects.create_user(
-                        first_name=name, last_name=last_name,
-                        password=password, number=number,
-                        status=status)
-                    return redirect('staff')
+                        username=username, first_name=name,
+                        last_name=last_name, password=password,
+                        number=number, role=status)
+                    return redirect('add-staff')
             else:
-                return redirect('dashboard')
+                return render(request, 'staff/add-staff.html')
         elif usr.role == 3:
+            print('hello')
             if request.method == 'POST':
+                print('bye')
+                username = request.POST.get('username')
                 name = request.POST.get('name')
                 last_name = request.POST.get('last-name')
                 password = request.POST.get('password')
-                confirm_password = request.POST.get('confirm-password')
+                cp = request.POST.get('cp')
                 number = request.POST.get('number')
                 status = request.POST.get('status')
-                if confirm_password == password:
+                if cp == password:
+                    print('hello')
                     User.objects.create_user(
-                        first_name=name, last_name=last_name,
-                        password=password, number=number,
-                        status=status)
-                    return redirect('staff')
+                        username=username, first_name=name,
+                        last_name=last_name, password=password,
+                        number=number, role=status)
+                    return redirect('add-staff')
             else:
-                return redirect('dashboard')
-        return render(request, 'staff/staff.html')
+                return render(request, 'staff/add-staff.html')
+        return redirect('404')
     except Exception as err:
         print(err)
 
