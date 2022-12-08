@@ -18,7 +18,7 @@
                                         <input class="form-control  mb-4" name="number" placeholder="Number" type="number" required>
                                     <div class="mb-4">
                                         {% if user.role == 1 %}
-                                            <select class="form-control select2 form-select mb-4" data-placeholder="Choose one">
+                                            <select class="form-control select2 form-select mb-4" name="status" data-placeholder="Choose one">
                                                 <option value="2">Waiter</option>
                                                 <option value="5">Call Center</option>
                                                 <option value="4">Cooker</option>
@@ -26,7 +26,7 @@
                                                 <option value="1">Director</option>
                                             </select>
                                         {% elif user.role == 3 %}
-                                            <select class="form-control select2 form-select" data-placeholder="Choose one">
+                                            <select class="form-control select2 form-select" name="status" data-placeholder="Choose one">
                                                 <option value="2">Waiter</option>
                                                 <option value="5">Call Center</option>
                                                 <option value="4">Cooker</option>
@@ -34,23 +34,8 @@
                                             </select>
                                         {% endif %}
                                     </div>
-                                        <button class="btn btn-success mb-0">Add</button>
+                                    <button class="btn btn-success mb-0">Add</button>
                                 </form>
-                            {% if true %}
-                                <div class="modal fade active" id="modaldemo">
-                                    <div class="modal-dialog modal-dialog-centered text-center" role="document">
-                                        <div class="modal-content modal-content-demo">
-                                            <div class="modal-header">
-                                                <h6 class="modal-title">Staff Added Successful</h6><button aria-label="Close" class="btn-close" data-bs-dismiss="modal"><span aria-hidden="true">&times;</span></button>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button class="btn btn-danger">Fire Out</button>
-                                                <button class="btn btn-success" data-bs-dismiss="modal">Close</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            {% endif %}
                             </div>
                         </div>
                     </div>

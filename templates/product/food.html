@@ -9,16 +9,20 @@
                         <div class="card">
                             {% if user.role == 1 %}
                                 <div class="card-header">
-                                    <a class="modal-effect" data-bs-effect="effect-flip-vertical" data-bs-toggle="modal" href="#add_product"><button class="btn btn-sm btn-primary badge" type="button">Add Product</button></a>
+                                    <a class="modal-effect" data-bs-effect="effect-flip-vertical" data-bs-toggle="modal" href="#add_product"><button class="btn btn-sm btn-primary badge" type="button">Add Food</button></a>
                                     <div class="modal fade" id="add_product">
                                         <div class="modal-dialog modal-dialog-centered text-center" role="document">
                                             <div class="modal-content modal-content-demo">
-                                                <form action="{% url 'product' %}" method="post">
+                                                <form action="{% url 'food' %}" method="post">
                                                     {% csrf_token %}
                                                         <div class="modal-body">
                                                             <input type="text" class="form-control mb-4" name="name" placeholder="Name" required>
                                                             <input type="number" class="form-control mb-4" name="price" placeholder="Price $" required>
-                                                            <input type="number" class="form-control mb-4" name="quantity" placeholder="Quantity" required>
+                                                            <label class="custom-switch form-switch d-flex mb-4">
+                                                                <input type="checkbox" name="available" value="True" class="custom-switch-input">
+                                                                <span class="custom-switch-indicator"></span>
+                                                                <span class="custom-switch-description">Available</span>
+                                                            </label>
                                                             <select class="form-control select2 form-select mb-4" name="category" data-placeholder="Choose one" required>
                                                                 {% for i in category %}
                                                                     <option value="{{ i.id }}">{{ i.name }}</option>
@@ -26,7 +30,7 @@
                                                             </select>
                                                         </div>
                                                         <div class="modal-footer">
-                                                            <button class="btn btn-success">Add Product</button>
+                                                            <button class="btn btn-success">Add Food</button>
                                                             <button class="btn btn-danger" data-bs-dismiss="modal">Close</button>
                                                         </div>
                                                 </form>
@@ -40,12 +44,16 @@
                                     <div class="modal fade" id="add_product">
                                         <div class="modal-dialog modal-dialog-centered text-center" role="document">
                                             <div class="modal-content modal-content-demo">
-                                                <form action="{% url 'product' %}" method="post">
+                                                <form action="{% url 'food' %}" method="post">
                                                     {% csrf_token %}
                                                         <div class="modal-body">
                                                             <input type="text" class="form-control mb-4" name="name" placeholder="Name" required>
                                                             <input type="number" class="form-control mb-4" name="price" placeholder="Price $" required>
-                                                            <input type="number" class="form-control mb-4" name="quantity" placeholder="Quantity" required>
+                                                            <label class="custom-switch form-switch d-flex mb-4">
+                                                                <input type="checkbox" name="available" value="True" class="custom-switch-input">
+                                                                <span class="custom-switch-indicator"></span>
+                                                                <span class="custom-switch-description">Available</span>
+                                                            </label>
                                                             <select class="form-control select2 form-select mb-4" name="category" data-placeholder="Choose one" required>
                                                                 {% for i in category %}
                                                                     <option value="{{ i.id }}">{{ i.name }}</option>
@@ -53,7 +61,7 @@
                                                             </select>
                                                         </div>
                                                         <div class="modal-footer">
-                                                            <button class="btn btn-success">Add Product</button>
+                                                            <button class="btn btn-success">Add Food</button>
                                                             <button class="btn btn-danger" data-bs-dismiss="modal">Close</button>
                                                         </div>
                                                 </form>
@@ -70,7 +78,6 @@
                                                 <th>Name</th>
                                                 <th>Price</th>
                                                 <th>Category</th>
-                                                <th>Quantity</th>
                                                 <th>Status</th>
                                                 <th>Update</th>
                                                 {% if user.role == 4 %}
@@ -81,12 +88,11 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            {% for i in product %}
+                                            {% for i in food %}
                                                 <tr>
                                                     <td class="text-nowrap align-middle">{{ i.name }}</td>
                                                     <td class="text-nowrap align-middle">{{ i.price  }}$</td>
                                                     <td class="text-nowrap align-middle">{{ i.category.name  }}</td>
-                                                    <td class="text-nowrap align-middle">{{ i.quantity  }}</td>
                                                     {% if i.available == True %}
                                                         <td class="text-nowrap align-middle">Available</td>
                                                     {% else %}
@@ -99,21 +105,6 @@
                                 </div>
                             </div>
                         </div>
-{#                        <div class="mb-5">#}
-{#                            <ul class="pagination float-end">#}
-{#                                <li class="page-item page-prev disabled">#}
-{#                                    <a class="page-link" href="javascript:void(0)" tabindex="-1">Prev</a>#}
-{#                                </li>#}
-{#                                <li class="page-item active"><a class="page-link" href="javascript:void(0)">1</a></li>#}
-{#                                <li class="page-item"><a class="page-link" href="javascript:void(0)">2</a></li>#}
-{#                                <li class="page-item"><a class="page-link" href="javascript:void(0)">3</a></li>#}
-{#                                <li class="page-item"><a class="page-link" href="javascript:void(0)">4</a></li>#}
-{#                                <li class="page-item"><a class="page-link" href="javascript:void(0)">5</a></li>#}
-{#                                <li class="page-item page-next">#}
-{#                                    <a class="page-link" href="javascript:void(0)">Next</a>#}
-{#                                </li>#}
-{#                            </ul>#}
-{#                        </div>#}
                     </div>
                 </div>
             </div>

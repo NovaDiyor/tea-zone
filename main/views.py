@@ -191,24 +191,8 @@ def waiters_view(request):
         }
         return render(request, 'staff/waiter.html', context)
     elif user.role == 3:
-        day = date.today()
         waiter = User.objects.filter(role=2)
-        month = 0
-        for i in waiter:
-            order = Order.objects.filter(done=True, date__day=day.day, user=i)
-            for x in order:
-                item = OrderItem.objects.get(order=x)
-                for n in item:
-                    if n.product:
-                        i.salary += n.quantity * n.product.price % 8
-                    else:
-                        i.salary += n.quantity * n.food.price % 8
-                    month += i.salary
-                    if i.date__day > day.day:
-                        i.salary = 0
-                    i.save()
         context = {
-            'month': month,
             'waiters': waiter,
         }
         return render(request, 'staff/waiter.html', context)
@@ -235,22 +219,58 @@ def call_center_view(request):
 
 @login_required(login_url='login')
 def product_view(request):
-    usr = request.user
-    if usr.role == 1:
-        pro = Product.objects.all()
-        for i in pro:
-            if i.quantity <= 0:
-                i.available = False
-            else:
-                i.available = True
-        return render(request, 'product/product.html', pro)
-    elif usr.role == 3:
-        pro = Product.objects.all()
-        for i in pro:
-            if i.quantity <= 0:
-                i.available = False
-            else:
-                i.available = True
-        return render(request, 'product/product.html', pro)
-    else:
-        return redirect('404')
+    pro = Product.objects.all()
+    context = {
+        'product': pro,
+        'category': Category.objects.all()
+    }
+    for i in pro:
+        if i.quantity <= 0:
+            i.available = False
+        else:
+            i.available = True
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        price = request.POST.get('price')
+        quantity = request.POST.get('quantity')
+        category = request.POST.get('category')
+        print(category)
+        if int(quantity) > 0:
+            available = True
+        elif int(quantity) <= 0:
+            available = False
+        Product.objects.create(name=name, price=price, quantity=quantity, available=available, category_id=category)
+        return redirect('product')
+    return render(request, 'product/product.html', context)
+
+
+@login_required(login_url='login')
+def category_view(request):
+    context = {
+        'category': Category.objects.all()
+    }
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        Category.objects.create(name=name)
+        return redirect('category')
+    return render(request, 'product/category.html', context)
+
+
+@login_required(login_url='login')
+def food_view(request):
+    context = {
+        'category': Category.objects.all(),
+        'food': Food.objects.all()
+    }
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        price = request.POST.get('price')
+        category = request.POST.get('category')
+        print(category)
+        available = request.POST.get('available')
+        if available is None:
+            available = False
+        Food.objects.create(
+            name=name, price=price, category_id=category, available=available)
+        return redirect('food')
+    return render(request, 'product/food.html', context)

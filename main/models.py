@@ -68,10 +68,3 @@ class OrderItem(models.Model):
     food = models.ForeignKey(Food, on_delete=models.CASCADE, null=True, blank=True)
     product = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True, blank=True)
     quantity = models.IntegerField()
-
-
-class Message(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='from_user')
-    to = models.ForeignKey(User, on_delete=models.CASCADE, related_name='to_user')
-    message = models.TextField()
-    see = models.BooleanField(default=True)
