@@ -22,7 +22,7 @@ class UserAdmin(UserAdmin):
                 ),
             },
         ),
-        (_('Extra'), {'fields': ('role', 'number', 'is_waiter', 'salary')}),
+        (_('Extra'), {'fields': ('role', 'number')}),
         (_("Important dates"), {"fields": ("last_login", "date_joined")}),
     )
 

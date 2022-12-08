@@ -2,11 +2,16 @@ from django.shortcuts import render, redirect
 from .models import *
 
 
-def delete_user(request, pk):
+def delete_manager(request, pk):
     usr = request.user
     if usr.role == 1:
-        User.objects.get(id=pk).delete()
-        return redirect('staff')
+        if request.method == 'POST':
+            password = request.POST.get('password')
+            if usr.password == password:
+                User.objects.get(id=pk).delete()
+                return redirect('manager')
+            else:
+                return redirect('404')
     elif usr.role == 3:
         User.objects.get(id=pk).delete()
         return redirect('staff')
