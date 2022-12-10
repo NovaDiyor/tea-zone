@@ -17,6 +17,7 @@ urlpatterns = [
     path('managers/', manager_view, name='manager'),
     path('cookers/', cooker_view, name='cooker'),
     path('call/canter/staffs/', call_center_view, name='call'),
+    path('client/', client_view, name='client'),
     path('staff/add/', add_staff, name='add-staff'),
     path('room/', room_view, name='room'),
     path('category/', category_view, name='category'),

@@ -262,6 +262,14 @@ def call_center_view(request):
 
 
 @login_required(login_url='login')
+def client_view(request):
+    context = {
+        'client': Client.objects.all()
+    }
+    return render(request, 'staff/client.html', context)
+
+
+@login_required(login_url='login')
 def product_view(request):
     pro = Product.objects.all()
     context = {
@@ -343,7 +351,7 @@ def order_view(request):
         phone = request.POST.get('phone')
         address = request.POST.get('address')
         day = request.POST.get('date')
-        delivery_date = request.POST.get('delivery-date')
+        delivery_date = request.POST.get('dd')
         delivery = request.POST.get('delivery')
         if delivery is None:
             delivery = False

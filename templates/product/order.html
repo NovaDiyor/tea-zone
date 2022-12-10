@@ -1,5 +1,156 @@
 {% extends "dashboard/base.html" %}
 {% load static %}
 {% block content %}
-
+    <div class="main-content app-content">
+        <div class="side-app">
+            <div class="main-container container-fluid">
+                <div class="row row-cards">
+                    <div class="col-lg-12 col-xl-12">
+                        <div class="card">
+                            {% if user.role == 1 %}
+                                <div class="card-header">
+                                    <a class="modal-effect" data-bs-effect="effect-flip-vertical" data-bs-toggle="modal" href="#add_product"><button class="btn btn-sm btn-primary badge" type="button">Add Product</button></a>
+                                    <div class="modal fade" id="add_product">
+                                        <div class="modal-dialog modal-dialog-centered text-center" role="document">
+                                            <div class="modal-content modal-content-demo">
+                                                <form action="{% url 'order' %}" method="post">
+                                                    {% csrf_token %}
+                                                        <div class="modal-body">
+                                                            <input type="number" class="form-control mb-4" name="quantity" placeholder="Quantity" required>
+                                                            <select class="form-control select2 form-select mb-4" name="category" data-placeholder="Choose one" required>
+                                                                {% for i in waiter %}
+                                                                    <option value="{{ i.id }}">{{ i.first_name }}{{ i.last_name }}</option>
+                                                                {% endfor %}
+                                                            </select>
+                                                            <select class="form-control select2 form-select mb-4" name="category" data-placeholder="Choose one" required>
+                                                                {% for i in room %}
+                                                                    <option value="{{ i.id }}">{{ i.number }}</option>
+                                                                {% endfor %}
+                                                            </select>
+                                                            <label class="custom-switch form-switch d-flex mb-4">
+                                                                <input type="checkbox" name="delivery" value="True" class="custom-switch-input">
+                                                                <span class="custom-switch-indicator"></span>
+                                                                <span class="custom-switch-description">Delivery</span>
+                                                            </label>
+                                                            <input type="text" class="form-control mb-4" name="owner" placeholder="Customer" required>
+                                                            <input type="number" class="form-control mb-4" name="phone" placeholder="Phone" required>
+                                                            <input type="text" class="form-control mb-4" name="address" placeholder="Address" required>
+                                                            <input class="form-control fc-datepicker" name="date" placeholder="Date" type="text">
+                                                            <input class="form-control fc-datepicker" name="dd" placeholder="Delivery Date" type="datetime-local">
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button class="btn btn-success">Add Product</button>
+                                                            <button class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                                                        </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% elif user.role == 2 %}
+                                <div class="card-header">
+                                    <a class="modal-effect d-grid mb-3" data-bs-effect="effect-flip-vertical" data-bs-toggle="modal" href="#add_product"><button class="btn btn-sm btn-primary badge" type="button">Add Product</button></a>
+                                    <div class="modal fade" id="add_product">
+                                        <div class="modal-dialog modal-dialog-centered text-center" role="document">
+                                            <div class="modal-content modal-content-demo">
+                                                <form action="{% url 'product' %}" method="post">
+                                                    {% csrf_token %}
+                                                        <div class="modal-body">
+                                                            <input type="text" class="form-control mb-4" name="name" placeholder="Name" required>
+                                                            <input type="number" class="form-control mb-4" name="price" placeholder="Price $" required>
+                                                            <input type="number" class="form-control mb-4" name="quantity" placeholder="Quantity" required>
+                                                            <select class="form-control select2 form-select mb-4" name="category" data-placeholder="Choose one" required>
+                                                                {% for i in category %}
+                                                                    <option value="{{ i.id }}">{{ i.name }}</option>
+                                                                {% endfor %}
+                                                            </select>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button class="btn btn-success">Add Product</button>
+                                                            <button class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                                                        </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% elif user.role == 5 %}
+                                <div class="card-header">
+                                    <a class="modal-effect d-grid mb-3" data-bs-effect="effect-flip-vertical" data-bs-toggle="modal" href="#add_product"><button class="btn btn-sm btn-primary badge" type="button">Add Product</button></a>
+                                    <div class="modal fade" id="add_product">
+                                        <div class="modal-dialog modal-dialog-centered text-center" role="document">
+                                            <div class="modal-content modal-content-demo">
+                                                <form action="{% url 'order' %}" method="post">
+                                                    {% csrf_token %}
+                                                        <div class="modal-body">
+                                                            <input type="number" class="form-control mb-4" name="quantity" placeholder="Quantity" required>
+                                                            <select class="form-control select2 form-select mb-4" name="category" data-placeholder="Choose one" required>
+                                                                {% for i in waiter %}
+                                                                    <option value="{{ i.id }}">{{ i.first_name }}{{ i.last_name }}{{ i.username }}</option>
+                                                                {% endfor %}
+                                                            </select>
+                                                            <select class="form-control select2 form-select mb-4" name="category" data-placeholder="Choose one" required>
+                                                                {% for i in room %}
+                                                                    <option value="{{ i.id }}">{{ i.number }}</option>
+                                                                {% endfor %}
+                                                            </select>
+                                                            <label class="custom-switch form-switch d-flex mb-4">
+                                                                <input type="checkbox" name="delivery" value="True" class="custom-switch-input">
+                                                                <span class="custom-switch-indicator"></span>
+                                                                <span class="custom-switch-description">Delivery</span>
+                                                            </label>
+                                                            <input type="text" class="form-control mb-4" name="owner" placeholder="Customer" required>
+                                                            <input type="number" class="form-control mb-4" name="phone" placeholder="Phone" required>
+                                                            <input type="text" class="form-control mb-4" name="address" placeholder="Address" required>
+                                                            <input class="form-control fc-datepicker" name="date" placeholder="Date" type="text">
+                                                            <input class="form-control fc-datepicker" name="dd" placeholder="Delivery Date" type="datetime-local">
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button class="btn btn-success">Add Order</button>
+                                                            <button class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                                                        </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endif %}
+                            <div class="e-table px-5 pb-5">
+                                <div class="table-responsive table-lg">
+                                    <table class="table border-top table-bordered mb-0">
+                                        <thead>
+                                            <tr>
+                                                <th>Waiter</th>
+                                                <th>Room</th>
+                                                <th>Delivery</th>
+                                                <th>Address</th>
+                                                <th>Date</th>
+                                                <th>Delivery Date</th>
+                                                <th>Done</th>
+                                                <th>Bill</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for i in order %}
+                                                <tr>
+                                                    <td class="text-nowrap align-middle">{{ i.user.username }}</td>
+                                                    <td class="text-nowrap align-middle">{{ i.room.number  }}</td>
+                                                    <td class="text-nowrap align-middle">{{ i.delivery  }}</td>
+                                                    <td class="text-nowrap align-middle">{{ i.address  }}</td>
+                                                    <td class="text-nowrap align-middle">{{ i.date  }}</td>
+                                                    <td class="text-nowrap align-middle">{{ i.delivery_date  }}</td>
+                                                    <td class="text-nowrap align-middle">{{ i.done  }}</td>
+                                                    <td class="text-nowrap align-middle">{{ i.bill  }}$</td>
+                                                </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}

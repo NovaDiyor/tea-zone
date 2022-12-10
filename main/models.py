@@ -16,6 +16,7 @@ class User(AbstractUser):
 class Rooms(models.Model):
     number = models.IntegerField()
     places = models.IntegerField()
+    busy = models.BooleanField(default=False)
 
 
 class Client(models.Model):
@@ -60,6 +61,12 @@ class Order(models.Model):
     delivery_date = models.DateTimeField(null=True, blank=True)
     done = models.BooleanField(default=False)
     bill = models.IntegerField()
+
+    def save(self, *args, **kwargs):
+        room = self.room
+        room.busy = True
+        room.save()
+        super(Order, self).save(*args, **kwargs)
 
 
 class OrderItem(models.Model):

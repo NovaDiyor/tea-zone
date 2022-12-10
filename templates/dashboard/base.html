@@ -153,6 +153,19 @@
                                                 <li><a href="{% url 'product' %}" class="slide-item">Product</a></li>
                                             </ul>
                                         </li>
+                                        <li class="slide">
+                                            <a class="side-menu__item" data-bs-toggle="slide" href="javascript:void(0)">
+                                                <i class="side-menu__icon fe fe-shopping-cart"></i>
+                                                <span class="side-menu__label">Orders</span>
+                                                <i class="angle fe fe-chevron-right"></i>
+                                            </a>
+                                            <ul class="slide-menu">
+                                                <li class="side-menu-label1"><a href="javascript:void(0)">Orders</a></li>
+                                                <li><a href="{% url 'client' %}" class="slide-item">Clients</a></li>
+                                                <li><a href="{% url 'order' %}" class="slide-item">Orders</a></li>
+                                                <li><a href="{% url 'order-item' %}" class="slide-item">Orders Item</a></li>
+                                            </ul>
+                                        </li>
                                     {% elif user.role == 2 %}
                                         <li class="slide">
                                             <a class="side-menu__item" data-bs-toggle="slide" href="javascript:void(0)">
@@ -193,8 +206,8 @@
                                             </a>
                                             <ul class="slide-menu">
                                                 <li class="side-menu-label1"><a href="javascript:void(0)">Product</a></li>
-                                                <li><a href="#" class="slide-item">Rooms</a></li>
-                                                <li><a href="#" class="slide-item">Foods</a></li>
+                                                <li><a href="{% url 'room' %}" class="slide-item">Rooms</a></li>
+                                                <li><a href="{% url 'food' %}" class="slide-item">Foods</a></li>
                                                 <li><a href="{% url 'product' %}" class="slide-item">Product</a></li>
                                             </ul>
                                         </li>
@@ -225,6 +238,19 @@
                                                 <li><a href="#" class="slide-item">Rooms</a></li>
                                                 <li><a href="{% url 'product' %}" class="slide-item">Products</a></li>
                                                 <li><a href="#" class="slide-item">Foods</a></li>
+                                            </ul>
+                                        </li>
+                                        <li class="slide">
+                                            <a class="side-menu__item" data-bs-toggle="slide" href="javascript:void(0)">
+                                                <i class="side-menu__icon fe fe-slack"></i>
+                                                    <span class="side-menu__label"></span>
+                                                <i class="angle fe fe-chevron-right">Orders</i>
+                                            </a>
+                                            <ul class="slide-menu">
+                                                <li class="side-menu-label1"><a href="javascript:void(0)">Orders</a></li>
+                                                <li><a href="#" class="slide-item">Customers</a></li>
+                                                <li><a href="#" class="slide-item">Orders</a></li>
+                                                <li><a href="{% url 'product' %}" class="slide-item">Orders Item</a></a></li>
                                             </ul>
                                         </li>
                                     {% endif %}
