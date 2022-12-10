@@ -62,12 +62,6 @@ class Order(models.Model):
     done = models.BooleanField(default=False)
     bill = models.IntegerField()
 
-    def save(self, *args, **kwargs):
-        room = self.room
-        room.busy = True
-        room.save()
-        super(Order, self).save(*args, **kwargs)
-
 
 class OrderItem(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE)

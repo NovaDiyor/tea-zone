@@ -147,7 +147,7 @@
                                             </a>
                                             <ul class="slide-menu">
                                                 <li class="side-menu-label1"><a href="javascript:void(0)">Product</a></li>
-                                                <li><a href="#" class="slide-item">Rooms</a></li>
+                                                <li><a href="{% url 'room' %}" class="slide-item">Rooms</a></li>
                                                 <li><a href="{% url 'category' %}" class="slide-item">Category</a></li>
                                                 <li><a href="{% url 'food' %}" class="slide-item">Foods</a></li>
                                                 <li><a href="{% url 'product' %}" class="slide-item">Product</a></li>
@@ -174,7 +174,7 @@
                                                 <i class="angle fe fe-chevron-right"></i>
                                             </a>
                                             <ul class="slide-menu">
-                                                <li><a href="#" class="slide-item">Rooms</a></li>
+                                                <li><a href="{% url 'room' %}" class="slide-item">Rooms</a></li>
                                                 <li><a href="{% url 'product' %}" class="slide-item">Product</a></li>
                                                 <li><a href="#" class="slide-item">Food</a></li>
                                                 <li><a href="#" class="slide-item">Orders</a></li>
@@ -235,7 +235,7 @@
                                             <ul class="slide-menu">
                                                 <li class="side-menu-label1"><a href="javascript:void(0)">Clients</a></li>
                                                 <li><a href="#" class="slide-item">Customers</a></li>
-                                                <li><a href="#" class="slide-item">Rooms</a></li>
+                                                <li><a href="{% url 'room' %}" class="slide-item">Rooms</a></li>
                                                 <li><a href="{% url 'product' %}" class="slide-item">Products</a></li>
                                                 <li><a href="#" class="slide-item">Foods</a></li>
                                             </ul>
@@ -250,7 +250,7 @@
                                                 <li class="side-menu-label1"><a href="javascript:void(0)">Orders</a></li>
                                                 <li><a href="#" class="slide-item">Customers</a></li>
                                                 <li><a href="#" class="slide-item">Orders</a></li>
-                                                <li><a href="{% url 'product' %}" class="slide-item">Orders Item</a></a></li>
+                                                <li><a href="{% url 'product' %}" class="slide-item">Orders Item</a></li>
                                             </ul>
                                         </li>
                                     {% endif %}
