@@ -341,11 +341,24 @@ def room_view(request):
 
 @login_required(login_url='login')
 def order_view(request):
+    order = Order.objects.filter(done=True)
+    for i in order:
+        item = OrderItem.objects.filter(order_id=i)
+        for x in item:
+            if x.product:
+                i.bill += x.product.price * x.quantity
+                x.product.quantity -= x.quantity
+                x.product.save()
+                i.save()
+            else:
+                i.bill += x.food.price * x.quantity
+                i.save()
     context = {
         'order': Order.objects.all(),
         'waiter': User.objects.filter(role=2),
         'room': Rooms.objects.all(),
     }
+    usr = request.user
     if request.method == 'POST':
         user = request.POST.get('user')
         room = request.POST.get('room')
@@ -363,9 +376,14 @@ def order_view(request):
             room = None
         Client.objects.create(name=owner, phone=phone)
         client = Client.objects.last()
-        Order.objects.create(user_id=user, room_id=room, address=address, date=day,
-                             delivery_date=delivery_date,
-                             owner=client, delivery=delivery)
+        if usr.role == 2:
+            Order.objects.create(user_id=usr, room_id=room, address=address, date=day,
+                                 delivery_date=delivery_date,
+                                 owner=client, delivery=delivery, bill=None)
+        else:
+            Order.objects.create(user_id=user, room_id=room, address=address, date=day,
+                                 delivery_date=delivery_date,
+                                 owner=client, delivery=delivery, bill=None)
         return redirect('order')
     return render(request, 'product/order.html', context)
 

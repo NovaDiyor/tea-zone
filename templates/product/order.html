@@ -17,14 +17,14 @@
                                                     {% csrf_token %}
                                                         <div class="modal-body">
                                                             <div class="mb-4">
-                                                                <select class="form-control select2 form-select pb-5" name="category" data-placeholder="Choose one" required>
+                                                                <select class="form-control select2 form-select pb-5" name="user" data-placeholder="Choose one" required>
                                                                     {% for i in waiter %}
                                                                         <option value="{{ i.id }}">{{ i.first_name }}&emsp;{{ i.last_name }}</option>
                                                                     {% endfor %}
                                                                 </select>
                                                             </div>
                                                             <div class="mb-4">
-                                                                <select class="form-control select2 form-select pb-5" name="category" data-placeholder="Choose one" required>
+                                                                <select class="form-control select2 form-select pb-5" name="room" data-placeholder="Choose one" required>
                                                                     {% for i in room %}
                                                                         <option value="{{ i.id }}">{{ i.number }}</option>
                                                                     {% endfor %}
@@ -38,8 +38,8 @@
                                                             <input type="text" class="form-control mb-4" name="owner" placeholder="Customer" required>
                                                             <input type="number" class="form-control mb-4" name="phone" placeholder="Phone" required>
                                                             <input type="text" class="form-control mb-4" name="address" placeholder="Address" required>
-                                                            <input class="form-control fc-datepicker mb-4" name="date" placeholder="Date" type="text">
-                                                            <input class="form-control fc-datepicker" name="dd" placeholder="Delivery Date" type="datetime-local">
+                                                            <input class="form-control mb-4" name="date" placeholder="Date" type="date">
+                                                            <input class="form-control" name="dd" placeholder="Delivery Date" type="datetime-local">
                                                         </div>
                                                         <div class="modal-footer">
                                                             <button class="btn btn-success">Add Product</button>
@@ -56,12 +56,11 @@
                                     <div class="modal fade" id="add_product">
                                         <div class="modal-dialog modal-dialog-centered text-center" role="document">
                                             <div class="modal-content modal-content-demo">
-                                                <form action="{% url 'product' %}" method="post">
+                                                <form action="{% url 'order' %}" method="post">
                                                     {% csrf_token %}
                                                         <div class="modal-body">
                                                             <input type="text" class="form-control mb-4" name="name" placeholder="Name" required>
                                                             <input type="number" class="form-control mb-4" name="price" placeholder="Price $" required>
-                                                            <input type="number" class="form-control mb-4" name="quantity" placeholder="Quantity" required>
                                                             <select class="form-control select2 form-select mb-4" name="category" data-placeholder="Choose one" required>
                                                                 {% for i in category %}
                                                                     <option value="{{ i.id }}">{{ i.name }}</option>
@@ -88,7 +87,7 @@
                                                         <div class="modal-body">
                                                             <select class="form-control select2 form-select mb-4" name="category" data-placeholder="Choose one" required>
                                                                 {% for i in waiter %}
-                                                                    <option value="{{ i.id }}">{{ i.first_name }}{{ i.last_name }}{{ i.username }}</option>
+                                                                    <option value="{{ i.id }}">{{ i.first_name }}&emsp;{{ i.last_name }}</option>
                                                                 {% endfor %}
                                                             </select>
                                                             <select class="form-control select2 form-select mb-4" name="category" data-placeholder="Choose one" required>
@@ -104,8 +103,8 @@
                                                             <input type="text" class="form-control mb-4" name="owner" placeholder="Customer" required>
                                                             <input type="number" class="form-control mb-4" name="phone" placeholder="Phone" required>
                                                             <input type="text" class="form-control mb-4" name="address" placeholder="Address">
-                                                            <input class="form-control fc-datepicker mb-4" name="date" placeholder="Date" type="date">
-                                                            <input class="form-control fc-datepicker" name="dd" placeholder="Delivery Date" type="datetime-local">
+                                                            <input class="form-control mb-4" name="date" placeholder="Date" type="date">
+                                                            <input class="form-control" name="dd" placeholder="Delivery Date" type="datetime-local">
                                                         </div>
                                                         <div class="modal-footer">
                                                             <button class="btn btn-success">Add Order</button>
@@ -135,14 +134,26 @@
                                         <tbody>
                                             {% for i in order %}
                                                 <tr>
-                                                    <td class="text-nowrap align-middle">{{ i.user.username }}</td>
+                                                    <td class="text-nowrap align-middle">{{ i.user.first_name }}</td>
                                                     <td class="text-nowrap align-middle">{{ i.room.number  }}</td>
                                                     <td class="text-nowrap align-middle">{{ i.delivery  }}</td>
                                                     <td class="text-nowrap align-middle">{{ i.address  }}</td>
                                                     <td class="text-nowrap align-middle">{{ i.date  }}</td>
-                                                    <td class="text-nowrap align-middle">{{ i.delivery_date  }}</td>
-                                                    <td class="text-nowrap align-middle">{{ i.done  }}</td>
-                                                    <td class="text-nowrap align-middle">{{ i.bill  }}$</td>
+                                                    {% if i.delivery_date == None %}
+                                                        <td class="text-nowrap align-middle">False</td>
+                                                    {% else %}
+                                                        <td class="text-nowrap align-middle">{{ i.delivery_date  }}</td>
+                                                    {% endif %}
+                                                    {% if i.done == False %}
+                                                        <td class="text-nowrap align-middle">Open</td>
+                                                    {% else %}
+                                                        <td class="text-nowrap align-middle">Close</td>
+                                                    {% endif %}
+                                                    {% if i.bill == None %}
+                                                        <td class="text-nowrap align-middle">0$</td>
+                                                    {% else %}
+                                                        <td class="text-nowrap align-middle">{{ i.bill }}$</td>
+                                                    {% endif %}
                                                 </tr>
                                             {% endfor %}
                                         </tbody>

@@ -60,7 +60,7 @@ class Order(models.Model):
     date = models.DateField()
     delivery_date = models.DateTimeField(null=True, blank=True)
     done = models.BooleanField(default=False)
-    bill = models.IntegerField()
+    bill = models.IntegerField(null=True, blank=True)
 
 
 class OrderItem(models.Model):
