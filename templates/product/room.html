@@ -52,7 +52,7 @@
                             {% endif %}
                             <div class="e-table px-5 pb-5">
                                 <div class="table-responsive table-lg">
-                                    <table class="table border-top table-bordered mb-0">
+                                    <table class="table border-top table-bordered mb-0" style="text-align: center">
                                         <thead>
                                             <tr>
                                                 <th>Number</th>
@@ -72,6 +72,8 @@
                                                     {% else %}
                                                         <td class="text-nowrap align-middle">Busy</td>
                                                     {% endif %}
+                                                    <td><a href="#"><i class="fe fe-edit-2"></i></a></td>
+                                                    <td><a href="#"><i class="fe fe-trash"></i></a></td>
                                                 </tr>
                                             {% endfor %}
                                         </tbody>

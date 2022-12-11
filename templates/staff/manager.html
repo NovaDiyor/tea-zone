@@ -27,7 +27,7 @@
                             </div>
                             <div class="e-table px-5 pb-5">
                                 <div class="table-responsive table-lg">
-                                    <table class="table border-top table-bordered mb-0">
+                                    <table class="table border-top table-bordered mb-0" style="text-align: center">
                                         <thead>
                                             <tr>
                                                 <th>Username</th>
@@ -35,6 +35,7 @@
                                                 <th>Last Name</th>
                                                 <th>Phone Number</th>
                                                 <th>Date Joined</th>
+                                                <th>Update</th>
                                                 <th class="text-center">Fire Out</th>
                                             </tr>
                                         </thead>
@@ -46,6 +47,7 @@
                                                     <td class="text-nowrap align-middle">{{ i.last_name  }}</td>
                                                     <td class="text-nowrap align-middle">{{ i.number  }}</td>
                                                     <td class="text-nowrap align-middle"><span>{{ i.date_joined  }}</span></td>
+                                                    <td class="text-center align-middle"><a href="#"><i class="fe fe-edit-2"></i></a></td>
                                                     <td class="text-center align-middle">
                                                         {% if user.role == 1 %}
                                                             <div class="btn-group align-top">

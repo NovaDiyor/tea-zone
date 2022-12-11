@@ -1,3 +1,5 @@
+from datetime import date
+
 from django.shortcuts import render, redirect
 from .models import *
 
@@ -34,6 +36,11 @@ def delete_room(request, pk):
 def delete_order_item(request, pk):
     OrderItem.objects.get(id=pk).delete()
     return redirect('order-item')
+
+
+def delete_order(request, pk):
+    Order.objects.get(id=pk).delete()
+    return redirect('order')
 
 
 def delete_category(request, pk):
@@ -102,6 +109,27 @@ def change_order(request, pk):
         return redirect('order')
     else:
         return redirect('404')
+
+
+def update_order(request, pk):
+    order = Order.objects.get(id=pk)
+    if request.method == 'POST':
+        if order.delivery == True:
+            address = request.POST.get('address')
+            dd = request.POST.get('dd')
+            order.address = address
+            order.delivery_date = dd
+            order.save()
+            return redirect('order')
+        else:
+            order.done = True
+            order.save()
+            return redirect('order')
+    context = {
+        'item': order
+    }
+    print(context)
+    return render(request, 'product/order.html', context)
 
 
 def update_food(request,pk):

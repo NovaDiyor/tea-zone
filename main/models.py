@@ -37,7 +37,7 @@ class Food(models.Model):
 
 class Product(models.Model):
     name = models.CharField(max_length=210)
-    price = models.IntegerField()
+    price = models.DecimalField(max_digits=50, decimal_places=2)
     quantity = models.IntegerField()
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, blank=True)
     available = models.BooleanField(default=True)

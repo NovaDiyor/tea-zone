@@ -74,7 +74,6 @@ def add_staff(request):
                 number = request.POST.get('number')
                 status = request.POST.get('status')
                 if cp == password:
-                    print('hello')
                     User.objects.create_user(
                         username=username, first_name=name,
                         last_name=last_name, password=password,
@@ -341,18 +340,11 @@ def room_view(request):
 
 @login_required(login_url='login')
 def order_view(request):
-    order = Order.objects.filter(done=True)
+    day = date.today()
+    order = Order.objects.filter(delivery_date__day=day.day)
     for i in order:
-        item = OrderItem.objects.filter(order_id=i)
-        for x in item:
-            if x.product:
-                i.bill += x.product.price * x.quantity
-                x.product.quantity -= x.quantity
-                x.product.save()
-                i.save()
-            else:
-                i.bill += x.food.price * x.quantity
-                i.save()
+        i.done = True
+        i.save()
     context = {
         'order': Order.objects.all(),
         'waiter': User.objects.filter(role=2),
@@ -366,11 +358,9 @@ def order_view(request):
         phone = request.POST.get('phone')
         address = request.POST.get('address')
         day = request.POST.get('date')
-        delivery_date = request.POST.get('dd')
         delivery = request.POST.get('delivery')
         if delivery is None:
             delivery = False
-            delivery_date = None
             address = None
         else:
             room = None
@@ -378,11 +368,11 @@ def order_view(request):
         client = Client.objects.last()
         if usr.role == 2:
             Order.objects.create(user_id=usr, room_id=room, address=address, date=day,
-                                 delivery_date=delivery_date,
+                                 delivery_date=None,
                                  owner=client, delivery=delivery, bill=None)
         else:
             Order.objects.create(user_id=user, room_id=room, address=address, date=day,
-                                 delivery_date=delivery_date,
+                                 delivery_date=None,
                                  owner=client, delivery=delivery, bill=None)
         return redirect('order')
     return render(request, 'product/order.html', context)
@@ -397,25 +387,20 @@ def order_item_view(request):
         'product': Product.objects.all(),
         'food': Food.objects.all()
     }
-    for i in OrderItem.objects.all():
-        print(i.food)
-        if i.food is None:
-            print('False')
     if request.method == 'POST':
         order = request.POST.get('order')
         food = request.POST.get('food')
         product = request.POST.get('product')
         quantity = request.POST.get('quantity')
-        if food:
-            print(food)
-            OrderItem.objects.create(
-                order_id=order,
-                food_id=food,
-                quantity=quantity)
-        elif product:
+        if food == 'Nothing':
             OrderItem.objects.create(
                 order_id=order,
                 product_id=product,
+                quantity=quantity)
+        elif product == 'Nothing':
+            OrderItem.objects.create(
+                order_id=order,
+                food_id=food,
                 quantity=quantity)
         return redirect('order-item')
     return render(request, 'product/order-item.html', context)
