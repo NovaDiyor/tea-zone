@@ -13,17 +13,33 @@
                                     <div class="modal fade" id="add_product">
                                         <div class="modal-dialog modal-dialog-centered text-center" role="document">
                                             <div class="modal-content modal-content-demo">
-                                                <form action="{% url 'product' %}" method="post">
+                                                <form action="{% url 'order-item' %}" method="post">
                                                     {% csrf_token %}
                                                         <div class="modal-body">
-                                                            <input type="text" class="form-control mb-4" name="name" placeholder="Name" required>
-                                                            <input type="number" class="form-control mb-4" name="price" placeholder="Price $" required>
+                                                            <div class="mb-4">
+                                                                <select class="form-control select2 form-select mb-4" name="order" data-placeholder="Choose one" required>
+                                                                    {% for i in order %}
+                                                                        <option value="{{ i.id }}">{{ i.owner.name }}</option>
+                                                                    {% endfor %}
+                                                                </select>
+                                                            </div>
+                                                            <div class="mb-4">
+                                                                <select class="form-control select2 form-select mb-4" name="food" data-placeholder="Choose one" required>
+                                                                    <option value="None"></option>
+                                                                    {% for i in product %}
+                                                                        <option value="{{ i.id }}">{{ i.name }}</option>
+                                                                    {% endfor %}
+                                                                </select>
+                                                            </div>
+                                                            <div class="mb-4">
+                                                                <select class="form-control select2 form-select mb-4" name="product" data-placeholder="Choose one" required>
+                                                                    <option value="None"></option>
+                                                                    {% for i in food %}
+                                                                        <option value="{{ i.id }}">{{ i.name }}</option>
+                                                                    {% endfor %}
+                                                                </select>
+                                                            </div>
                                                             <input type="number" class="form-control mb-4" name="quantity" placeholder="Quantity" required>
-                                                            <select class="form-control select2 form-select mb-4" name="category" data-placeholder="Choose one" required>
-                                                                {% for i in category %}
-                                                                    <option value="{{ i.id }}">{{ i.name }}</option>
-                                                                {% endfor %}
-                                                            </select>
                                                         </div>
                                                         <div class="modal-footer">
                                                             <button class="btn btn-success">Add Product</button>
@@ -40,20 +56,34 @@
                                     <div class="modal fade" id="add_product">
                                         <div class="modal-dialog modal-dialog-centered text-center" role="document">
                                             <div class="modal-content modal-content-demo">
-                                                <form action="{% url 'product' %}" method="post">
+                                                <form action="{% url 'order-item' %}" method="post">
                                                     {% csrf_token %}
-                                                        <div class="modal-body">
-                                                            <input type="text" class="form-control mb-4" name="name" placeholder="Name" required>
-                                                            <input type="number" class="form-control mb-4" name="price" placeholder="Price $" required>
+                                                         <div class="modal-body">
+                                                            <div class="mb-4">
+                                                                <select class="form-control select2 form-select mb-4" name="order" data-placeholder="Choose one" required>
+                                                                    {% for i in order %}
+                                                                        <option value="{{ i.id }}">{{ i.owner.name }}</option>
+                                                                    {% endfor %}
+                                                                </select>
+                                                            </div>
+                                                             <div class="mb-4">
+                                                                 <select class="form-control select2 form-select mb-4" name="food" data-placeholder="Choose one" required>
+                                                                     <option class="form-control"></option>
+                                                                     {% for i in food %}
+                                                                         <option value="{{ i.id }}">{{ i.name }}</option>
+                                                                     {% endfor %}
+                                                                 </select>
+                                                             </div>
+                                                             <select class="form-control select2 form-select mb-4" name="product" data-placeholder="Choose one" required>
+                                                                 <option></option>
+                                                                 {% for i in product %}
+                                                                     <option value="{{ i.id }}">{{ i.name }}</option>
+                                                                 {% endfor %}
+                                                             </select>
                                                             <input type="number" class="form-control mb-4" name="quantity" placeholder="Quantity" required>
-                                                            <select class="form-control select2 form-select mb-4" name="category" data-placeholder="Choose one" required>
-                                                                {% for i in category %}
-                                                                    <option value="{{ i.id }}">{{ i.name }}</option>
-                                                                {% endfor %}
-                                                            </select>
                                                         </div>
                                                         <div class="modal-footer">
-                                                            <button class="btn btn-success">Add Product</button>
+                                                            <button class="btn btn-success">Add Order Item</button>
                                                             <button class="btn btn-danger" data-bs-dismiss="modal">Close</button>
                                                         </div>
                                                 </form>
@@ -63,16 +93,14 @@
                                 </div>
                             {% endif %}
                             <div class="e-table px-5 pb-5">
-                                <div class="table-responsive table-lg">
-                                    <table class="table border-top table-bordered mb-0">
+                                <div class="table-responsive tc table-lg">
+                                    <table class="table border-top table-bordered mb-0" style="text-align: center">
                                         <thead>
                                             <tr>
-                                                <th>Name</th>
-                                                <th>Price</th>
-                                                <th>Category</th>
+                                                <th>Order</th>
+                                                <th>Food</th>
+                                                <th>Product</th>
                                                 <th>Quantity</th>
-                                                <th>Status</th>
-                                                <th>Update</th>
                                                 {% if user.role == 4 %}
                                                     <td>Change Status</td>
                                                 {% else %}
@@ -81,17 +109,34 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            {% for i in product %}
+                                            {% for i in item %}
                                                 <tr>
-                                                    <td class="text-nowrap align-middle">{{ i.name }}</td>
-                                                    <td class="text-nowrap align-middle">{{ i.price  }}$</td>
-                                                    <td class="text-nowrap align-middle">{{ i.category.name  }}</td>
-                                                    <td class="text-nowrap align-middle">{{ i.quantity  }}</td>
-                                                    {% if i.available == True %}
-                                                        <td class="text-nowrap align-middle">Available</td>
-                                                    {% else %}
-                                                        <td class="text-nowrap align-middle">Not Available</td>
+                                                    <td class="text-nowrap align-middle">{{ i.order.user.first_name }}</td>
+                                                    {% if i.food %}
+                                                        <td class="text-nowrap align-middle">{{ i.food.name  }}</td>
+                                                    {% elif i.food == None %}
+                                                        <td class="text-nowrap align-middle">{{ i.food }}</td>
                                                     {% endif %}
+                                                    {% if i.product %}
+                                                        <td class="text-nowrap align-middle">{{ i.product.name }}</td>
+                                                    {% else %}
+                                                        <td class="text-nowrap align-middle">{{ i.product }}</td>
+                                                    {% endif %}
+                                                    <td class="text-nowrap align-middle">{{ i.quantity  }}</td>
+                                                    <td><a href="#delete_order{{ i.id }}"><i class="fe fe-trash"></i></a></td>
+                                                    <div class="modal fade" id="delete_order{{ i.id }}">
+                                                        <div class="modal-dialog modal-dialog-centered text-center" role="document">
+                                                            <div class="modal-content modal-content-demo">
+                                                                <div class="modal-body">
+                                                                    <h2 class="text-danger">Warning: If You Delete Order Item You Cant Restore It!</h2>
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <a href="{% url 'delete-order-item' i.id %}"><button class="btn btn-danger"><i class="fe fe-trash"></i></button></a>
+                                                                    <button class="btn btn-success" data-bs-dismiss="modal">Close</button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                 </tr>
                                             {% endfor %}
                                         </tbody>

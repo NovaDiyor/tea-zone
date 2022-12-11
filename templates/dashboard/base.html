@@ -176,9 +176,9 @@
                                             <ul class="slide-menu">
                                                 <li><a href="{% url 'room' %}" class="slide-item">Rooms</a></li>
                                                 <li><a href="{% url 'product' %}" class="slide-item">Product</a></li>
-                                                <li><a href="#" class="slide-item">Food</a></li>
-                                                <li><a href="#" class="slide-item">Orders</a></li>
-                                                <li><a href="#" class="slide-item">Order Item</a></li>
+                                                <li><a href="{% url 'food' %}" class="slide-item">Food</a></li>
+                                                <li><a href="{% url 'order' %}" class="slide-item">Orders</a></li>
+                                                <li><a href="{% url 'order-item' %}" class="slide-item">Order Item</a></li>
                                             </ul>
                                         </li>
                                     {% elif user.role == 3 %}
@@ -220,9 +220,9 @@
                                                 </a>
                                                 <ul class="slide-menu">
                                                     <li class="side-menu-label1"><a href="javascript:void(0)">Orders</a></li>
-                                                    <li><a href="" class="slide-item">Order Item</a></li>
-                                                    <li><a href="" class="slide-item">Food</a></li>
-                                                    <li><a href="" class="slide-item">Product</a></li>
+                                                    <li><a href="{% url 'order-item' %}" class="slide-item">Order Item</a></li>
+                                                    <li><a href="{% url 'food' %}" class="slide-item">Food</a></li>
+                                                    <li><a href="{% url 'product' %}" class="slide-item">Product</a></li>
                                                 </ul>
                                             </li>
                                     {% elif user.role == 5 %}
@@ -237,7 +237,7 @@
                                                 <li><a href="#" class="slide-item">Customers</a></li>
                                                 <li><a href="{% url 'room' %}" class="slide-item">Rooms</a></li>
                                                 <li><a href="{% url 'product' %}" class="slide-item">Products</a></li>
-                                                <li><a href="#" class="slide-item">Foods</a></li>
+                                                <li><a href="{% url 'food' %}" class="slide-item">Foods</a></li>
                                             </ul>
                                         </li>
                                         <li class="slide">
@@ -248,8 +248,8 @@
                                             </a>
                                             <ul class="slide-menu">
                                                 <li class="side-menu-label1"><a href="javascript:void(0)">Orders</a></li>
-                                                <li><a href="#" class="slide-item">Customers</a></li>
-                                                <li><a href="#" class="slide-item">Orders</a></li>
+                                                <li><a href="{% url 'client' %}" class="slide-item">Customers</a></li>
+                                                <li><a href="{% url 'order' %}" class="slide-item">Orders</a></li>
                                                 <li><a href="{% url 'product' %}" class="slide-item">Orders Item</a></li>
                                             </ul>
                                         </li>

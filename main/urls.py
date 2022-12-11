@@ -26,6 +26,7 @@ urlpatterns = [
     path('order/item', order_item_view, name='order-item'),
     path('user/delete/', delete_manager, name='delete-user'),
     path('room/delete/', delete_room, name='delete-room'),
+    path('order/item/delete/<int:pk>/', delete_order_item, name='delete-order-item'),
     path('category/delete/', delete_category, name='delete-category'),
     path('food/change/', change_food, name='change-food'),
     path('waiters/add/', delete_product, name='delete-product'),

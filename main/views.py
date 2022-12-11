@@ -393,17 +393,29 @@ def order_item_view(request):
     day = date.today()
     context = {
         'order': Order.objects.filter(date__day=day.day),
-        'item': OrderItem.objects.all()
+        'item': OrderItem.objects.all(),
+        'product': Product.objects.all(),
+        'food': Food.objects.all()
     }
+    for i in OrderItem.objects.all():
+        print(i.food)
+        if i.food is None:
+            print('False')
     if request.method == 'POST':
         order = request.POST.get('order')
         food = request.POST.get('food')
         product = request.POST.get('product')
         quantity = request.POST.get('quantity')
         if food:
-            product = None
+            print(food)
+            OrderItem.objects.create(
+                order_id=order,
+                food_id=food,
+                quantity=quantity)
         elif product:
-            food = None
-        OrderItem.objects.create(order_id=order, food_id=food, product_id=product, quantity=quantity)
+            OrderItem.objects.create(
+                order_id=order,
+                product_id=product,
+                quantity=quantity)
         return redirect('order-item')
     return render(request, 'product/order-item.html', context)

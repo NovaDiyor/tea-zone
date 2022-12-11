@@ -31,6 +31,11 @@ def delete_room(request, pk):
         return redirect('404')
 
 
+def delete_order_item(request, pk):
+    OrderItem.objects.get(id=pk).delete()
+    return redirect('order-item')
+
+
 def delete_category(request, pk):
     usr = request.user
     if usr.role == 1:
