@@ -9,7 +9,7 @@
                         <div class="card">
                             {% if user.role == 1 %}
                                 <div class="card-header">
-                                    <a class="modal-effect" data-bs-effect="effect-flip-vertical" data-bs-toggle="modal" href="#add_product"><button class="btn btn-sm btn-primary badge" type="button">Add Product</button></a>
+                                    <a class="modal-effect" data-bs-effect="effect-flip-vertical" data-bs-toggle="modal" href="#add_product"><button class="btn btn-sm btn-primary badge" type="button">Add Order</button></a>
                                     <div class="modal fade" id="add_product">
                                         <div class="modal-dialog modal-dialog-centered text-center" role="document">
                                             <div class="modal-content modal-content-demo">
@@ -51,33 +51,32 @@
                                 </div>
                             {% elif user.role == 2 %}
                                 <div class="card-header">
-                                    <a class="modal-effect d-grid mb-3" data-bs-effect="effect-flip-vertical" data-bs-toggle="modal" href="#add_product"><button class="btn btn-sm btn-primary badge" type="button">Add Product</button></a>
+                                    <a class="modal-effect d-grid mb-3" data-bs-effect="effect-flip-vertical" data-bs-toggle="modal" href="#add_product"><button class="btn btn-sm btn-primary badge" type="button">Add Order</button></a>
                                     <div class="modal fade" id="add_product">
                                         <div class="modal-dialog modal-dialog-centered text-center" role="document">
                                             <div class="modal-content modal-content-demo">
                                                 <form action="{% url 'order' %}" method="post">
                                                     {% csrf_token %}
                                                         <div class="modal-body">
-                                                            <input type="text" class="form-control mb-4" name="name" placeholder="Name" required>
-                                                            <input type="number" class="form-control mb-4" name="price" placeholder="Price $" required>
-                                                            <select class="form-control select2 form-select mb-4" name="category" data-placeholder="Choose one" required>
-                                                                {% for i in category %}
-                                                                    <option value="{{ i.id }}">{{ i.name }}</option>
+                                                            <input class="form-control mb-4" id="datepickerNoOfMonths" name="date" placeholder="MM/DD/YYYY" type="text" required>
+                                                            <select class="form-control select2 form-select pb-5" name="room" data-placeholder="Choose one" required>
+                                                                {% for i in room %}
+                                                                    <option value="{{ i.id }}">{{ i.number }}</option>
                                                                 {% endfor %}
                                                             </select>
                                                         </div>
                                                         <div class="modal-footer">
-                                                            <button class="btn btn-success">Add Product</button>
+                                                            <button class="btn btn-success">Add Order</button>
+                                                </form>
                                                             <button class="btn btn-danger" data-bs-dismiss="modal">Close</button>
                                                         </div>
-                                                </form>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             {% elif user.role == 5 %}
                                 <div class="card-header">
-                                    <a class="modal-effect d-grid mb-3" data-bs-effect="effect-flip-vertical" data-bs-toggle="modal" href="#add_product"><button class="btn btn-sm btn-primary badge" type="button">Add Product</button></a>
+                                    <a class="modal-effect d-grid mb-3" data-bs-effect="effect-flip-vertical" data-bs-toggle="modal" href="#add_product"><button class="btn btn-sm btn-primary badge" type="button">Add Order</button></a>
                                     <div class="modal fade" id="add_product">
                                         <div class="modal-dialog modal-dialog-centered text-center" role="document">
                                             <div class="modal-content modal-content-demo">

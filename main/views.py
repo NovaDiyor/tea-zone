@@ -9,9 +9,6 @@ def login_view(request):
     if request.method == 'POST':
         name = request.POST.get('name')
         password = request.POST.get('password')
-        number = request.POST.get('number')
-        if number is None:
-            number = 1
         user = User.objects.filter(username=name)
         if user.count() > 0:
             usr = authenticate(username=name, password=password)
@@ -20,16 +17,6 @@ def login_view(request):
                 return redirect('dashboard')
             else:
                 return redirect('404')
-        else:
-            user = User.objects.filter(number=number)
-            if user.count() > 0:
-                usr = authenticate(number=number, password=password)
-                if usr:
-                    login(request, usr)
-                    return redirect('dashboard')
-                else:
-                    return redirect('404')
-            return redirect('login')
     return render(request, 'login.html')
 
 
@@ -95,9 +82,14 @@ def dashboard_waiter(request):
         month = Order.objects.filter(done=True, date__month=day.month, user=usr)
         proces = Order.objects.filter(done=False, date__day=day.day, user=usr)
         total = 0
-        for i in order:
-            item = OrderItem.objects.get(order=i)
-            total += item.quantity * item.price % 8
+        if order.count() > 0:
+            print(order.count())
+            for i in order:
+                item = OrderItem.objects.get(order=i)
+                if item.count() > 0:
+                    total += item.quantity * item.price % 8
+                else:
+                    pass
         context = {
             'total': total,
             'done': order.count(),
@@ -145,15 +137,10 @@ def dashboard(request):
         order = Order.objects.filter(done=True)
         total = 0
         revenue = 0
-        for i in order:
-            item = OrderItem.objects.get(order=i)
-            total += item.quantity * item.price
-            for x in staff:
-                revenue += total - x.salary
         context = {
             'client': client.count(),
             'staff': staff.count(),
-            'total': total,
+            'total': order.count(),
             'revenue': revenue
         }
         return render(request, 'dashboard/dashboard.html', context)
@@ -368,9 +355,9 @@ def order_view(request):
             Client.objects.create(name=owner, phone=phone)
             client = Client.objects.last()
             if usr.role == 2:
-                Order.objects.create(user_id=usr, room_id=room, address=address, date=day,
-                                     delivery_date=None,
-                                     owner=client, delivery=delivery, bill=None)
+                Order.objects.create(
+                    user_id=usr, room_id=room, delivery_date=None, address=None,
+                    date=day, delivery=False, bill=None)
                 return redirect('order')
             else:
                 Order.objects.create(user_id=user, room_id=room, address=address, date=day,
@@ -379,7 +366,7 @@ def order_view(request):
                 return redirect('order')
         return render(request, 'product/order.html', context)
     except Exception as err:
-        print(err)
+        return err
 
 
 @login_required(login_url='login')

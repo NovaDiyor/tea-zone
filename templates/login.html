@@ -26,21 +26,13 @@
             <div class="col col-login mx-auto mt-7">
                 <div class="container-login100">
                     <div class="wrap-login100 p-6">
-                        <form class="login100-form validate-form" action="{% url 'login' %}" method="post">
-                            {% csrf_token %}
-                            <span class="login100-form-title pb-5">Login</span>
-                            <div class="panel panel-primary">
-                                <div class="tab-menu-heading">
-                                    <div class="tabs-menu1">
-                                        <ul class="nav panel-tabs">
-                                            <li class="mx-0"><a href="#tab5" class="active" data-bs-toggle="tab">Login</a></li>
-                                            <li class="mx-0"><a href="#tab6" data-bs-toggle="tab">Mobile</a></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                                <div class="panel-body tabs-menu-body p-0 pt-5">
-                                    <div class="tab-content">
-                                        <div class="tab-pane active" id="tab5">
+                        <span class="login100-form-title pb-5">Login</span>
+                        <div class="panel panel-primary">
+                            <div class="panel-body tabs-menu-body p-0 pt-5">
+                                <div class="tab-content">
+                                    <div class="tab-pane active" id="tab5">
+                                        <form class="login100-form validate-form" action="{% url 'login' %}" method="post">
+                                            {% csrf_token %}
                                             <div class="wrap-input100 validate-input input-group">
                                                 <input class="input100 border-start-0 form-control ms-0" type="text" name="name" placeholder="Name" required>
                                             </div>
@@ -53,55 +45,24 @@
                                             <div class="container-login100-form-btn">
                                                 <button class="login100-form-btn btn-primary">Login</button>
                                             </div>
-                                        </div>
-                                        <div class="tab-pane" id="tab6">
-                                            <div id="mobile-num" class="wrap-input100 validate-input input-group mb-4">
-                                                <input class="input100 border-start-0 form-control ms-0">
-                                            </div>
-                                            <div id="mobile-num" class="wrap-input100 validate-input input-group mb-4">
-                                                <input class="input100 border-start-0 form-control ms-0">
-                                            </div>
-                                            <div class="container-login100-form-btn ">
-                                                <a href="javascript:void(0)" class="login100-form-btn btn-primary" id="generate-otp">Login</a>
-                                            </div>
-                                        </div>
+                                        </form>
                                     </div>
                                 </div>
                             </div>
-                        </form>
+                        </div>
                     </div>
                 </div>
-                <!-- CONTAINER CLOSED -->
             </div>
         </div>
-        <!-- End PAGE -->
-
     </div>
-    <!-- BACKGROUND-IMAGE CLOSED -->
-
-    <!-- JQUERY JS -->
     <script src="{% static 'assets/js/jquery.min.js' %}"></script>
-
-    <!-- BOOTSTRAP JS -->
     <script src="{% static 'assets/plugins/bootstrap/js/popper.min.js' %}"></script>
     <script src="{% static 'assets/plugins/bootstrap/js/bootstrap.min.js' %}"></script>
-
-    <!-- SHOW PASSWORD JS -->
     <script src="{% static 'assets/js/show-password.min.js' %}"></script>
-
-    <!-- GENERATE OTP JS -->
     <script src="{% static 'assets/js/generate-otp.js' %}"></script>
-
-    <!-- Perfect SCROLLBAR JS-->
     <script src="{% static 'assets/plugins/p-scroll/perfect-scrollbar.js' %}"></script>
-
-    <!-- Color Theme js -->
     <script src="{% static 'assets/js/themeColors.js' %}"></script>
-
-    <!-- CUSTOM JS -->
     <script src="{% static 'assets/js/custom.js' %}"></script>
-
-
 </body>
 
 </html>
