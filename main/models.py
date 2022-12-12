@@ -58,7 +58,7 @@ class Order(models.Model):
     owner = models.ForeignKey(Client, on_delete=models.SET_NULL, null=True, blank=True)
     address = models.CharField(max_length=210, null=True, blank=True)
     date = models.DateField()
-    delivery_date = models.DateTimeField(null=True, blank=True)
+    delivery_date = models.TimeField(null=True, blank=True)
     done = models.BooleanField(default=False)
     bill = models.IntegerField(null=True, blank=True)
 

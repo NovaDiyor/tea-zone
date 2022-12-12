@@ -12,7 +12,7 @@
                                     <table class="table border-top table-bordered mb-0" style="text-align: center">
                                         <thead>
                                             <tr>
-                                                <th>Name</th>
+                                                <th>Full Name</th>
                                                 <th>Phone</th>
                                                 <th>Update</th>
                                             </tr>
@@ -22,7 +22,25 @@
                                                 <tr>
                                                     <td class="text-nowrap align-middle">{{ i.name }}</td>
                                                     <td class="text-nowrap align-middle">{{ i.phone  }}</td>
-                                                    <td class="text-nowrap align-middle"><a href="#"><i class="fe fe-edit-2"></i></a></td>
+                                                    <td><a href="#update_client{{ i.id }}" class="modal-effect" data-bs-effect="effect-flip-vertical" data-bs-toggle="modal"><i class="fe fe-edit-2"></i></a></td>
+                                                    <div class="modal fade" id="update_client{{ i.id }}">
+                                                        <div class="modal-dialog modal-dialog-centered text-center" role="document">
+                                                            <div class="modal-content modal-content-demo">
+                                                                <form action="{% url 'update-client' i.id %}" method="post">
+                                                                    {% csrf_token %}
+                                                                        <div class="modal-body">
+                                                                            <input type="text" value="{{ i.name }}" class="form-control mb-4" name="name" placeholder="Full Name" required>
+                                                                            <input class="form-control br-0 mb-4" name="phone" value="{{ i.phone }}" placeholder="Phone Number" type="text" required>
+                                                                            <h2 class="text-success">Update Client</h2>
+                                                                        </div>
+                                                                        <div class="modal-footer">
+                                                                            <button class="btn btn-success">Update Order</button>
+                                                                            <button class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                                                                        </div>
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                 </tr>
                                             {% endfor %}
                                         </tbody>

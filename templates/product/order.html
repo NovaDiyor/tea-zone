@@ -37,15 +37,14 @@
                                                             </label>
                                                             <input type="text" class="form-control mb-4" name="owner" placeholder="Customer" required>
                                                             <input type="number" class="form-control mb-4" name="phone" placeholder="Phone" required>
-                                                            <input type="text" class="form-control mb-4" name="address" placeholder="Address" required>
-                                                            <input class="form-control mb-4" name="date" placeholder="Date" type="date">
-                                                            <input class="form-control" id="datepickerNoOfMonths" placeholder="MM/DD/YYYY" type="text">
+                                                            <input type="text" class="form-control mb-4" name="address" placeholder="Address">
+                                                            <input class="form-control" id="datepickerNoOfMonths" name="date" placeholder="MM/DD/YYYY" type="text" required>
                                                         </div>
                                                         <div class="modal-footer">
                                                             <button class="btn btn-success">Add Product</button>
+                                                </form>
                                                             <button class="btn btn-danger" data-bs-dismiss="modal">Close</button>
                                                         </div>
-                                                </form>
                                             </div>
                                         </div>
                                     </div>
@@ -171,16 +170,17 @@
                                                                         <div class="modal-body">
                                                                             {% if i.delivery == True %}
                                                                                 <input type="text" value="{{ i.address }}" class="form-control mb-4" name="address" placeholder="Address" required>
-                                                                                <input type="datetime-local" value="{{ i.delivery_date }}" class="form-control mb-4" name="dd" required>
+                                                                                <input class="form-control br-0 mb-4" name="hour" value="{{ i.delivery_date.hour }}" placeholder="hour" type="text">
+                                                                                <input class="form-control br-0 mb-4" name="minute" value="{{ i.delivery_date.minute }}" placeholder="Minute" type="text">
                                                                             {% else %}
-                                                                                <h2 class="text-success">Update Done</h2>
+                                                                                <h2 class="text-success">Close Order</h2>
                                                                             {% endif %}
                                                                         </div>
-                                                                        <div class="modal-footer">
-                                                                            <button class="btn btn-success">Update Order</button>
-                                                                            <button class="btn btn-danger" data-bs-dismiss="modal">Close</button>
-                                                                        </div>
+                                                                    <div class="modal-footer">
+                                                                        <button class="btn btn-danger">Close Order</button>
                                                                 </form>
+                                                                        <button class="btn btn-success" data-bs-dismiss="modal">Cancel</button>
+                                                                    </div>
                                                             </div>
                                                         </div>
                                                     </div>

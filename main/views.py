@@ -1,4 +1,4 @@
-from datetime import date
+from datetime import date, datetime
 from django.shortcuts import render, redirect
 from .models import *
 from django.contrib.auth import authenticate, login, logout
@@ -340,8 +340,8 @@ def room_view(request):
 
 @login_required(login_url='login')
 def order_view(request):
-    day = date.today()
-    order = Order.objects.filter(delivery_date__day=day.day)
+    d = datetime.today()
+    order = Order.objects.filter(delivery_date__hour=d.hour)
     for i in order:
         i.done = True
         i.save()
@@ -351,31 +351,35 @@ def order_view(request):
         'room': Rooms.objects.all(),
     }
     usr = request.user
-    if request.method == 'POST':
-        user = request.POST.get('user')
-        room = request.POST.get('room')
-        owner = request.POST.get('owner')
-        phone = request.POST.get('phone')
-        address = request.POST.get('address')
-        day = request.POST.get('date')
-        delivery = request.POST.get('delivery')
-        if delivery is None:
-            delivery = False
-            address = None
-        else:
-            room = None
-        Client.objects.create(name=owner, phone=phone)
-        client = Client.objects.last()
-        if usr.role == 2:
-            Order.objects.create(user_id=usr, room_id=room, address=address, date=day,
-                                 delivery_date=None,
-                                 owner=client, delivery=delivery, bill=None)
-        else:
-            Order.objects.create(user_id=user, room_id=room, address=address, date=day,
-                                 delivery_date=None,
-                                 owner=client, delivery=delivery, bill=None)
-        return redirect('order')
-    return render(request, 'product/order.html', context)
+    try:
+        if request.method == 'POST':
+            user = request.POST.get('user')
+            room = request.POST.get('room')
+            owner = request.POST.get('owner')
+            phone = request.POST.get('phone')
+            address = request.POST.get('address')
+            day = datetime.strptime(request.POST.get('date'), "%m/%d/%Y").date()
+            delivery = request.POST.get('delivery')
+            if delivery is None:
+                delivery = False
+                address = None
+            else:
+                room = None
+            Client.objects.create(name=owner, phone=phone)
+            client = Client.objects.last()
+            if usr.role == 2:
+                Order.objects.create(user_id=usr, room_id=room, address=address, date=day,
+                                     delivery_date=None,
+                                     owner=client, delivery=delivery, bill=None)
+                return redirect('order')
+            else:
+                Order.objects.create(user_id=user, room_id=room, address=address, date=day,
+                                     delivery_date=None,
+                                     owner=client, delivery=delivery, bill=None)
+                return redirect('order')
+        return render(request, 'product/order.html', context)
+    except Exception as err:
+        print(err)
 
 
 @login_required(login_url='login')

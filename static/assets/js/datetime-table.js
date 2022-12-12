@@ -21,10 +21,10 @@ $.fn.dataTable.ext.search.push(
  
 // Create date inputs
 minDate = new DateTime($('#min'), {
-    format: 'YYYY MMMM Do'
+    format: 'MMMM Do YYYY'
 });
 maxDate = new DateTime($('#max'), {
-    format: 'YYYY MMMM Do'
+    format: 'MMMM Do YYYY'
 });
 
 // DataTables initialisation

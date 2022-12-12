@@ -1,5 +1,7 @@
-from datetime import date
+from datetime import date, datetime
+from timeit import timeit
 
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from .models import *
 
@@ -115,10 +117,15 @@ def update_order(request, pk):
     order = Order.objects.get(id=pk)
     if request.method == 'POST':
         if order.delivery == True:
+            d = date.today()
             address = request.POST.get('address')
-            dd = request.POST.get('dd')
+            hour = request.POST.get('hour')
+            minute = request.POST.get('minute')
+            hour = hour + ':'
+            total = hour + minute
+            print(total)
             order.address = address
-            order.delivery_date = dd
+            order.delivery_date = total
             order.save()
             return redirect('order')
         else:
@@ -181,6 +188,17 @@ def update_product(request,pk):
         return redirect('404')
 
 
+@login_required(login_url='login')
+def update_client(request, pk):
+    client = Client.objects.get(id=pk)
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        phone = request.POST.get('phone')
+        client.name = name
+        client.phone = phone
+        client.save()
+        return redirect('client')
+    return render(request, 'staff/client.html')
 
 
 
