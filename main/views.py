@@ -3,8 +3,20 @@ from django.shortcuts import render, redirect
 from .models import *
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator,PageNotAnInteger,EmptyPage
 
 
+def PagenatorPage(List, num, request):
+    paginator = Paginator(List, num)
+    page = request.GET.get('page')
+    try:
+        list = paginator.page(page)
+
+    except PageNotAnInteger:
+        list = paginator.page(1)
+    except EmptyPage:
+        list = paginator.page(paginator.num_page)
+    return list
 def login_view(request):
     if request.method == 'POST':
         name = request.POST.get('name')
@@ -235,12 +247,14 @@ def call_center_view(request):
     usr = request.user
     if usr.role == 1:
         context = {
-            'call_canter': User.objects.filter(role=5)
+            'call_canter': User.objects.filter(role=5),
+            'objects':PagenatorPage(User.objects.filter(role=5), 5, request)
         }
         return render(request, 'staff/call-canter.html', context)
     elif usr.role == 3:
         context = {
-            'call_center': User.objects.filter(role=5)
+            'call_center': User.objects.filter(role=5),
+            'objects': PagenatorPage(User.objects.filter(role=5), 5, request)
         }
         return render(request, 'staff/call-canter.html', context)
     else:
@@ -250,7 +264,8 @@ def call_center_view(request):
 @login_required(login_url='login')
 def client_view(request):
     context = {
-        'client': Client.objects.all()
+        'client': Client.objects.all(),
+        'objects':PagenatorPage(Client.objects.all(), 5, request),
     }
     return render(request, 'staff/client.html', context)
 
@@ -260,6 +275,7 @@ def product_view(request):
     pro = Product.objects.all()
     context = {
         'product': pro,
+        'objects': PagenatorPage(Product.objects.all(),5,request),
         'category': Category.objects.all()
     }
     for i in pro:
@@ -284,7 +300,8 @@ def product_view(request):
 @login_required(login_url='login')
 def category_view(request):
     context = {
-        'category': Category.objects.all()
+        'category': Category.objects.all(),
+        'objects': PagenatorPage(Category.objects.all(),5,request)
     }
     if request.method == 'POST':
         name = request.POST.get('name')
@@ -297,7 +314,8 @@ def category_view(request):
 def food_view(request):
     context = {
         'category': Category.objects.all(),
-        'food': Food.objects.all()
+        'food': Food.objects.all(),
+        'objects':PagenatorPage(Food.objects.all(),5,request)
     }
     if request.method == 'POST':
         name = request.POST.get('name')
@@ -315,7 +333,8 @@ def food_view(request):
 @login_required(login_url='login')
 def room_view(request):
     context = {
-        'room': Rooms.objects.all()
+        'room':Rooms.objects.all(),
+        'objects': PagenatorPage(Rooms.objects.all(), 5, request)
     }
     if request.method == 'POST':
         number = request.POST.get('number')
@@ -334,6 +353,7 @@ def order_view(request):
         i.save()
     context = {
         'order': Order.objects.all(),
+        'objects':PagenatorPage(Order.objects.all(),5,request),
         'waiter': User.objects.filter(role=2),
         'room': Rooms.objects.all(),
     }
@@ -375,6 +395,7 @@ def order_item_view(request):
     context = {
         'order': Order.objects.filter(date__day=day.day),
         'item': OrderItem.objects.all(),
+        'objects':PagenatorPage(OrderItem.objects.all(),5,request),
         'product': Product.objects.all(),
         'food': Food.objects.all()
     }

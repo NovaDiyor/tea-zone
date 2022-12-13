@@ -63,7 +63,7 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            {% for i in room %}
+                                            {% for i in objects %}
                                                 <tr>
                                                     <td class="text-nowrap align-middle">{{ i.number }}</td>
                                                     <td class="text-nowrap align-middle">{{ i.places }}</td>
@@ -82,8 +82,42 @@
                             </div>
                         </div>
                     </div>
+                    <div class="text-center" >
+ <section class="text-center"  class="ftco-section bg-light">
+    {% if objects.paginator.num_pages > 1 %}
+    <nav aria-labelledby="Page navigations" >
+      <ul class="pagination pagination-lg round-pagination" style="justify-content:center">
+        {% if objects.has_previous %}
+        <li class="page-item">
+          <a class="page-link" href="?page={{ objects.previous_page_number }}"><i class="bx bx-left-arrow-alt">orqaga</i></a>
+        </li>
+        {% endif %}
+        {% for num in objects.paginator.page_range %}
+        {% if num == objects.number %}
+        <li class="page-item active">
+          <a class="page-link" href="#" tabindex="-1">{{ num }}</a>
+        </li>
+        {% elif num > objects.number|add:'-3' and num < objects.number|add:'3' %}
+        <li class="page-item">
+          <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+        </li>
+        {% endif %}
+        {% endfor %}
+        {% if objects.has_next %}
+        <li class="page-item">
+          <a class="page-link" href="?page={{ objects.next_page_number }}" aria-label="Next">
+            <i class="bx bx-right-arrow-alt">oldinga</i>
+          </a>
+        </li>
+        {% endif %}
+      </ul>
+    </nav>
+    {% endif %}
+  </section>
+    </div>
                 </div>
             </div>
         </div>
     </div>
+
 {% endblock %}

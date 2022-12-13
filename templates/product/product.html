@@ -81,7 +81,7 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            {% for i in product %}
+                                            {% for i in objects %}
                                                 <tr>
                                                     <td class="text-nowrap align-middle">{{ i.name }}</td>
                                                     <td class="text-nowrap align-middle">{{ i.price  }}$</td>
@@ -101,21 +101,39 @@
                                 </div>
                             </div>
                         </div>
-{#                        <div class="mb-5">#}
-{#                            <ul class="pagination float-end">#}
-{#                                <li class="page-item page-prev disabled">#}
-{#                                    <a class="page-link" href="javascript:void(0)" tabindex="-1">Prev</a>#}
-{#                                </li>#}
-{#                                <li class="page-item active"><a class="page-link" href="javascript:void(0)">1</a></li>#}
-{#                                <li class="page-item"><a class="page-link" href="javascript:void(0)">2</a></li>#}
-{#                                <li class="page-item"><a class="page-link" href="javascript:void(0)">3</a></li>#}
-{#                                <li class="page-item"><a class="page-link" href="javascript:void(0)">4</a></li>#}
-{#                                <li class="page-item"><a class="page-link" href="javascript:void(0)">5</a></li>#}
-{#                                <li class="page-item page-next">#}
-{#                                    <a class="page-link" href="javascript:void(0)">Next</a>#}
-{#                                </li>#}
-{#                            </ul>#}
-{#                        </div>#}
+               <div class="text-center" >
+ <section class="text-center"  class="ftco-section bg-light">
+    {% if objects.paginator.num_pages > 1 %}
+    <nav aria-labelledby="Page navigations" >
+      <ul class="pagination pagination-lg round-pagination" style="justify-content:center">
+        {% if objects.has_previous %}
+        <li class="page-item">
+          <a class="page-link" href="?page={{ objects.previous_page_number }}"><i class="bx bx-left-arrow-alt">orqaga</i></a>
+        </li>
+        {% endif %}
+        {% for num in objects.paginator.page_range %}
+        {% if num == objects.number %}
+        <li class="page-item active">
+          <a class="page-link" href="#" tabindex="-1">{{ num }}</a>
+        </li>
+        {% elif num > objects.number|add:'-3' and num < objects.number|add:'3' %}
+        <li class="page-item">
+          <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+        </li>
+        {% endif %}
+        {% endfor %}
+        {% if objects.has_next %}
+        <li class="page-item">
+          <a class="page-link" href="?page={{ objects.next_page_number }}" aria-label="Next">
+            <i class="bx bx-right-arrow-alt">oldinga</i>
+          </a>
+        </li>
+        {% endif %}
+      </ul>
+    </nav>
+    {% endif %}
+  </section>
+    </div>
                     </div>
                 </div>
             </div>
