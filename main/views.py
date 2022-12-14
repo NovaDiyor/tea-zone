@@ -55,12 +55,22 @@ def add_staff(request):
                 confirm_password = request.POST.get('cp')
                 number = request.POST.get('number')
                 status = request.POST.get('status')
-                if confirm_password == password:
-                    User.objects.create_user(
-                        username=username, first_name=name,
-                        last_name=last_name, password=password,
-                        number=number, role=status)
-                    return redirect('add-staff')
+                f = 0
+                for i in User.objects.all():
+                    if i.username == username:
+                        f += 1
+                    else:
+                        f += 0
+                if f == 1:
+                    return redirect('dashboard')
+                elif f == 0:
+                    if confirm_password == password:
+                        User.objects.create_user(
+                            username=username, first_name=name,
+                            last_name=last_name, password=password,
+                            number=number, role=status)
+                        f = 0
+                        return redirect('add-staff')
             else:
                 return render(request, 'staff/add-staff.html')
         elif usr.role == 3:
