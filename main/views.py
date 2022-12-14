@@ -301,7 +301,7 @@ def product_view(request):
 def category_view(request):
     context = {
         'category': Category.objects.all(),
-        'objects': PagenatorPage(Category.objects.all(),5,request)
+        'objects': PagenatorPage(Category.objects.all(), 5, request)
     }
     if request.method == 'POST':
         name = request.POST.get('name')
@@ -309,6 +309,14 @@ def category_view(request):
         return redirect('category')
     return render(request, 'product/category.html', context)
 
+
+@login_required(login_url='login')
+def staff_view(request):
+    context = {
+        'staff': User.objects.all(),
+        'total': User.objects.all().count()
+    }
+    return render(request, 'staff/staff.html', context)
 
 @login_required(login_url='login')
 def food_view(request):
@@ -360,29 +368,29 @@ def order_view(request):
     usr = request.user
     try:
         if request.method == 'POST':
-            user = request.POST.get('user')
+            # user = request.POST.get('user')
             room = request.POST.get('room')
-            owner = request.POST.get('owner')
-            phone = request.POST.get('phone')
-            address = request.POST.get('address')
+            # owner = request.POST.get('owner')
+            # phone = request.POST.get('phone')
+            # address = request.POST.get('address')
             day = datetime.strptime(request.POST.get('date'), "%m/%d/%Y").date()
-            delivery = request.POST.get('delivery')
-            if delivery is None:
-                delivery = False
-                address = None
-            else:
-                room = None
-            Client.objects.create(name=owner, phone=phone)
-            client = Client.objects.last()
+            # delivery = request.POST.get('delivery')
+            # if delivery is None:
+            #     delivery = False
+            #     address = None
+            # else:
+            #     room = None
+            # Client.objects.create(name=owner, phone=phone)
+            # client = Client.objects.last()
             if usr.role == 2:
                 Order.objects.create(
                     user_id=usr, room_id=room, delivery_date=None, address=None,
                     date=day, delivery=False, bill=None)
                 return redirect('order')
             else:
-                Order.objects.create(user_id=user, room_id=room, address=address, date=day,
-                                     delivery_date=None,
-                                     owner=client, delivery=delivery, bill=None)
+                # Order.objects.create(user_id=user, room_id=room, address=address, date=day,
+                #                      delivery_date=None,
+                #                      owner=client, delivery=delivery, bill=None)
                 return redirect('order')
         return render(request, 'product/order.html', context)
     except Exception as err:

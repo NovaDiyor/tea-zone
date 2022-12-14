@@ -12,6 +12,7 @@ urlpatterns = [
     path('dashboard/cooker/', dashboard_cooker, name='dashboard-c'),
     path('dashboard/call-center/', dashboard_call_center, name='dashboard-call'),
     path('product/', product_view, name='product'),
+    path('staff/', staff_view, name='staff'),
     path('directors/', director_view, name='director'),
     path('waiters/', waiters_view, name='waiter'),
     path('managers/', manager_view, name='manager'),
