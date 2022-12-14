@@ -69,7 +69,6 @@ def add_staff(request):
                             username=username, first_name=name,
                             last_name=last_name, password=password,
                             number=number, role=status)
-                        f = 0
                         return redirect('add-staff')
             else:
                 return render(request, 'staff/add-staff.html')
