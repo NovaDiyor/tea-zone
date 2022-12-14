@@ -3,20 +3,21 @@ from django.shortcuts import render, redirect
 from .models import *
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from django.core.paginator import Paginator,PageNotAnInteger,EmptyPage
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 
 
-def PagenatorPage(List, num, request):
+def paginator_page(List, num, request):
     paginator = Paginator(List, num)
     page = request.GET.get('page')
     try:
-        list = paginator.page(page)
-
+        lt = paginator.page(page)
     except PageNotAnInteger:
-        list = paginator.page(1)
+        lt = paginator.page(1)
     except EmptyPage:
-        list = paginator.page(paginator.num_page)
-    return list
+        lt = paginator.page(paginator.num_page)
+    return lt
+
+
 def login_view(request):
     if request.method == 'POST':
         name = request.POST.get('name')
@@ -46,50 +47,31 @@ def error_view(request):
 def add_staff(request):
     usr = request.user
     try:
-        if usr.role == 1:
-            if request.method == 'POST':
-                username = request.POST.get('username')
-                name = request.POST.get('name')
-                last_name = request.POST.get('last-name')
-                password = request.POST.get('password')
-                confirm_password = request.POST.get('cp')
-                number = request.POST.get('number')
-                status = request.POST.get('status')
-                f = 0
-                for i in User.objects.all():
-                    if i.username == username:
-                        f += 1
-                    else:
-                        f += 0
-                if f == 1:
-                    return redirect('dashboard')
-                elif f == 0:
-                    if confirm_password == password:
-                        User.objects.create_user(
-                            username=username, first_name=name,
-                            last_name=last_name, password=password,
-                            number=number, role=status)
-                        return redirect('add-staff')
-            else:
-                return render(request, 'staff/add-staff.html')
-        elif usr.role == 3:
-            if request.method == 'POST':
-                username = request.POST.get('username')
-                name = request.POST.get('name')
-                last_name = request.POST.get('last-name')
-                password = request.POST.get('password')
-                cp = request.POST.get('cp')
-                number = request.POST.get('number')
-                status = request.POST.get('status')
-                if cp == password:
+        if request.method == 'POST':
+            username = request.POST.get('username')
+            name = request.POST.get('name')
+            last_name = request.POST.get('last-name')
+            password = request.POST.get('password')
+            confirm_password = request.POST.get('cp')
+            number = request.POST.get('number')
+            status = request.POST.get('status')
+            f = 0
+            for i in User.objects.all():
+                if i.username == username:
+                    f += 1
+                else:
+                    f += 0
+            if f == 1:
+                print('user is exist')
+            elif f == 0:
+                if confirm_password == password:
                     User.objects.create_user(
                         username=username, first_name=name,
                         last_name=last_name, password=password,
                         number=number, role=status)
-                    return redirect('add-staff')
-            else:
-                return render(request, 'staff/add-staff.html')
-        return redirect('404')
+            return redirect('staff')
+        else:
+            return render(request, 'staff/add-staff.html')
     except Exception as err:
         print(err)
 
@@ -257,13 +239,13 @@ def call_center_view(request):
     if usr.role == 1:
         context = {
             'call_canter': User.objects.filter(role=5),
-            'objects':PagenatorPage(User.objects.filter(role=5), 5, request)
+            'objects': paginator_page(User.objects.filter(role=5), 5, request)
         }
         return render(request, 'staff/call-canter.html', context)
     elif usr.role == 3:
         context = {
             'call_center': User.objects.filter(role=5),
-            'objects': PagenatorPage(User.objects.filter(role=5), 5, request)
+            'objects': paginator_page(User.objects.filter(role=5), 5, request)
         }
         return render(request, 'staff/call-canter.html', context)
     else:
@@ -274,7 +256,7 @@ def call_center_view(request):
 def client_view(request):
     context = {
         'client': Client.objects.all(),
-        'objects':PagenatorPage(Client.objects.all(), 5, request),
+        'objects': paginator_page(Client.objects.all(), 5, request),
     }
     return render(request, 'staff/client.html', context)
 
@@ -284,7 +266,7 @@ def product_view(request):
     pro = Product.objects.all()
     context = {
         'product': pro,
-        'objects': PagenatorPage(Product.objects.all(),5,request),
+        'objects': paginator_page(Product.objects.all(), 5, request),
         'category': Category.objects.all()
     }
     for i in pro:
@@ -310,7 +292,7 @@ def product_view(request):
 def category_view(request):
     context = {
         'category': Category.objects.all(),
-        'objects': PagenatorPage(Category.objects.all(), 5, request)
+        'objects': paginator_page(Category.objects.all(), 5, request)
     }
     if request.method == 'POST':
         name = request.POST.get('name')
@@ -322,18 +304,18 @@ def category_view(request):
 @login_required(login_url='login')
 def staff_view(request):
     context = {
-        'staff': User.objects.all(),
-        'objects': PagenatorPage(User.objects.all(),5,request),
+        'staff': paginator_page(User.objects.all(), 5, request),
         'total': User.objects.all().count()
     }
     return render(request, 'staff/staff.html', context)
+
 
 @login_required(login_url='login')
 def food_view(request):
     context = {
         'category': Category.objects.all(),
         'food': Food.objects.all(),
-        'objects':PagenatorPage(Food.objects.all(),5,request)
+        'objects': paginator_page(Food.objects.all(), 5, request)
     }
     if request.method == 'POST':
         name = request.POST.get('name')
@@ -351,8 +333,8 @@ def food_view(request):
 @login_required(login_url='login')
 def room_view(request):
     context = {
-        'room':Rooms.objects.all(),
-        'objects': PagenatorPage(Rooms.objects.all(), 5, request)
+        'room': Rooms.objects.all(),
+        'objects': paginator_page(Rooms.objects.all(), 5, request)
     }
     if request.method == 'POST':
         number = request.POST.get('number')
@@ -371,37 +353,30 @@ def order_view(request):
         i.save()
     context = {
         'order': Order.objects.all(),
-        'objects':PagenatorPage(Order.objects.all(),5,request),
+        'objects': paginator_page(Order.objects.all(), 5, request),
         'waiter': User.objects.filter(role=2),
         'room': Rooms.objects.all(),
     }
-    usr = request.user
     try:
         if request.method == 'POST':
-            # user = request.POST.get('user')
+            user = request.POST.get('user')
             room = request.POST.get('room')
-            # owner = request.POST.get('owner')
-            # phone = request.POST.get('phone')
-            # address = request.POST.get('address')
+            owner = request.POST.get('owner')
+            phone = request.POST.get('phone')
+            address = request.POST.get('address')
             day = datetime.strptime(request.POST.get('date'), "%m/%d/%Y").date()
-            # delivery = request.POST.get('delivery')
-            # if delivery is None:
-            #     delivery = False
-            #     address = None
-            # else:
-            #     room = None
-            # Client.objects.create(name=owner, phone=phone)
-            # client = Client.objects.last()
-            if usr.role == 2:
-                Order.objects.create(
-                    user_id=usr, room_id=room, delivery_date=None, address=None,
-                    date=day, delivery=False, bill=None)
-                return redirect('order')
+            delivery = request.POST.get('delivery')
+            if delivery is None:
+                delivery = False
+                address = None
             else:
-                # Order.objects.create(user_id=user, room_id=room, address=address, date=day,
-                #                      delivery_date=None,
-                #                      owner=client, delivery=delivery, bill=None)
-                return redirect('order')
+                room = None
+            Client.objects.create(name=owner, phone=phone)
+            client = Client.objects.last()
+            Order.objects.create(user_id=user, room_id=room, address=address, date=day,
+                                 delivery_date=None,
+                                 owner=client, delivery=delivery, bill=None)
+            return redirect('order')
         return render(request, 'product/order.html', context)
     except Exception as err:
         return err
@@ -413,7 +388,7 @@ def order_item_view(request):
     context = {
         'order': Order.objects.filter(date__day=day.day),
         'item': OrderItem.objects.all(),
-        'objects':PagenatorPage(OrderItem.objects.all(),5,request),
+        'objects': paginator_page(OrderItem.objects.all(), 5, request),
         'product': Product.objects.all(),
         'food': Food.objects.all()
     }
