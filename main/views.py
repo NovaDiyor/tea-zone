@@ -314,6 +314,7 @@ def category_view(request):
 def staff_view(request):
     context = {
         'staff': User.objects.all(),
+        'objects': PagenatorPage(User.objects.all(),5,request),
         'total': User.objects.all().count()
     }
     return render(request, 'staff/staff.html', context)
