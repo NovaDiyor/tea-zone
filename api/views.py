@@ -51,5 +51,11 @@ def get_rooms(request):
 
 
 
-# @api_view(['POST'])
-# def
+@api_view(['POST'])
+def client_create(request):
+    name = request.POST.get('name')
+    number = request.POST.get('number')
+    Client.objects.create(name=name,number=number)
+    return Response()
+
+
