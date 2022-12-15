@@ -39,3 +39,14 @@ class Order_item_serializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+
+class BotInfoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = BotInfo
+        fields = '__all__'
+
+
+class BotDetailSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = BotDetail
+        fields = '__all__'

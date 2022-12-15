@@ -13,8 +13,19 @@ class User(AbstractUser):
     number = models.BigIntegerField(null=True, blank=True)
 
 
+class BotInfo(models.Model):
+    text = models.CharField(max_length=255)
+
+
+class BotDetail(models.Model):
+    text = models.TextField()
+    phone = models.CharField(max_length=255)
+    lat = models.CharField(max_length=255)
+    lng = models.CharField(max_length=255)
+
+
 class Rooms(models.Model):
-    number = models.IntegerField()
+    number = models.CharField(max_length=255, unique=True)
     places = models.IntegerField()
     busy = models.BooleanField(default=False)
 
