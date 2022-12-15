@@ -352,8 +352,7 @@ def order_view(request):
         i.done = True
         i.save()
     context = {
-        'order': Order.objects.all(),
-        'objects': paginator_page(Order.objects.all(), 5, request),
+        'order': paginator_page(Order.objects.filter(delivery=False), 5, request),
         'waiter': User.objects.filter(role=2),
         'room': Rooms.objects.all(),
     }
@@ -363,23 +362,20 @@ def order_view(request):
             room = request.POST.get('room')
             owner = request.POST.get('owner')
             phone = request.POST.get('phone')
-            address = request.POST.get('address')
             day = datetime.strptime(request.POST.get('date'), "%m/%d/%Y").date()
-            delivery = request.POST.get('delivery')
-            if delivery is None:
-                delivery = False
-                address = None
-            else:
-                room = None
             Client.objects.create(name=owner, phone=phone)
             client = Client.objects.last()
-            Order.objects.create(user_id=user, room_id=room, address=address, date=day,
-                                 delivery_date=None,
-                                 owner=client, delivery=delivery, bill=None)
+            Order.objects.create(user_id=user, room_id=room, date=day,
+                                 owner=client, bill=None)
             return redirect('order')
         return render(request, 'product/order.html', context)
     except Exception as err:
         return err
+
+
+@login_required(login_url='login')
+def delivery_view(request):
+    pass
 
 
 @login_required(login_url='login')

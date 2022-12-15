@@ -69,13 +69,13 @@
                                                                 <div class="modal-header">
                                                                     <h6 class="modal-title">Are You Sure?</h6><button aria-label="Close" class="btn-close" data-bs-dismiss="modal"><span aria-hidden="true">&times;</span></button>
                                                                 </div>
-                                                                <form action="{% url 'delete-user' %}" method="post">
+                                                                <form action="#" method="post">
                                                                     {% csrf_token %}
                                                                         <div class="modal-body">
                                                                             <input type="password" class="form-control" name="password" placeholder="Password">
                                                                         </div>
                                                                         <div class="modal-footer">
-                                                                            <a href="{% url 'delete-user' %}"><button class="btn btn-danger">Fire Out</button></a>
+                                                                            <a href="#"><button class="btn btn-danger">Fire Out</button></a>
                                                                             <button class="btn btn-success" data-bs-dismiss="modal">Close</button>
                                                                         </div>
                                                                 </form>

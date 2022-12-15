@@ -39,19 +39,44 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            {% for i in objects %}
+                                            {% for i in staff %}
                                                 <tr>
                                                     <td class="text-nowrap align-middle">{{ i.username }}</td>
                                                     <td class="text-nowrap align-middle">{{ i.first_name  }}</td>
                                                     <td class="text-nowrap align-middle">{{ i.last_name  }}</td>
                                                     <td class="text-nowrap align-middle">{{ i.number  }}</td>
                                                     <td class="text-nowrap align-middle"><span>{{ i.date_joined  }}</span></td>
-                                                    <td>
-                                                        <div class="mt-sm-1 d-block">
-                                                            <span
-                                                                class="badge bg-transparent rounded-pill text-info-gradient p-2 px-3">{{ i.get_role_display }}</span>
-                                                        </div>
-                                                    </td>
+                                                    {% if i.role == 1 %}
+                                                        <td>
+                                                            <div class="mt-sm-1 d-block">
+                                                                <a href="{% url 'director' %}"><span class="badge bg-transparent rounded-pill text-info-gradient p-2 px-3">{{ i.get_role_display }}</span></a>
+                                                            </div>
+                                                        </td>
+                                                    {% elif i.role == 2 %}
+                                                        <td>
+                                                            <div class="mt-sm-1 d-block">
+                                                                <a href="{% url 'waiter' %}"><span class="badge bg-transparent rounded-pill text-info-gradient p-2 px-3">{{ i.get_role_display }}</span></a>
+                                                            </div>
+                                                        </td>
+                                                    {% elif i.role == 3 %}
+                                                        <td>
+                                                            <div class="mt-sm-1 d-block">
+                                                                <a href="{% url 'manager' %}"><span class="badge bg-transparent rounded-pill text-info-gradient p-2 px-3">{{ i.get_role_display }}</span></a>
+                                                            </div>
+                                                        </td>
+                                                    {% elif i.role == 4 %}
+                                                        <td>
+                                                            <div class="mt-sm-1 d-block">
+                                                                <a href="{% url 'cooker' %}"><span class="badge bg-transparent rounded-pill text-info-gradient p-2 px-3">{{ i.get_role_display }}</span></a>
+                                                            </div>
+                                                        </td>
+                                                    {% elif i.role == 5 %}
+                                                        <td>
+                                                            <div class="mt-sm-1 d-block">
+                                                                <a href="{% url 'call' %}"><span class="badge bg-transparent rounded-pill text-info-gradient p-2 px-3">{{ i.get_role_display }}</span></a>
+                                                            </div>
+                                                        </td>
+                                                    {% endif %}
                                                 </tr>
                                             {% endfor %}
                                         </tbody>
@@ -61,16 +86,16 @@
                         </div>
                         <div class="text-center" >
                             <section class="text-center"  class="ftco-section bg-light">
-                                {% if objects.paginator.num_pages > 1 %}
+                                {% if staff.paginator.num_pages > 1 %}
                                     <nav aria-labelledby="Page navigations" >
                                         <ul class="pagination pagination-lg round-pagination" style="justify-content:center">
-                                            {% if objects.has_previous %}
+                                            {% if staff.has_previous %}
                                                 <li class="page-item">
                                                     <a class="page-link" href="?page={{ staff.previous_page_number }}"><i class="bx bx-left-arrow-alt">previous</i></a>
                                                 </li>
                                             {% endif %}
                                             {% for num in staff.paginator.page_range %}
-                                                {% if num == objects.number %}
+                                                {% if num == staff.number %}
                                                     <li class="page-item active">
                                                       <a class="page-link" href="#" tabindex="-1">{{ num }}</a>
                                                     </li>
