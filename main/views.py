@@ -45,7 +45,6 @@ def error_view(request):
 
 @login_required(login_url='login')
 def add_staff(request):
-    usr = request.user
     try:
         if request.method == 'POST':
             username = request.POST.get('username')
@@ -346,16 +345,18 @@ def room_view(request):
 
 @login_required(login_url='login')
 def order_view(request):
-    d = datetime.today()
-    order = Order.objects.filter(delivery_date__hour=d.hour)
-    for i in order:
-        i.done = True
-        i.save()
+    d = date.today()
     context = {
         'order': paginator_page(Order.objects.filter(delivery=False), 5, request),
         'waiter': User.objects.filter(role=2),
-        'room': Rooms.objects.all(),
+        'room': Rooms.objects.filter(busy=False),
     }
+    order = Order.objects.filter(delivery=False, done=False)
+    for i in order:
+        if i.date.day == d.day:
+            r = Rooms.objects.get(id=i.room.id)
+            r.busy = True
+            r.save()
     try:
         if request.method == 'POST':
             user = request.POST.get('user')
@@ -363,11 +364,26 @@ def order_view(request):
             owner = request.POST.get('owner')
             phone = request.POST.get('phone')
             day = datetime.strptime(request.POST.get('date'), "%m/%d/%Y").date()
-            Client.objects.create(name=owner, phone=phone)
-            client = Client.objects.last()
-            Order.objects.create(user_id=user, room_id=room, date=day,
-                                 owner=client, bill=None)
-            return redirect('order')
+            f = 0
+            for i in Client.objects.all():
+                if i.phone == int(phone):
+                    f += 1
+                elif i.phone != int(phone):
+                    f += 0
+            if f == 1:
+                Order.objects.create(user_id=user, room_id=room, date=day,
+                                     owner=Client.objects.get(phone=phone),
+                                     bill=0)
+                return redirect('order')
+            elif f == 0:
+                c = Client.objects.create(name=owner, phone=phone)
+                r = Order.objects.create(user_id=user, room_id=room, date=day, owner=c, bill=0)
+                # rm = Rooms.objects.get(id=room)
+                # if rm.busy_date == date:
+                #     r.delete()
+                # else:
+                #     rm.busy_date = date
+                return redirect('order')
         return render(request, 'product/order.html', context)
     except Exception as err:
         return err
@@ -375,16 +391,41 @@ def order_view(request):
 
 @login_required(login_url='login')
 def delivery_view(request):
-    pass
+    d = datetime.today()
+    order = Order.objects.filter(delivery_date__hour=d.hour)
+    for i in order:
+        i.done = True
+        i.save()
+    context = {
+        'delivery': paginator_page(Order.objects.filter(delivery=True), 5, request),
+    }
+    try:
+        if request.method == 'POST':
+            owner = request.POST.get('owner')
+            phone = request.POST.get('phone')
+            day = datetime.strptime(request.POST.get('date'), "%m/%d/%Y").date()
+            f = 0
+            for i in Client.objects.filter(phone=phone):
+                if i.count() > 0:
+                    f += 1
+                    cl = i
+                else:
+                    f += 0
+            if f == 0:
+                c = Client.objects.create(name=owner, phone=phone)
+                Order.objects.create(delivery=True, date=day, bill=0, owner=c)
+            else:
+                Order.objects.create(delivery=True, date=day, bill=0, owner=cl)
+    except Exception as err:
+        print(err)
 
 
 @login_required(login_url='login')
 def order_item_view(request):
     day = date.today()
     context = {
-        'order': Order.objects.filter(date__day=day.day),
-        'item': OrderItem.objects.all(),
-        'objects': paginator_page(OrderItem.objects.all(), 5, request),
+        'order': Order.objects.filter(date__day=day.day, done=False),
+        'item': paginator_page(OrderItem.objects.all(), 5, request),
         'product': Product.objects.all(),
         'food': Food.objects.all()
     }
@@ -394,14 +435,58 @@ def order_item_view(request):
         product = request.POST.get('product')
         quantity = request.POST.get('quantity')
         if food == 'Nothing':
+            pro = Product.objects.get(id=product)
+            pro.quantity -= int(quantity)
+            pro.save()
+            rd = Order.objects.get(id=order)
+            rd.bill += pro.price * int(quantity)
+            rd.save()
             OrderItem.objects.create(
-                order_id=order,
-                product_id=product,
+                order=rd,
+                product=pro,
                 quantity=quantity)
         elif product == 'Nothing':
+            fd = Food.objects.get(id=food)
+            rd = Order.objects.get(id=order)
+            print(fd.price, type(fd.price), rd.bill, type(rd.bill))
+            rd.bill += fd.price * int(quantity)
+            rd.save()
             OrderItem.objects.create(
-                order_id=order,
-                food_id=food,
+                order=rd,
+                food=fd,
                 quantity=quantity)
         return redirect('order-item')
     return render(request, 'product/order-item.html', context)
+
+
+@login_required(login_url='login')
+def add_order_item(request, pk):
+    order = Order.objects.get(id=pk)
+    if request.method == 'POST':
+        food = request.POST.get('food')
+        product = request.POST.get('product')
+        quantity = request.POST.get('quantity')
+        if food == 'Nothing':
+            pro = Product.objects.get(id=product)
+            pro.quantity -= int(quantity)
+            pro.save()
+            order.bill += pro.price * int(quantity)
+            order.save()
+            OrderItem.objects.create(
+                order=order,
+                product=pro,
+                quantity=quantity)
+        elif product == 'Nothing':
+            fd = Food.objects.get(id=food)
+            order.bill += fd.price * int(quantity)
+            order.save()
+            OrderItem.objects.create(
+                order=order,
+                food=fd,
+                quantity=quantity)
+        return redirect('order')
+    context = {
+        'food': Food.objects.all(),
+        'product': Product.objects.all(),
+    }
+    return render(request, 'product/order.html', context)

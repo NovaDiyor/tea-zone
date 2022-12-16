@@ -123,13 +123,14 @@ def update_order(request, pk):
             minute = request.POST.get('minute')
             hour = hour + ':'
             total = hour + minute
-            print(total)
             order.address = address
             order.delivery_date = total
             order.save()
             return redirect('order')
         else:
             order.done = True
+            order.room.busy = False
+            order.room.save()
             order.save()
             return redirect('order')
     context = {

@@ -7,10 +7,6 @@
                 <div class="row row-cards">
                     <div class="col-lg-12 col-xl-12">
                         <div class="card">
-                            <div class="card-header" style="justify-content: center;">
-                                <button class="btn btn-info" id="order_btn" style="margin-right: 1.5rem">Orders</button>
-                                <button class="btn btn-info" id="delivery_btn">Delivery</button>
-                            </div>
                             {% if user.role == 1 %}
                                 <div class="card-header">
                                     <a class="modal-effect" data-bs-effect="effect-flip-vertical" data-bs-toggle="modal" href="#add_order"><button class="btn btn-sm btn-primary badge" type="button">Add Order</button></a>
@@ -34,14 +30,8 @@
                                                                     {% endfor %}
                                                                 </select>
                                                             </div>
-                                                            <label class="custom-switch form-switch d-flex mb-4">
-                                                                <input type="checkbox" name="delivery" value="True" class="custom-switch-input">
-                                                                <span class="custom-switch-indicator"></span>
-                                                                <span class="custom-switch-description">Delivery</span>
-                                                            </label>
                                                             <input type="text" class="form-control mb-4" name="owner" placeholder="Customer" required>
                                                             <input type="number" class="form-control mb-4" name="phone" placeholder="Phone" required>
-                                                            <input type="text" class="form-control mb-4" name="address" placeholder="Address">
                                                             <input class="form-control" id="datepickerNoOfMonths" name="date" placeholder="MM/DD/YYYY" type="text" required>
                                                         </div>
                                                         <div class="modal-footer">
@@ -72,16 +62,9 @@
                                                                     <option value="{{ i.id }}">{{ i.number }}&emsp;{{ i.places }}</option>
                                                                 {% endfor %}
                                                             </select>
-                                                            <label class="custom-switch form-switch d-flex mb-4">
-                                                                <input type="checkbox" name="delivery" value="True" class="custom-switch-input">
-                                                                <span class="custom-switch-indicator"></span>
-                                                                <span class="custom-switch-description">Delivery</span>
-                                                            </label>
                                                             <input type="text" class="form-control mb-4" name="owner" placeholder="Customer" required>
                                                             <input type="number" class="form-control mb-4" name="phone" placeholder="Phone" required>
-                                                            <input type="text" class="form-control mb-4" name="address" placeholder="Address">
                                                             <input class="form-control mb-4" name="date" placeholder="Date" type="date">
-                                                            <input class="form-control" name="dd" placeholder="Delivery Date" type="datetime-local">
                                                         </div>
                                                         <div class="modal-footer">
                                                             <button class="btn btn-success">Add Order</button>
@@ -95,7 +78,7 @@
                             {% endif %}
                             <div class="e-table px-5 pb-5">
                                 <div class="table-responsive table-lg">
-                                    <table class="table border-top table-bordered mb-0  table__order" style="text-align: center">
+                                    <table class="table border-top table-bordered mb-0" style="text-align: center">
                                         <thead>
                                             <tr>
                                                 <th>Waiter</th>

@@ -28,11 +28,12 @@ class Rooms(models.Model):
     number = models.CharField(max_length=255, unique=True)
     places = models.IntegerField()
     busy = models.BooleanField(default=False)
+    busy_date = models.DateField(unique=True)
 
 
 class Client(models.Model):
     name = models.CharField(max_length=1212)
-    phone = models.BigIntegerField(null=True, blank=True)
+    phone = models.IntegerField(unique=True)
 
 
 class Category(models.Model):
@@ -41,14 +42,14 @@ class Category(models.Model):
 
 class Food(models.Model):
     name = models.CharField(max_length=23232)
-    price = models.DecimalField(max_digits=50, decimal_places=2)
+    price = models.IntegerField()
     available = models.BooleanField(default=False)
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, blank=True)
 
 
 class Product(models.Model):
     name = models.CharField(max_length=210)
-    price = models.DecimalField(max_digits=50, decimal_places=2)
+    price = models.IntegerField()
     quantity = models.IntegerField()
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, blank=True)
     available = models.BooleanField(default=True)
