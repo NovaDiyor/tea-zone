@@ -378,11 +378,13 @@ def order_view(request):
             elif f == 0:
                 c = Client.objects.create(name=owner, phone=phone)
                 r = Order.objects.create(user_id=user, room_id=room, date=day, owner=c, bill=0)
-                # rm = Rooms.objects.get(id=room)
-                # if rm.busy_date == date:
-                #     r.delete()
-                # else:
-                #     rm.busy_date = date
+                o = Order.objects.filter(delivery=False)
+                rm = Rooms.objects.get(id=room)
+                for i in o:
+                    if rm in i:
+                        if i.date == day:
+                            print("bu kunga bu xona bant")
+
                 return redirect('order')
         return render(request, 'product/order.html', context)
     except Exception as err:
@@ -424,7 +426,7 @@ def delivery_view(request):
 def order_item_view(request):
     day = date.today()
     context = {
-        'order': Order.objects.filter(date__day=day.day, done=False),
+        'order': Order.objects.filter( done=False),
         'item': paginator_page(OrderItem.objects.all(), 5, request),
         'product': Product.objects.all(),
         'food': Food.objects.all()
