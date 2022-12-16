@@ -16,27 +16,29 @@
                                                 <form action="{% url 'order' %}" method="post">
                                                     {% csrf_token %}
                                                         <div class="modal-body">
-                                                            <div class="mb-4">
-                                                                <select class="form-control select2 form-select pb-5" name="user" data-placeholder="Choose one" required>
-                                                                    {% for i in waiter %}
-                                                                        <option value="{{ i.id }}">{{ i.first_name }}&emsp;{{ i.last_name }}</option>
-                                                                    {% endfor %}
-                                                                </select>
+                                                            <div style="display: none;" id="other">
+                                                                <div class="mb-4">
+                                                                    <select class="form-control select2 form-select pb-5" name="user" data-placeholder="Choose one" required>
+                                                                        {% for i in waiter %}
+                                                                            <option value="{{ i.id }}">{{ i.first_name }}&emsp;{{ i.last_name }}</option>
+                                                                        {% endfor %}
+                                                                    </select>
+                                                                </div>
+                                                                <div class="mb-4">
+                                                                    <select class="form-control select2 form-select pb-5" name="room" data-placeholder="Choose one" required>
+                                                                        {% for i in room %}
+                                                                            <option value="{{ i.id }}">{{ i.number }}&emsp;{{ i.places }}</option>
+                                                                        {% endfor %}
+                                                                    </select>
+                                                                </div>
+                                                                <input type="text" class="form-control mb-4" name="owner" placeholder="Customer" required>
+                                                                <input type="number" class="form-control mb-4" name="phone" placeholder="Phone" required>
                                                             </div>
-                                                            <div class="mb-4">
-                                                                <select class="form-control select2 form-select pb-5" name="room" data-placeholder="Choose one" required>
-                                                                    {% for i in room %}
-                                                                        <option value="{{ i.id }}">{{ i.number }}&emsp;{{ i.places }}</option>
-                                                                    {% endfor %}
-                                                                </select>
-                                                            </div>
-                                                            <input type="text" class="form-control mb-4" name="owner" placeholder="Customer" required>
-                                                            <input type="number" class="form-control mb-4" name="phone" placeholder="Phone" required>
-                                                            <input class="form-control" id="datepickerNoOfMonths" name="date" placeholder="MM/DD/YYYY" type="text" required>
+                                                            <input class="form-control date-input" id="datepickerNoOfMonths" name="date" placeholder="MM/DD/YYYY" type="text" required>
                                                         </div>
-                                                        <div class="modal-footer">
-                                                            <button class="btn btn-success">Add Order</button>
                                                 </form>
+                                                        <div class="modal-footer">
+                                                            <button class="btn btn-success" id="btn">Add Order</button>
                                                             <button class="btn btn-danger" data-bs-dismiss="modal">Close</button>
                                                         </div>
                                             </div>
