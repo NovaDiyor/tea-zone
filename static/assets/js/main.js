@@ -1,11 +1,9 @@
-let other = document.querySelector('other')
-let input = document.getElementById('.date-input')
-let btn = document.getElementById('btn')
+let showInput = document.getElementById('input')
+let dateInfo = document.getElementById('datepickerNoOfMonths')
+let btnOrder = document.getElementById('btn__order')
 
-btn.addEventListener('click', (e) => {
-    e.preventDefault()
-    other.style.display = 'none'
-    input.style.display = 'block'
-    console.log('gg')
+btnOrder.addEventListener('click', function () {
+    showInput.style.display = 'block'
+    dateInfo.style.display = 'none'
+    console.log('end function')
 })
-

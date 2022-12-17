@@ -377,14 +377,7 @@ def order_view(request):
                 return redirect('order')
             elif f == 0:
                 c = Client.objects.create(name=owner, phone=phone)
-                r = Order.objects.create(user_id=user, room_id=room, date=day, owner=c, bill=0)
-                o = Order.objects.filter(delivery=False)
-                rm = Rooms.objects.get(id=room)
-                for i in o:
-                    if rm in i:
-                        if i.date == day:
-                            print("bu kunga bu xona bant")
-
+                Order.objects.create(user_id=user, room_id=room, date=day, owner=c, bill=0)
                 return redirect('order')
         return render(request, 'product/order.html', context)
     except Exception as err:
