@@ -24,6 +24,7 @@ urlpatterns = [
     path('category/', category_view, name='category'),
     path('food/', food_view, name='food'),
     path('order/', order_view, name='order'),
+    path('order/add/', add_order, name='add-order'),
     path('order/item/', order_item_view, name='order-item'),
     path('order/item/add/', add_order_item, name='add-order-item'),
     path('user/delete/<int:pk>/', delete_manager, name='delete-user'),

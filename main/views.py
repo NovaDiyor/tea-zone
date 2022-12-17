@@ -353,42 +353,43 @@ def order_view(request):
             r.busy = True
             r.save()
     try:
-        rl = []
-        for i in Rooms.objects.all():
-            rl.append(i)
         if request.method == 'POST':
-            user = request.POST.get('user')
-            room = request.POST.get('room')
-            owner = request.POST.get('owner')
-            phone = request.POST.get('phone')
             day = datetime.strptime(request.POST.get('date'), "%m/%d/%Y").date()
-            order_day = OrderDay.objects.create(day=day)
-            for i in Order.objects.all():
-                if i.day == order_day:
-                    rl.remove(i.room)
-            f = 0
-            for i in Client.objects.all():
-                if i.phone == int(phone):
-                    f += 1
-                elif i.phone != int(phone):
-                    f += 0
-            if f == 1:
-                Order.objects.create(user_id=user, room_id=room, date=order_day,
-                                     owner=Client.objects.get(phone=phone),
-                                     bill=0)
-                return redirect('order')
-            elif f == 0:
-                c = Client.objects.create(name=owner, phone=phone)
-                Order.objects.create(user_id=user, room_id=room, date=order_day, owner=c, bill=0)
-                return redirect('order')
+            OrderDay.objects.create(day=day)
+            return redirect('add-order')
         context = {
             'order': paginator_page(Order.objects.filter(delivery=False), 5, request),
-            'waiter': User.objects.filter(role=2),
-            'room': rl
         }
         return render(request, 'product/order.html', context)
     except Exception as err:
         return err
+
+
+@login_required(login_url='login')
+def add_order(request):
+    room_list = []
+    for i in Rooms.objects.all():
+        room_list.append(i)
+    for i in Order.objects.all():
+        if i.day == OrderDay.objects.last().day:
+            room_list.remove(i.room)
+    try:
+        if request.method == 'POST':
+            user = request.POST.get('user')
+            room = request.POST.get('room')
+            client = request.POST.get('client')
+            phone = request.POST.get('phone')
+            day = OrderDay.objects.last()
+            cl = Client.objects.create(name=client, phone=phone)
+            Order.objects.create(user_id=user, room_id=room, owner=cl, delivery=False, date=day.day)
+            return redirect('order')
+        context = {
+            'room': room_list,
+            'waiter': User.objects.filter(role=2)
+        }
+        return render(request, 'product/add-order.html', context)
+    except Exception as err:
+        print(err)
 
 
 @login_required(login_url='login')
