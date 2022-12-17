@@ -26,7 +26,7 @@
                                                             <div class="mb-4">
                                                                 <select class="form-control select2 form-select mb-4" name="food" data-placeholder="Choose one">
                                                                     <option class="form-control">Nothing</option>
-                                                                    {% for i in product %}
+                                                                    {% for i in food %}
                                                                         <option value="{{ i.id }}">{{ i.name }}&emsp;{{ i.category.name }}</option>
                                                                     {% endfor %}
                                                                 </select>
@@ -34,7 +34,7 @@
                                                             <div class="mb-4">
                                                                 <select class="form-control select2 form-select mb-4" name="product" data-placeholder="Choose one">
                                                                     <option class="form-control">Nothing</option>
-                                                                    {% for i in food %}
+                                                                    {% for i in product %}
                                                                         <option value="{{ i.id }}">{{ i.name }}&emsp;{{ i.category.name }}</option>
                                                                     {% endfor %}
                                                                 </select>
@@ -43,9 +43,9 @@
                                                         </div>
                                                         <div class="modal-footer">
                                                             <button class="btn btn-success">Add Item</button>
+                                                </form>
                                                             <button class="btn btn-danger" data-bs-dismiss="modal">Close</button>
                                                         </div>
-                                                </form>
                                             </div>
                                         </div>
                                     </div>
@@ -84,9 +84,9 @@
                                                         </div>
                                                         <div class="modal-footer">
                                                             <button class="btn btn-success">Add Order Item</button>
+                                                </form>
                                                             <button class="btn btn-danger" data-bs-dismiss="modal">Close</button>
                                                         </div>
-                                                </form>
                                             </div>
                                         </div>
                                     </div>
