@@ -80,3 +80,7 @@ class OrderItem(models.Model):
     food = models.ForeignKey(Food, on_delete=models.CASCADE, null=True, blank=True)
     product = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True, blank=True)
     quantity = models.IntegerField()
+
+
+class OrderDay(models.Model):
+    day = models.DateField(null=True, blank=True)

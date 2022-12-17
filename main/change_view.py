@@ -1,6 +1,4 @@
 from datetime import date, datetime
-from timeit import timeit
-
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from .models import *
@@ -16,9 +14,6 @@ def delete_manager(request, pk):
                 return redirect('manager')
             else:
                 return redirect('404')
-    elif usr.role == 3:
-        User.objects.get(id=pk).delete()
-        return redirect('staff')
     else:
         return redirect('404')
 
@@ -36,7 +31,14 @@ def delete_room(request, pk):
 
 
 def delete_order_item(request, pk):
-    OrderItem.objects.get(id=pk).delete()
+    item = OrderItem.objects.get(id=pk)
+    order = item.order
+    if item.product:
+        order.bill -= item.product.price * item.quantity
+    elif item.food:
+        order.bill -= item.food.price * item.quantity
+    order.save()
+    item.delete()
     return redirect('order-item')
 
 

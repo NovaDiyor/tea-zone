@@ -346,11 +346,6 @@ def room_view(request):
 @login_required(login_url='login')
 def order_view(request):
     d = date.today()
-    context = {
-        'order': paginator_page(Order.objects.filter(delivery=False), 5, request),
-        'waiter': User.objects.filter(role=2),
-        'room': Rooms.objects.filter(busy=False),
-    }
     order = Order.objects.filter(delivery=False, done=False)
     for i in order:
         if i.date.day == d.day:
@@ -358,12 +353,19 @@ def order_view(request):
             r.busy = True
             r.save()
     try:
+        rl = []
+        for i in Rooms.objects.all():
+            rl.append(i)
         if request.method == 'POST':
             user = request.POST.get('user')
             room = request.POST.get('room')
             owner = request.POST.get('owner')
             phone = request.POST.get('phone')
             day = datetime.strptime(request.POST.get('date'), "%m/%d/%Y").date()
+            order_day = OrderDay.objects.create(day=day)
+            for i in Order.objects.all():
+                if i.day == order_day:
+                    rl.remove(i.room)
             f = 0
             for i in Client.objects.all():
                 if i.phone == int(phone):
@@ -371,14 +373,19 @@ def order_view(request):
                 elif i.phone != int(phone):
                     f += 0
             if f == 1:
-                Order.objects.create(user_id=user, room_id=room, date=day,
+                Order.objects.create(user_id=user, room_id=room, date=order_day,
                                      owner=Client.objects.get(phone=phone),
                                      bill=0)
                 return redirect('order')
             elif f == 0:
                 c = Client.objects.create(name=owner, phone=phone)
-                Order.objects.create(user_id=user, room_id=room, date=day, owner=c, bill=0)
+                Order.objects.create(user_id=user, room_id=room, date=order_day, owner=c, bill=0)
                 return redirect('order')
+        context = {
+            'order': paginator_page(Order.objects.filter(delivery=False), 5, request),
+            'waiter': User.objects.filter(role=2),
+            'room': rl
+        }
         return render(request, 'product/order.html', context)
     except Exception as err:
         return err
