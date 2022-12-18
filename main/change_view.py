@@ -118,6 +118,18 @@ def change_order(request, pk):
         return redirect('404')
 
 
+def update_director(request, pk):
+    director = User.objects.get(id=pk)
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        l_name = request.POST.get('l-name')
+        phone = request.POST.get('phone')
+        director.first_name = name
+        director.last_name = l_name
+        director.number = phone
+        return redirect('director')
+
+
 def update_order(request, pk):
     order = Order.objects.get(id=pk)
     if order.done == False:

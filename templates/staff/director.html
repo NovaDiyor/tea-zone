@@ -47,7 +47,7 @@
                                                     <td class="text-nowrap align-middle">{{ i.last_name  }}</td>
                                                     <td class="text-nowrap align-middle">{{ i.number  }}</td>
                                                     <td class="text-nowrap align-middle"><span>{{ i.date_joined  }}</span></td>
-                                                    <td><a href="#"><i class="fe fe-edit-2"></i></a></td>
+                                                    <td><a class="modal-effect d-grid mb-3" data-bs-effect="effect-flip-vertical" data-bs-toggle="modal" href="#update_director{{ i.id }}"><i class="fe fe-edit-2"></i></a></td>
                                                     <td class="text-center align-middle">
                                                         {% if user == i %}
                                                             You cant fire out your self
@@ -59,25 +59,27 @@
                                                             You cant fire out cause of your status
                                                         {% endif %}
                                                     </td>
-{#                                                    <div class="modal fade" id="delete_manager">#}
-{#                                                        <div class="modal-dialog modal-dialog-centered text-center" role="document">#}
-{#                                                            <div class="modal-content modal-content-demo">#}
-{#                                                                <div class="modal-header">#}
-{#                                                                    <h6 class="modal-title">Are You Sure?</h6><button aria-label="Close" class="btn-close" data-bs-dismiss="modal"><span aria-hidden="true">&times;</span></button>#}
-{#                                                                </div>#}
-{#                                                                <form action="{% url 'delete-user' i.id %}" method="post">#}
-{#                                                                    {% csrf_token %}#}
-{#                                                                        <div class="modal-body">#}
-{#                                                                            <input type="password" class="form-control" name="password" placeholder="Password">#}
-{#                                                                        </div>#}
-{#                                                                        <div class="modal-footer">#}
-{#                                                                            <a href="{% url 'delete-user' i.id %}"><button class="btn btn-danger">Fire Out</button></a>#}
-{#                                                                            <button class="btn btn-success" data-bs-dismiss="modal">Close</button>#}
-{#                                                                        </div>#}
-{#                                                                </form>#}
-{#                                                            </div>#}
-{#                                                        </div>#}
-{#                                                    </div>#}
+                                                    <div class="modal fade" id="update_director{{ i.id }}">
+                                                        <div class="modal-dialog modal-dialog-centered text-center" role="document">
+                                                            <div class="modal-content modal-content-demo">
+                                                                <div class="modal-header">
+                                                                    <h6 class="modal-title">Update Director</h6><button aria-label="Close" class="btn-close" data-bs-dismiss="modal"><span aria-hidden="true">&times;</span></button>
+                                                                </div>
+                                                                <form action="{% url 'update-director' i.id %}" method="post">
+                                                                    {% csrf_token %}
+                                                                        <div class="modal-body">
+                                                                            <input type="text" class="form-control mb-4" value="{{ i.first_name }}" name="name" placeholder="Name">
+                                                                            <input type="text" class="form-control mb-4" value="{{ i.last_name }}" name="l-name" placeholder="Last Name">
+                                                                            <input type="number" class="form-control mb-4" value="{{ i.number }}" name="phone" placeholder="Phone">
+                                                                        </div>
+                                                                        <div class="modal-footer">
+                                                                            <button class="btn btn-success">Update</button></a>
+                                                                </form>
+                                                                            <button class="btn btn-info" data-bs-dismiss="modal">Close</button>
+                                                                        </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                 </tr>
                                             {% endfor %}
                                         </tbody>
