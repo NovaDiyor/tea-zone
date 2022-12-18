@@ -133,6 +133,16 @@ def update_order(request, pk):
     return redirect('order')
 
 
+def update_order_item(request, pk):
+    item = OrderItem.objects.get(id=pk)
+    if request.method == 'POST':
+        order = request.POST.get('order')
+        food = request.POST.get('food')
+        product = request.POST.get('product')
+        quantity = request.POST.get('quantity')
+        item.order_id = order
+
+
 def update_food(request,pk):
     user = request.user
     if user.role == 1:

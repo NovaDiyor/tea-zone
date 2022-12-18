@@ -36,6 +36,7 @@ urlpatterns = [
     path('waiters/add/', delete_product, name='delete-product'),
     path('order/change/', change_order, name='change-order'),
     path('order/update/<int:pk>/', update_order, name='update-order'),
+    path('order/item/update/<int:pk>/', update_order_item, name='update-order-item'),
     path('product/update/<int:pk>/', update_product, name='update-product'),
     path('client/update/<int:pk>/', update_client, name='update-client'),
 ]
