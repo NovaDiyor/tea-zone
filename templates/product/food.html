@@ -85,6 +85,8 @@
                                                 {% elif user.role == 3 %}
                                                     <th>Update</th>
                                                     <th>Delete</th>
+                                                {% elif user.role == 4 %}
+                                                    <th>Change Status</th>
                                                 {% endif %}
                                             </tr>
                                         </thead>
@@ -105,6 +107,8 @@
                                                     {% elif user.role == 3 %}
                                                         <td><a class="#"><i class="fe fe-edit-2"></i></a></td>
                                                         <td><a class="#"><i class="fe fe-trash"></i></a></td>
+                                                    {% elif user.role == 4 %}
+                                                        <td><a href="{% url 'change-food' i.id %}"><i class="fe fe-refresh-ccw"></i></a></td>
                                                     {% endif %}
                                                 </tr>
                                             {% endfor %}

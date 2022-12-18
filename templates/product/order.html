@@ -66,7 +66,7 @@
                                                     <th>Add Order</th>
                                                 {% elif user.role == 5 %}
                                                     <th>Update</th>
-                                                    <th>Delete</th>
+                                                    <th>Add Order Item</th>
                                                 {% endif %}
                                             </tr>
                                         </thead>
@@ -133,40 +133,68 @@
                                                             <div class="modal fade" id="update_order{{ i.id }}">
                                                                 <div class="modal-dialog modal-dialog-centered text-center" role="document">
                                                                     <div class="modal-content modal-content-demo">
-                                                                        <form action="{% url 'update-order' i.id %}" method="post">
-                                                                            {% csrf_token %}
-                                                                                <div class="modal-body">
-                                                                                    {% if i.delivery == True %}
-                                                                                        <input type="text" value="{{ i.address }}" class="form-control mb-4" name="address" placeholder="Address" required>
-                                                                                        <input class="form-control br-0 mb-4" name="hour" value="{{ i.delivery_date.hour }}" placeholder="hour" type="text">
-                                                                                        <input class="form-control br-0 mb-4" name="minute" value="{{ i.delivery_date.minute }}" placeholder="Minute" type="text">
-                                                                                    {% else %}
-                                                                                        <h2 class="text-success">Close Order</h2>
-                                                                                    {% endif %}
-                                                                                </div>
-                                                                                <div class="modal-footer">
-                                                                                    <button class="btn btn-danger">Close Order</button>
-                                                                        </form>
-                                                                                    <button class="btn btn-success" data-bs-dismiss="modal">Cancel</button>
-                                                                                </div>
+                                                                        <div class="modal-body">
+                                                                            <h2 class="text-success">Close Order</h2>
+                                                                        </div>
+                                                                        <div class="modal-footer">
+                                                                            <a href="{% url 'update-order' i.id %}"><button class="btn btn-danger">Close Order</button></a>
+                                                                            <button class="btn btn-success" data-bs-dismiss="modal">Cancel</button>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        {% elif i.done == True %}
+                                                            <div class="modal fade" id="update_order{{ i.id }}">
+                                                                <div class="modal-dialog modal-dialog-centered text-center" role="document">
+                                                                    <div class="modal-content modal-content-demo">
+                                                                        <div class="modal-body">
+                                                                            <h2 class="text-success">Open Order</h2>
+                                                                        </div>
+                                                                        <div class="modal-footer">
+                                                                            <a href="{% url 'update-order' i.id %}"><button class="btn btn-success">Open Order</button></a>
+                                                                            <button class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
+                                                                        </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                         {% endif %}
-                                                        <td><a href="#delete_order{{ i.id }}" class="modal-effect" data-bs-effect="effect-flip-vertical" data-bs-toggle="modal"><i class="fe fe-trash"></i></a></td>
-                                                        <div class="modal fade" id="delete_order{{ i.id }}">
-                                                            <div class="modal-dialog modal-dialog-centered text-center" role="document">
-                                                                <div class="modal-content modal-content-demo">
-                                                                    <div class="modal-body">
-                                                                        <h2 class="text-danger">Warning: If You Delete Order Item You Cant Restore It!</h2>
-                                                                    </div>
-                                                                    <div class="modal-footer">
-                                                                        <a href="{% url 'delete-order' i.id %}"><button class="btn btn-danger"><i class="fe fe-trash"></i></button></a>
-                                                                        <button class="btn btn-success" data-bs-dismiss="modal">Close</button>
+                                                        {% if i.done == False %}
+                                                            <td><a href="#add_order_item{{ i.id }}" class="modal-effect" data-bs-effect="effect-flip-vertical" data-bs-toggle="modal"><i class="fe fe-plus"></i></a></td>
+                                                            <div class="modal fade" id="add_order_item{{ i.id }}">
+                                                                <div class="modal-dialog modal-dialog-centered text-center" role="document">
+                                                                    <div class="modal-content modal-content-demo">
+                                                                        <form action="{% url 'add-order-item' i.id %}" method="post">
+                                                                            {% csrf_token %}
+                                                                                <div class="modal-body">
+                                                                                    <div class="mb-4">
+                                                                                        <select class="form-control select2 form-select mb-4" name="food" data-placeholder="Choose one">
+                                                                                            <option class="form-control">Nothing</option>
+                                                                                            {% for i in food %}
+                                                                                                <option value="{{ i.id }}">{{ i.name }}&emsp;{{ i.category.name }}</option>
+                                                                                            {% endfor %}
+                                                                                        </select>
+                                                                                    </div>
+                                                                                    <div class="mb-4">
+                                                                                        <select class="form-control select2 form-select mb-4" name="product" data-placeholder="Choose one">
+                                                                                            <option class="form-control">Nothing</option>
+                                                                                            {% for i in product %}
+                                                                                                <option value="{{ i.id }}">{{ i.name }}&emsp;{{ i.category.name }}</option>
+                                                                                            {% endfor %}
+                                                                                        </select>
+                                                                                    </div>
+                                                                                    <input type="number" class="form-control mb-4" name="quantity" placeholder="Quantity" required>
+                                                                                </div>
+                                                                                <div class="modal-footer">
+                                                                                    <button class="btn btn-success">Add Order Item</button>
+                                                                        </form>
+                                                                                    <button class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                                                                                </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                        </div>
+                                                        {% else %}
+                                                            <td>You cant add item for closed order!</td>
+                                                        {% endif %}
                                                     {% endif %}
                                                 </tr>
                                             {% endfor %}

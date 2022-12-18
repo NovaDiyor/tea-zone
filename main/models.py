@@ -28,7 +28,6 @@ class Rooms(models.Model):
     number = models.CharField(max_length=255, unique=True)
     places = models.IntegerField()
     busy = models.BooleanField(default=False)
-    busy_date = models.DateField(unique=True,null=True,blank=True)
 
 
 class Client(models.Model):

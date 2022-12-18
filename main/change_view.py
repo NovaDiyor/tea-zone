@@ -69,7 +69,10 @@ def change_food(request, pk):
         return redirect('food')
     elif usr.role == 4:
         food = Food.objects.get(id=pk)
-        food.available = False
+        if food.available == True:
+            food.available = False
+        else:
+            food.available = True
         food.save()
         return redirect('food')
     else:
@@ -117,29 +120,17 @@ def change_order(request, pk):
 
 def update_order(request, pk):
     order = Order.objects.get(id=pk)
-    if request.method == 'POST':
-        if order.delivery == True:
-            d = date.today()
-            address = request.POST.get('address')
-            hour = request.POST.get('hour')
-            minute = request.POST.get('minute')
-            hour = hour + ':'
-            total = hour + minute
-            order.address = address
-            order.delivery_date = total
-            order.save()
-            return redirect('order')
-        else:
-            order.done = True
-            order.room.busy = False
-            order.room.save()
-            order.save()
-            return redirect('order')
-    context = {
-        'item': order
-    }
-    print(context)
-    return render(request, 'product/order.html', context)
+    if order.done == False:
+        order.done = True
+        order.room.busy = False
+        order.room.save()
+        order.save()
+    elif order.done == True:
+        order.done = False
+        order.room.busy = True
+        order.room.save()
+        order.save()
+    return redirect('order')
 
 
 def update_food(request,pk):
@@ -164,31 +155,21 @@ def update_food(request,pk):
         return redirect('404')
 
 
-
-def update_product(request,pk):
+def update_product(request, pk):
     user = request.user
-    if user.role == 1:
-        if request.method == 'POST':
-            pr = Product.objects.get(id=pk)
-            price = request.POST.get('price')
-            quantity = request.POST.get('quantity')
+    if request.method == 'POST':
+        pr = Product.objects.get(id=pk)
+        price = request.POST.get('price')
+        quantity = request.POST.get('quantity')
+        if price:
             pr.price = price
-            pr.quantity = quantity
-            pr.save()
-            return redirect('product')
-        return render(request,'product-update.html')
-    elif user.role == 3:
-        if request.method == 'POST':
-            pr = Product.objects.get(id=pk)
-            price = request.POST.get('price')
-            quantity = request.POST.get('quantity')
-            pr.price = price
-            pr.quantity = quantity
-            pr.save()
-            return redirect('product')
-        return render(request, 'product-update.html')
-    else:
-        return redirect('404')
+        else:
+            pr.price = pr.price
+        if int(quantity) < 0:
+            quantity = 0
+        pr.quantity = quantity
+        pr.save()
+        return redirect('product')
 
 
 @login_required(login_url='login')

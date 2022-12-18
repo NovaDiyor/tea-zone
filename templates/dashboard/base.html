@@ -110,89 +110,326 @@
                             <img src="{% static 'assets/images/brand/logo-3.png' %}" class="header-brand-img light-logo1" alt="logo">
                         </a>
                     </div>
-                        <div class="main-sidemenu">
-                            <div class="slide-left disabled" id="slide-left"><svg xmlns="http://www.w3.org/2000/svg"
-                                    fill="#7b8191" width="24" height="24" viewBox="0 0 24 24">
-                                    <path d="M13.293 6.293 7.586 12l5.707 5.707 1.414-1.414L10.414 12l4.293-4.293z" />
-                                </svg></div>
-                                <ul class="side-menu">
+                    <div class="main-sidemenu">
+                        <div class="slide-left disabled" id="slide-left"><svg xmlns="http://www.w3.org/2000/svg"
+                                fill="#7b8191" width="24" height="24" viewBox="0 0 24 24">
+                                <path d="M13.293 6.293 7.586 12l5.707 5.707 1.414-1.414L10.414 12l4.293-4.293z" />
+                            </svg></div>
+                            <ul class="side-menu">
+                                {% if user.role == 1 %}
+                                    {% if request.path == '/dashboard/director/' %}
+                                        <li class="slide">
+                                            <a class="side-menu__item active" data-bs-toggle="slide" href="{% url 'dashboard' %}">
+                                                <i class="side-menu__icon fa fa-home"></i>
+                                                <span class="side-menu__label">Dashboard</span>
+                                            </a>
+                                        </li>
+                                    {% else %}
+                                        <li class="slide">
+                                            <a class="side-menu__item" data-bs-toggle="slide" href="{% url 'dashboard' %}">
+                                                <i class="side-menu__icon fa fa-home"></i>
+                                                <span class="side-menu__label">Dashboard</span>
+                                            </a>
+                                        </li>
+                                    {% endif %}
                                     <li class="slide">
-                                        <a class="side-menu__item has-link" data-bs-toggle="slide" href="{% url 'dashboard' %}">
-                                            <i class="side-menu__icon fe fe-home"></i>
-                                            <span class="side-menu__label">Dashboard</span>
+                                        <a class="side-menu__item" data-bs-toggle="slide" href="{% url 'add-staff' %}">
+                                            <i class="side-menu__icon fa fa-user-plus"></i>
+                                            <span class="side-menu__label">Add Worker</span>
                                         </a>
                                     </li>
-                                    {% if user.role == 1 %}
+                                    <li class="slide">
+                                        <a class="side-menu__item" data-bs-toggle="slide" href="javascript:void(0)">
+                                            <i class="side-menu__icon fa fa-users"></i>
+                                            <span class="side-menu__label">Workers</span>
+                                            <i class="angle fe fe-chevron-right"></i>
+                                        </a>
+                                        <ul class="slide-menu">
+                                            <li class="side-menu-label1"><a href="javascript:void(0)">Workers</a></li>
+                                            <li><a href="{% url 'director' %}" class="slide-item">Directors</a></li>
+                                            <li><a href="{% url 'manager' %}" class="slide-item">Managers</a></li>
+                                            <li><a href="{% url 'waiter' %}" class="slide-item">Waiters</a></li>
+                                            <li><a href="{% url 'cooker' %}" class="slide-item">Cookers</a></li>
+                                            <li><a href="{% url 'call' %}" class="slide-item">Call Center Staff</a></li>
+                                        </ul>
+                                    </li>
+                                    {% if request.path == '/staff/' %}
                                         <li class="slide">
-                                            <a class="side-menu__item" data-bs-toggle="slide" href="javascript:void(0)">
-                                                <i class="side-menu__icon fe fe-users"></i>
-                                                <span class="side-menu__label">Staff</span>
-                                                <i class="angle fe fe-chevron-right"></i>
+                                            <a class="side-menu__item active" data-bs-toggle="slide" href="{% url 'staff' %}">
+                                                <i class="side-menu__icon fa fa-address-book"></i>
+                                                <span class="side-menu__label">Team</span>
                                             </a>
-                                            <ul class="slide-menu">
-                                                <li class="side-menu-label1"><a href="javascript:void(0)">Staff</a></li>
-                                                <li><a href="{% url 'add-staff' %}" class="slide-item">Add Staff</a></li>
-                                                <li><a href="{% url 'staff' %}" class="slide-item">Our Team</a></li>
-                                                <li><a href="{% url 'director' %}" class="slide-item">Director</a></li>
-                                                <li><a href="{% url 'manager' %}" class="slide-item">Managers</a></li>
-                                                <li><a href="{% url 'waiter' %}" class="slide-item">Waiters</a></li>
-                                                <li><a href="{% url 'cooker' %}" class="slide-item">Cookers</a></li>
-                                                <li><a href="{% url 'call' %}" class="slide-item">Call Center Staff</a></li>
-                                            </ul>
                                         </li>
+                                    {% else %}
                                         <li class="slide">
-                                            <a class="side-menu__item" data-bs-toggle="slide" href="javascript:void(0)">
-                                                <i class="side-menu__icon fe fe-shopping-cart"></i>
+                                            <a class="side-menu__item" data-bs-toggle="slide" href="{% url 'staff' %}">
+                                                <i class="side-menu__icon fa fa-address-book"></i>
+                                                <span class="side-menu__label">Team</span>
+                                            </a>
+                                        </li>
+                                    {% endif %}
+                                    {% if request.path == '/client/' %}
+                                        <li class="slide">
+                                            <a class="side-menu__item active" data-bs-toggle="slide" href="{% url 'client' %}">
+                                                <i class="side-menu__icon fa fa-address-card"></i>
+                                                <span class="side-menu__label">Client List</span>
+                                            </a>
+                                        </li>
+                                    {% else %}
+                                        <li class="slide">
+                                            <a class="side-menu__item" data-bs-toggle="slide" href="{% url 'client' %}">
+                                                <i class="side-menu__icon fa fa-address-card"></i>
+                                                <span class="side-menu__label">Client List</span>
+                                            </a>
+                                        </li>
+                                    {% endif %}
+                                    {% if request.path == '/room/' %}
+                                        <li class="slide">
+                                            <a class="side-menu__item active" data-bs-toggle="slide" href="javascript:void(0)">
+                                                <i class="side-menu__icon fa fa-street-view"></i>
                                                 <span class="side-menu__label">Product</span>
                                                 <i class="angle fe fe-chevron-right"></i>
                                             </a>
                                             <ul class="slide-menu">
                                                 <li class="side-menu-label1"><a href="javascript:void(0)">Product</a></li>
                                                 <li><a href="{% url 'room' %}" class="slide-item">Rooms</a></li>
-                                                <li><a href="{% url 'category' %}" class="slide-item">Category</a></li>
+                                                <li><a href="{% url 'category' %}" class="slide-item">Category For &darr;</a></li>
                                                 <li><a href="{% url 'food' %}" class="slide-item">Foods</a></li>
                                                 <li><a href="{% url 'product' %}" class="slide-item">Product</a></li>
                                             </ul>
                                         </li>
+                                    {% elif request.path == '/category/' %}
+                                        <li class="slide">
+                                            <a class="side-menu__item active" data-bs-toggle="slide" href="javascript:void(0)">
+                                                <i class="side-menu__icon fa fa-reorder"></i>
+                                                <span class="side-menu__label">Product</span>
+                                                <i class="angle fe fe-chevron-right"></i>
+                                            </a>
+                                            <ul class="slide-menu">
+                                                <li class="side-menu-label1"><a href="javascript:void(0)">Product</a></li>
+                                                <li><a href="{% url 'room' %}" class="slide-item">Rooms</a></li>
+                                                <li><a href="{% url 'category' %}" class="slide-item">Category For &darr;</a></li>
+                                                <li><a href="{% url 'food' %}" class="slide-item">Foods</a></li>
+                                                <li><a href="{% url 'product' %}" class="slide-item">Product</a></li>
+                                            </ul>
+                                        </li>
+                                    {% elif request.path == '/food/' %}
+                                        <li class="slide">
+                                            <a class="side-menu__item active" data-bs-toggle="slide" href="javascript:void(0)">
+                                                <i class="side-menu__icon fa fa-cutlery"></i>
+                                                <span class="side-menu__label">Product</span>
+                                                <i class="angle fe fe-chevron-right"></i>
+                                            </a>
+                                            <ul class="slide-menu">
+                                                <li class="side-menu-label1"><a href="javascript:void(0)">Product</a></li>
+                                                <li><a href="{% url 'room' %}" class="slide-item">Rooms</a></li>
+                                                <li><a href="{% url 'category' %}" class="slide-item">Category For &darr;</a></li>
+                                                <li><a href="{% url 'food' %}" class="slide-item">Foods</a></li>
+                                                <li><a href="{% url 'product' %}" class="slide-item">Product</a></li>
+                                            </ul>
+                                        </li>
+                                    {% elif request.path == '/product/' %}
+                                        <li class="slide">
+                                            <a class="side-menu__item active" data-bs-toggle="slide" href="javascript:void(0)">
+                                                <i class="side-menu__icon fa fa-coffee"></i>
+                                                <span class="side-menu__label">Product</span>
+                                                <i class="angle fe fe-chevron-right"></i>
+                                            </a>
+                                            <ul class="slide-menu">
+                                                <li class="side-menu-label1"><a href="javascript:void(0)">Product</a></li>
+                                                <li><a href="{% url 'room' %}" class="slide-item">Rooms</a></li>
+                                                <li><a href="{% url 'category' %}" class="slide-item">Category For &darr;</a></li>
+                                                <li><a href="{% url 'food' %}" class="slide-item">Foods</a></li>
+                                                <li><a href="{% url 'product' %}" class="slide-item">Product</a></li>
+                                            </ul>
+                                        </li>
+                                    {% else %}
                                         <li class="slide">
                                             <a class="side-menu__item" data-bs-toggle="slide" href="javascript:void(0)">
-                                                <i class="side-menu__icon fe fe-shopping-cart"></i>
+                                                <i class="side-menu__icon fa fa-tasks"></i>
+                                                <span class="side-menu__label">Product</span>
+                                                <i class="angle fe fe-chevron-right"></i>
+                                            </a>
+                                            <ul class="slide-menu">
+                                                <li class="side-menu-label1"><a href="javascript:void(0)">Product</a></li>
+                                                <li><a href="{% url 'room' %}" class="slide-item">Rooms</a></li>
+                                                <li><a href="{% url 'category' %}" class="slide-item">Category For &darr;</a></li>
+                                                <li><a href="{% url 'food' %}" class="slide-item">Foods</a></li>
+                                                <li><a href="{% url 'product' %}" class="slide-item">Product</a></li>
+                                            </ul>
+                                        </li>
+                                    {% endif %}
+                                    {% if request.path == '/order/' %}
+                                        <li class="slide">
+                                            <a class="side-menu__item active" data-bs-toggle="slide" href="javascript:void(0)">
+                                                <i class="side-menu__icon fa fa-shopping-cart"></i>
                                                 <span class="side-menu__label">Orders</span>
                                                 <i class="angle fe fe-chevron-right"></i>
                                             </a>
                                             <ul class="slide-menu">
                                                 <li class="side-menu-label1"><a href="javascript:void(0)">Orders</a></li>
-                                                <li><a href="{% url 'client' %}" class="slide-item">Clients</a></li>
                                                 <li><a href="{% url 'order' %}" class="slide-item">Orders</a></li>
                                                 <li><a href="{% url 'order-item' %}" class="slide-item">Orders Item</a></li>
                                             </ul>
                                         </li>
-                                    {% elif user.role == 2 %}
+                                    {% elif request.path == '/order/item/' %}
                                         <li class="slide">
-                                            <a class="side-menu__item" data-bs-toggle="slide" href="javascript:void(0)">
-                                                <i class="side-menu__icon fe fe-more-vertical"></i>
+                                            <a class="side-menu__item active" data-bs-toggle="slide" href="javascript:void(0)">
+                                                <i class="side-menu__icon fa fa-shopping-basket"></i>
                                                 <span class="side-menu__label">Orders</span>
                                                 <i class="angle fe fe-chevron-right"></i>
                                             </a>
                                             <ul class="slide-menu">
-                                                <li><a href="{% url 'room' %}" class="slide-item">Rooms</a></li>
-                                                <li><a href="{% url 'product' %}" class="slide-item">Product</a></li>
-                                                <li><a href="{% url 'food' %}" class="slide-item">Food</a></li>
+                                                <li class="side-menu-label1"><a href="javascript:void(0)">Orders</a></li>
                                                 <li><a href="{% url 'order' %}" class="slide-item">Orders</a></li>
-                                                <li><a href="{% url 'order-item' %}" class="slide-item">Order Item</a></li>
+                                                <li><a href="{% url 'order-item' %}" class="slide-item">Orders Item</a></li>
                                             </ul>
                                         </li>
-                                    {% elif user.role == 3 %}
+                                    {% else %}
                                         <li class="slide">
                                             <a class="side-menu__item" data-bs-toggle="slide" href="javascript:void(0)">
-                                                <i class="side-menu__icon fe fe-users"></i>
-                                                <span class="side-menu__label">Staff</span>
+                                                <i class="side-menu__icon fa fa-shopping-cart"></i>
+                                                <span class="side-menu__label">Orders</span>
                                                 <i class="angle fe fe-chevron-right"></i>
                                             </a>
                                             <ul class="slide-menu">
-                                                <li class="side-menu-label1"><a href="javascript:void(0)">Staff</a></li>
-                                                <li><a href="{% url 'add-staff' %}" class="slide-item">Add Staff</a></li>
-                                                <li><a href="{% url 'staff' %}" class="slide-item">Our Team</a></li>
+                                                <li class="side-menu-label1"><a href="javascript:void(0)">Orders</a></li>
+                                                <li><a href="{% url 'order' %}" class="slide-item">Orders</a></li>
+                                                <li><a href="{% url 'order-item' %}" class="slide-item">Orders Item</a></li>
+                                            </ul>
+                                        </li>
+                                    {% endif %}
+                                {% elif user.role == 2 %}
+                                    {% if request.path == '/dashboard/waiter/' %}
+                                        <li class="slide">
+                                            <a class="side-menu__item has-link active" data-bs-toggle="slide" href="{% url 'dashboard' %}">
+                                                <i class="side-menu__icon fa fa-home"></i>
+                                                <span class="side-menu__label">Dashboard</span>
+                                            </a>
+                                        </li>
+                                    {% else %}
+                                        <li class="slide">
+                                            <a class="side-menu__item has-link" data-bs-toggle="slide" href="{% url 'dashboard' %}">
+                                                <i class="side-menu__icon fa fa-home"></i>
+                                                <span class="side-menu__label">Dashboard</span>
+                                            </a>
+                                        </li>
+                                    {% endif %}
+                                    {% if request.path == '/room/' %}
+                                        <li class="slide">
+                                            <a class="side-menu__item has-link active" data-bs-toggle="slide" href="{% url 'room' %}">
+                                                <i class="side-menu__icon fa fa-bank"></i>
+                                                <span class="side-menu__label">Rooms</span>
+                                            </a>
+                                        </li>
+                                    {% else %}
+                                        <li class="slide">
+                                            <a class="side-menu__item has-link" data-bs-toggle="slide" href="{% url 'room' %}">
+                                                <i class="side-menu__icon fa fa-bank"></i>
+                                                <span class="side-menu__label">Rooms</span>
+                                            </a>
+                                        </li>
+                                    {% endif %}
+                                    {% if request.path == '/product/' %}
+                                        <li class="slide">
+                                            <a class="side-menu__item has-link" data-bs-toggle="slide" href="{% url 'product' %}">
+                                                <i class="side-menu__icon fa fa-coffee"></i>
+                                                <span class="side-menu__label">Product</span>
+                                            </a>
+                                        </li>
+                                    {% else %}
+                                        <li class="slide">
+                                            <a class="side-menu__item has-link" data-bs-toggle="slide" href="{% url 'product' %}">
+                                                <i class="side-menu__icon fa fa-coffee"></i>
+                                                <span class="side-menu__label">Product</span>
+                                            </a>
+                                        </li>
+                                    {% endif %}
+                                    {% if request.path == '/food/' %}
+                                        <li class="slide">
+                                            <a class="side-menu__item has-link active" data-bs-toggle="slide" href="{% url 'food' %}">
+                                                <i class="side-menu__icon fa fa-cutlery"></i>
+                                                <span class="side-menu__label">Food</span>
+                                            </a>
+                                        </li>
+                                    {% else %}
+                                        <li class="slide">
+                                            <a class="side-menu__item has-link" data-bs-toggle="slide" href="{% url 'food' %}">
+                                                <i class="side-menu__icon fa fa-cutlery"></i>
+                                                <span class="side-menu__label">Food</span>
+                                            </a>
+                                        </li>
+                                    {% endif %}
+                                    {% if request.path == '/order/' %}
+                                        <li class="slide">
+                                            <a class="side-menu__item has-link active" data-bs-toggle="slide" href="{% url 'order' %}">
+                                                <i class="side-menu__icon fa fa-shopping-cart"></i>
+                                                <span class="side-menu__label">Order</span>
+                                            </a>
+                                        </li>
+                                    {% else %}
+                                        <li class="slide">
+                                            <a class="side-menu__item has-link" data-bs-toggle="slide" href="{% url 'order' %}">
+                                                <i class="side-menu__icon fa fa-shopping-cart"></i>
+                                                <span class="side-menu__label">Order</span>
+                                            </a>
+                                        </li>
+                                    {% endif %}
+                                    {% if request.path == '/order/item/' %}
+                                        <li class="slide">
+                                            <a class="side-menu__item has-link active" data-bs-toggle="slide" href="{% url 'order-item' %}">
+                                                <i class="side-menu__icon fa fa-shopping-basket"></i>
+                                                <span class="side-menu__label">Order Item</span>
+                                            </a>
+                                        </li>
+                                    {% else %}
+                                        <li class="slide">
+                                            <a class="side-menu__item has-link" data-bs-toggle="slide" href="{% url 'order-item' %}">
+                                                <i class="side-menu__icon fa fa-shopping-basket"></i>
+                                                <span class="side-menu__label">Order Item</span>
+                                            </a>
+                                        </li>
+                                    {% endif %}
+                                {% elif user.role == 3 %}
+                                    {% if request.path == '/dashboard/manager/' %}
+                                        <li class="slide">
+                                            <a class="side-menu__item has-link active" data-bs-toggle="slide" href="{% url 'dashboard' %}">
+                                                <i class="side-menu__icon fa fa-home"></i>
+                                                <span class="side-menu__label">Dashboard</span>
+                                            </a>
+                                        </li>
+                                    {% else %}
+                                        <li class="slide">
+                                            <a class="side-menu__item has-link" data-bs-toggle="slide" href="{% url 'dashboard' %}">
+                                                <i class="side-menu__icon fa fa-home"></i>
+                                                <span class="side-menu__label">Dashboard</span>
+                                            </a>
+                                        </li>
+                                    {% endif %}
+                                    {% if request.path == '/staff/add/' %}
+                                        <li class="slide">
+                                            <a class="side-menu__item active" data-bs-toggle="slide" href="{% url 'add-staff' %}">
+                                                <i class="side-menu__icon fa fa-user-plus"></i>
+                                                <span class="side-menu__label">Add Worker</span>
+                                            </a>
+                                        </li>
+                                    {% else %}
+                                        <li class="slide">
+                                            <a class="side-menu__item" data-bs-toggle="slide" href="{% url 'add-staff' %}">
+                                                <i class="side-menu__icon fa fa-user-plus"></i>
+                                                <span class="side-menu__label">Add Worker</span>
+                                            </a>
+                                        </li>
+                                    {% endif %}
+                                    {% if request.path == '/directors/' %}
+                                        <li class="slide">
+                                            <a class="side-menu__item active" data-bs-toggle="slide" href="javascript:void(0)">
+                                                <i class="side-menu__icon fa fa-users"></i>
+                                                <span class="side-menu__label">Workers</span>
+                                                <i class="angle fe fe-chevron-right"></i>
+                                            </a>
+                                            <ul class="slide-menu">
+                                                <li class="side-menu-label1"><a href="javascript:void(0)">Workers</a></li>
                                                 <li><a href="{% url 'director' %}" class="slide-item">Directors</a></li>
                                                 <li><a href="{% url 'manager' %}" class="slide-item">Managers</a></li>
                                                 <li><a href="{% url 'waiter' %}" class="slide-item">Waiters</a></li>
@@ -200,9 +437,106 @@
                                                 <li><a href="{% url 'call' %}" class="slide-item">Call Center Staff</a></li>
                                             </ul>
                                         </li>
+                                    {% elif request.path == '/managers/' %}
+                                        <li class="slide">
+                                            <a class="side-menu__item active" data-bs-toggle="slide" href="javascript:void(0)">
+                                                <i class="side-menu__icon fa fa-users"></i>
+                                                <span class="side-menu__label">Workers</span>
+                                                <i class="angle fe fe-chevron-right"></i>
+                                            </a>
+                                            <ul class="slide-menu">
+                                                <li class="side-menu-label1"><a href="javascript:void(0)">Workers</a></li>
+                                                <li><a href="{% url 'director' %}" class="slide-item">Directors</a></li>
+                                                <li><a href="{% url 'manager' %}" class="slide-item">Managers</a></li>
+                                                <li><a href="{% url 'waiter' %}" class="slide-item">Waiters</a></li>
+                                                <li><a href="{% url 'cooker' %}" class="slide-item">Cookers</a></li>
+                                                <li><a href="{% url 'call' %}" class="slide-item">Call Center Staff</a></li>
+                                            </ul>
+                                        </li>
+                                    {% elif request.path == '/waiters/' %}
+                                        <li class="slide">
+                                            <a class="side-menu__item active" data-bs-toggle="slide" href="javascript:void(0)">
+                                                <i class="side-menu__icon fa fa-users"></i>
+                                                <span class="side-menu__label">Workers</span>
+                                                <i class="angle fe fe-chevron-right"></i>
+                                            </a>
+                                            <ul class="slide-menu">
+                                                <li class="side-menu-label1"><a href="javascript:void(0)">Workers</a></li>
+                                                <li><a href="{% url 'director' %}" class="slide-item">Directors</a></li>
+                                                <li><a href="{% url 'manager' %}" class="slide-item">Managers</a></li>
+                                                <li><a href="{% url 'waiter' %}" class="slide-item">Waiters</a></li>
+                                                <li><a href="{% url 'cooker' %}" class="slide-item">Cookers</a></li>
+                                                <li><a href="{% url 'call' %}" class="slide-item">Call Center Staff</a></li>
+                                            </ul>
+                                        </li>
+                                    {% elif request.path == '/cookers/' %}
+                                        <li class="slide">
+                                            <a class="side-menu__item active" data-bs-toggle="slide" href="javascript:void(0)">
+                                                <i class="side-menu__icon fa fa-users"></i>
+                                                <span class="side-menu__label">Workers</span>
+                                                <i class="angle fe fe-chevron-right"></i>
+                                            </a>
+                                            <ul class="slide-menu">
+                                                <li class="side-menu-label1"><a href="javascript:void(0)">Workers</a></li>
+                                                <li><a href="{% url 'director' %}" class="slide-item">Directors</a></li>
+                                                <li><a href="{% url 'manager' %}" class="slide-item">Managers</a></li>
+                                                <li><a href="{% url 'waiter' %}" class="slide-item">Waiters</a></li>
+                                                <li><a href="{% url 'cooker' %}" class="slide-item">Cookers</a></li>
+                                                <li><a href="{% url 'call' %}" class="slide-item">Call Center Staff</a></li>
+                                            </ul>
+                                        </li>
+                                    {% elif request.path == '/call/center/staffs/' %}
+                                        <li class="slide">
+                                            <a class="side-menu__item active" data-bs-toggle="slide" href="javascript:void(0)">
+                                                <i class="side-menu__icon fa fa-users"></i>
+                                                <span class="side-menu__label">Workers</span>
+                                                <i class="angle fe fe-chevron-right"></i>
+                                            </a>
+                                            <ul class="slide-menu">
+                                                <li class="side-menu-label1"><a href="javascript:void(0)">Workers</a></li>
+                                                <li><a href="{% url 'director' %}" class="slide-item">Directors</a></li>
+                                                <li><a href="{% url 'manager' %}" class="slide-item">Managers</a></li>
+                                                <li><a href="{% url 'waiter' %}" class="slide-item">Waiters</a></li>
+                                                <li><a href="{% url 'cooker' %}" class="slide-item">Cookers</a></li>
+                                                <li><a href="{% url 'call' %}" class="slide-item">Call Center Staff</a></li>
+                                            </ul>
+                                        </li>
+                                    {% else %}
                                         <li class="slide">
                                             <a class="side-menu__item" data-bs-toggle="slide" href="javascript:void(0)">
-                                                <i class="side-menu__icon fe fe-shopping-cart"></i>
+                                                <i class="side-menu__icon fa fa-users"></i>
+                                                <span class="side-menu__label">Workers</span>
+                                                <i class="angle fe fe-chevron-right"></i>
+                                            </a>
+                                            <ul class="slide-menu">
+                                                <li class="side-menu-label1"><a href="javascript:void(0)">Workers</a></li>
+                                                <li><a href="{% url 'director' %}" class="slide-item">Directors</a></li>
+                                                <li><a href="{% url 'manager' %}" class="slide-item">Managers</a></li>
+                                                <li><a href="{% url 'waiter' %}" class="slide-item">Waiters</a></li>
+                                                <li><a href="{% url 'cooker' %}" class="slide-item">Cookers</a></li>
+                                                <li><a href="{% url 'call' %}" class="slide-item">Call Center Staff</a></li>
+                                            </ul>
+                                        </li>
+                                    {% endif %}
+                                    {% if request.path == '/staff/' %}
+                                        <li class="slide">
+                                            <a class="side-menu__item active" data-bs-toggle="slide" href="{% url 'staff' %}">
+                                                <i class="side-menu__icon fa fa-address-book"></i>
+                                                <span class="side-menu__label">Team</span>
+                                            </a>
+                                        </li>
+                                    {% else %}
+                                        <li class="slide">
+                                            <a class="side-menu__item" data-bs-toggle="slide" href="{% url 'staff' %}">
+                                                <i class="side-menu__icon fa fa-address-book"></i>
+                                                <span class="side-menu__label">Team</span>
+                                            </a>
+                                        </li>
+                                    {% endif %}
+                                    {% if request.path == '/room/' %}
+                                        <li class="slide">
+                                            <a class="side-menu__item active" data-bs-toggle="slide" href="javascript:void(0)">
+                                                <i class="side-menu__icon fa fa-street-view"></i>
                                                 <span class="side-menu__label">Product</span>
                                                 <i class="angle fe fe-chevron-right"></i>
                                             </a>
@@ -213,56 +547,224 @@
                                                 <li><a href="{% url 'product' %}" class="slide-item">Product</a></li>
                                             </ul>
                                         </li>
-                                    {% elif user.role == 4 %}
+                                    {% elif request.path == '/food/' %}
                                         <li class="slide">
-                                                <a class="side-menu__item" data-bs-toggle="slide" href="javascript:void(0)">
-                                                    <i class="side-menu__icon fe fe-slack"></i>
-                                                    <span class="side-menu__label">Orders</span>
-                                                    <i class="angle fe fe-chevron-right"></i>
-                                                </a>
-                                                <ul class="slide-menu">
-                                                    <li class="side-menu-label1"><a href="javascript:void(0)">Orders</a></li>
-                                                    <li><a href="{% url 'order-item' %}" class="slide-item">Order Item</a></li>
-                                                    <li><a href="{% url 'food' %}" class="slide-item">Food</a></li>
-                                                    <li><a href="{% url 'product' %}" class="slide-item">Product</a></li>
-                                                </ul>
-                                            </li>
-                                    {% elif user.role == 5 %}
-                                        <li class="slide">
-                                            <a class="side-menu__item" data-bs-toggle="slide" href="javascript:void(0)">
-                                                <i class="side-menu__icon fe fe-slack"></i>
-                                                    <span class="side-menu__label"></span>
-                                                <i class="angle fe fe-chevron-right">Clients</i>
+                                            <a class="side-menu__item active" data-bs-toggle="slide" href="javascript:void(0)">
+                                                <i class="side-menu__icon fa fa-cutlery"></i>
+                                                <span class="side-menu__label">Product</span>
+                                                <i class="angle fe fe-chevron-right"></i>
                                             </a>
                                             <ul class="slide-menu">
-                                                <li class="side-menu-label1"><a href="javascript:void(0)">Clients</a></li>
-                                                <li><a href="#" class="slide-item">Customers</a></li>
+                                                <li class="side-menu-label1"><a href="javascript:void(0)">Product</a></li>
                                                 <li><a href="{% url 'room' %}" class="slide-item">Rooms</a></li>
-                                                <li><a href="{% url 'product' %}" class="slide-item">Products</a></li>
                                                 <li><a href="{% url 'food' %}" class="slide-item">Foods</a></li>
+                                                <li><a href="{% url 'product' %}" class="slide-item">Product</a></li>
                                             </ul>
                                         </li>
+                                    {% elif request.path == '/product/' %}
                                         <li class="slide">
-                                            <a class="side-menu__item" data-bs-toggle="slide" href="javascript:void(0)">
-                                                <i class="side-menu__icon fe fe-slack"></i>
-                                                    <span class="side-menu__label"></span>
-                                                <i class="angle fe fe-chevron-right">Orders</i>
+                                            <a class="side-menu__item active" data-bs-toggle="slide" href="javascript:void(0)">
+                                                <i class="side-menu__icon fa fa-coffee"></i>
+                                                <span class="side-menu__label">Product</span>
+                                                <i class="angle fe fe-chevron-right"></i>
                                             </a>
                                             <ul class="slide-menu">
-                                                <li class="side-menu-label1"><a href="javascript:void(0)">Orders</a></li>
-                                                <li><a href="{% url 'client' %}" class="slide-item">Customers</a></li>
-                                                <li><a href="{% url 'order' %}" class="slide-item">Orders</a></li>
-                                                <li><a href="{% url 'product' %}" class="slide-item">Orders Item</a></li>
+                                                <li class="side-menu-label1"><a href="javascript:void(0)">Product</a></li>
+                                                <li><a href="{% url 'room' %}" class="slide-item">Rooms</a></li>
+                                                <li><a href="{% url 'food' %}" class="slide-item">Foods</a></li>
+                                                <li><a href="{% url 'product' %}" class="slide-item">Product</a></li>
+                                            </ul>
+                                        </li>
+                                    {% else %}
+                                        <li class="slide">
+                                            <a class="side-menu__item" data-bs-toggle="slide" href="javascript:void(0)">
+                                                <i class="side-menu__icon fa fa-reorder"></i>
+                                                <span class="side-menu__label">Product</span>
+                                                <i class="angle fe fe-chevron-right"></i>
+                                            </a>
+                                            <ul class="slide-menu">
+                                                <li class="side-menu-label1"><a href="javascript:void(0)">Product</a></li>
+                                                <li><a href="{% url 'room' %}" class="slide-item">Rooms</a></li>
+                                                <li><a href="{% url 'food' %}" class="slide-item">Foods</a></li>
+                                                <li><a href="{% url 'product' %}" class="slide-item">Product</a></li>
                                             </ul>
                                         </li>
                                     {% endif %}
-                                </ul>
-                            <div class="slide-right" id="slide-right">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="#7b8191" width="24" height="24" viewBox="0 0 24 24">
-                                    <path d="M10.707 17.707 16.414 12l-5.707-5.707-1.414 1.414L13.586 12l-4.293 4.293z" />
-                                </svg>
-                            </div>
+                                {% elif user.role == 4 %}
+                                    {% if request.path == '/dashboard/cooker/' %}
+                                        <li class="slide">
+                                            <a class="side-menu__item has-link active" data-bs-toggle="slide" href="{% url 'dashboard' %}">
+                                                <i class="side-menu__icon fa fa-home"></i>
+                                                <span class="side-menu__label">Dashboard</span>
+                                            </a>
+                                        </li>
+                                    {% else %}
+                                        <li class="slide">
+                                            <a class="side-menu__item has-link" data-bs-toggle="slide" href="{% url 'dashboard' %}">
+                                                <i class="side-menu__icon fa fa-home"></i>
+                                                <span class="side-menu__label">Dashboard</span>
+                                            </a>
+                                        </li>
+                                    {% endif %}
+                                    {% if request.path == '/order/item/' %}
+                                        <li class="slide">
+                                            <a class="side-menu__item active" data-bs-toggle="slide" href="{% url 'order-item' %}">
+                                                <i class="side-menu__icon fa fa-shopping-basket"></i>
+                                                <span class="side-menu__label">Orders</span>
+                                            </a>
+                                        </li>
+                                    {% else %}
+                                        <li class="slide">
+                                            <a class="side-menu__item" data-bs-toggle="slide" href="{% url 'order-item' %}">
+                                                <i class="side-menu__icon fa fa-shopping-basket"></i>
+                                                <span class="side-menu__label">Orders</span>
+                                            </a>
+                                        </li>
+                                    {% endif %}
+                                    {% if request.path == '/product/' %}
+                                        <li class="slide">
+                                            <a class="side-menu__item active" data-bs-toggle="slide" href="{% url 'product' %}">
+                                                <i class="side-menu__icon fa fa-coffee"></i>
+                                                <span class="side-menu__label">Product</span>
+                                            </a>
+                                        </li>
+                                    {% else %}
+                                        <li class="slide">
+                                            <a class="side-menu__item" data-bs-toggle="slide" href="{% url 'product' %}">
+                                                <i class="side-menu__icon fa fa-coffee"></i>
+                                                <span class="side-menu__label">Product</span>
+                                            </a>
+                                        </li>
+                                    {% endif %}
+                                    {% if request.path == '/food/' %}
+                                        <li class="slide">
+                                            <a class="side-menu__item active" data-bs-toggle="slide" href="{% url 'food' %}">
+                                                <i class="side-menu__icon fa fa-cutlery"></i>
+                                                <span class="side-menu__label">Food</span>
+                                            </a>
+                                        </li>
+                                    {% else %}
+                                        <li class="slide">
+                                            <a class="side-menu__item" data-bs-toggle="slide" href="{% url 'food' %}">
+                                                <i class="side-menu__icon fa fa-cutlery"></i>
+                                                <span class="side-menu__label">Food</span>
+                                            </a>
+                                        </li>
+                                    {% endif %}
+                                {% elif user.role == 5 %}
+                                    {% if request.path == '/dashboard/call-center/' %}
+                                        <li class="slide">
+                                            <a class="side-menu__item has-link active" data-bs-toggle="slide" href="{% url 'dashboard' %}">
+                                                <i class="side-menu__icon fa fa-home"></i>
+                                                <span class="side-menu__label">Dashboard</span>
+                                            </a>
+                                        </li>
+                                    {% else %}
+                                        <li class="slide">
+                                            <a class="side-menu__item has-link" data-bs-toggle="slide" href="{% url 'dashboard' %}">
+                                                <i class="side-menu__icon fa fa-home"></i>
+                                                <span class="side-menu__label">Dashboard</span>
+                                            </a>
+                                        </li>
+                                    {% endif %}
+                                    {% if request.path == '/client/' %}
+                                        <li class="slide">
+                                            <a class="side-menu__item active" data-bs-toggle="slide" href="{% url 'client' %}">
+                                                <i class="side-menu__icon fa fa-users"></i>
+                                                <span class="side-menu__label">Customer</span>
+                                            </a>
+                                        </li>
+                                    {% else %}
+                                        <li class="slide">
+                                            <a class="side-menu__item" data-bs-toggle="slide" href="{% url 'client' %}">
+                                                <i class="side-menu__icon fa fa-users"></i>
+                                                <span class="side-menu__label">Customer</span>
+                                            </a>
+                                        </li>
+                                    {% endif %}
+                                    {% if request.path == '/room/' %}
+                                        <li class="slide">
+                                            <a class="side-menu__item active" data-bs-toggle="slide" href="{% url 'room' %}">
+                                                <i class="side-menu__icon fa fa-bank"></i>
+                                                <span class="side-menu__label">Room</span>
+                                            </a>
+                                        </li>
+                                    {% else %}
+                                        <li class="slide">
+                                            <a class="side-menu__item" data-bs-toggle="slide" href="{% url 'room' %}">
+                                                <i class="side-menu__icon fa fa-bank"></i>
+                                                <span class="side-menu__label">Room</span>
+                                            </a>
+                                        </li>
+                                    {% endif %}
+                                    {% if request.path == '/product/' %}
+                                        <li class="slide">
+                                            <a class="side-menu__item active" data-bs-toggle="slide" href="{% url 'product' %}">
+                                            <i class="side-menu__icon fa fa-coffee"></i>
+                                            <span class="side-menu__label">Product</span>
+                                            </a>
+                                        </li>
+                                    {% else %}
+                                        <li class="slide">
+                                            <a class="side-menu__item" data-bs-toggle="slide" href="{% url 'product' %}">
+                                            <i class="side-menu__icon fa fa-coffee"></i>
+                                            <span class="side-menu__label">Product</span>
+                                            </a>
+                                        </li>
+                                    {% endif %}
+                                    {% if request.path == '/food/' %}
+                                        <li class="slide">
+                                            <a class="side-menu__item active" data-bs-toggle="slide" href="{% url 'food' %}">
+                                                <i class="side-menu__icon fa fa-cutlery"></i>
+                                                <span class="side-menu__label">Food</span>
+                                            </a>
+                                        </li>
+                                    {% else %}
+                                        <li class="slide">
+                                            <a class="side-menu__item" data-bs-toggle="slide" href="{% url 'food' %}">
+                                                <i class="side-menu__icon fa fa-cutlery"></i>
+                                                <span class="side-menu__label">Food</span>
+                                            </a>
+                                        </li>
+                                    {% endif %}
+                                    {% if request.path == '/order/' %}
+                                        <li class="slide">
+                                            <a class="side-menu__item active" data-bs-toggle="slide" href="{% url 'order' %}">
+                                                <i class="side-menu__icon fa fa-shopping-cart"></i>
+                                                <span class="side-menu__label">Orders</span>
+                                            </a>
+                                        </li>
+                                    {% else %}
+                                        <li class="slide">
+                                            <a class="side-menu__item" data-bs-toggle="slide" href="{% url 'order' %}">
+                                                <i class="side-menu__icon fa fa-shopping-cart"></i>
+                                                <span class="side-menu__label">Orders</span>
+                                            </a>
+                                        </li>
+                                    {% endif %}
+                                    {% if request.path == '/order/item/' %}
+                                        <li class="slide">
+                                            <a class="side-menu__item active" data-bs-toggle="slide" href="{% url 'order-item' %}">
+                                                <i class="side-menu__icon fa fa-shopping-basket"></i>
+                                                <span class="side-menu__label">Orders Item</span>
+                                            </a>
+                                        </li>
+                                    {% else %}
+                                        <li class="slide">
+                                            <a class="side-menu__item" data-bs-toggle="slide" href="{% url 'order-item' %}">
+                                                <i class="side-menu__icon fa fa-shopping-basket"></i>
+                                                <span class="side-menu__label">Orders Item</span>
+                                            </a>
+                                        </li>
+                                    {% endif %}
+                                {% endif %}
+                            </ul>
+                        <div class="slide-right" id="slide-right">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="#7b8191" width="24" height="24" viewBox="0 0 24 24">
+                                <path d="M10.707 17.707 16.414 12l-5.707-5.707-1.414 1.414L13.586 12l-4.293 4.293z" />
+                            </svg>
                         </div>
+                    </div>
                 </div>
             </div>
         </div>

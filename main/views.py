@@ -359,6 +359,8 @@ def order_view(request):
             return redirect('add-order')
         context = {
             'order': paginator_page(Order.objects.filter(delivery=False), 5, request),
+            'food': Food.objects.filter(available=True),
+            'product': Product.objects.filter(available=True)
         }
         return render(request, 'product/order.html', context)
     except Exception as err:
@@ -404,7 +406,7 @@ def add_order(request):
                 return redirect('order')
         context = {
             'room': room_list,
-            'waiter': User.objects.filter(role=2)
+            'waiter': User.objects.filter(role=2),
         }
         return render(request, 'product/add-order.html', context)
     except Exception as err:
@@ -491,6 +493,8 @@ def add_order_item(request, pk):
         quantity = request.POST.get('quantity')
         if food == 'Nothing':
             pro = Product.objects.get(id=product)
+            if int(quantity) > pro.quantity:
+                quantity = pro.quantity
             pro.quantity -= int(quantity)
             pro.save()
             order.bill += pro.price * int(quantity)
@@ -507,7 +511,7 @@ def add_order_item(request, pk):
                 order=order,
                 food=fd,
                 quantity=quantity)
-        return redirect('order')
+        return redirect('order-item')
     context = {
         'food': Food.objects.all(),
         'product': Product.objects.all(),
