@@ -127,6 +127,7 @@ def update_director(request, pk):
         director.first_name = name
         director.last_name = l_name
         director.number = phone
+        director.save()
         return redirect('director')
 
 
