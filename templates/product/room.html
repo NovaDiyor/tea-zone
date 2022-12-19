@@ -81,8 +81,38 @@
                                                         <td><a href="#"><i class="fe fe-edit-2"></i></a></td>
                                                         <td><a href="#"><i class="fe fe-trash"></i></a></td>
                                                     {% elif user.role == 3 %}
-                                                        <td><a href="#"><i class="fe fe-edit-2"></i></a></td>
-                                                        <td><a href="#"><i class="fe fe-trash"></i></a></td>
+                                                        <td><a class="modal-effect" data-bs-effect="effect-flip-vertical" data-bs-toggle="modal" href="#update_room{{ i.id }}"><i class="fe fe-edit-2"></i></a></td>
+                                                        <div class="modal fade" id="update_room{{ i.id }}">
+                                                            <div class="modal-dialog modal-dialog-centered text-center" role="document">
+                                                                <div class="modal-content modal-content-demo">
+                                                                    <form action="{% url 'update-room' i.id %}" method="post">
+                                                                        {% csrf_token %}
+                                                                            <div class="modal-body">
+                                                                                <input type="text" class="form-control mb-4" value="{{ i.number }}" name="number" placeholder="Number Or Name Of Room" required>
+                                                                                <input type="text" class="form-control mb-4" value="{{ i.places }}" name="place" placeholder="How Many Places In Room" required>
+                                                                            </div>
+                                                                            <div class="modal-footer">
+                                                                                <button class="btn btn-success">Update Room</button>
+                                                                    </form>
+                                                                                <button class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                                                                            </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <td><a href="#delete_room{{ i.id }}" class="modal-effect" data-bs-effect="effect-flip-vertical" data-bs-toggle="modal" ><i class="fe fe-trash"></i></a></td>
+                                                        <div class="modal fade" id="delete_room{{ i.id }}">
+                                                            <div class="modal-dialog modal-dialog-centered text-center" role="document">
+                                                                <div class="modal-content modal-content-demo">
+                                                                    <div class="modal-body">
+                                                                        <h2 class="text-danger">Warning: If You Delete Room Item You Cant Restore It!</h2>
+                                                                    </div>
+                                                                    <div class="modal-footer">
+                                                                        <a href="{% url 'delete-room' i.id %}"><button class="btn btn-danger"><i class="fe fe-trash"></i></button></a>
+                                                                        <button class="btn btn-success" data-bs-dismiss="modal">Close</button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
                                                     {% endif %}
                                                 </tr>
                                             {% endfor %}

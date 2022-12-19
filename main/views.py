@@ -254,8 +254,7 @@ def call_center_view(request):
 @login_required(login_url='login')
 def client_view(request):
     context = {
-        'client': Client.objects.all(),
-        'objects': paginator_page(Client.objects.all(), 5, request),
+        'client': paginator_page(Client.objects.all(), 5, request),
     }
     return render(request, 'staff/client.html', context)
 
@@ -264,8 +263,7 @@ def client_view(request):
 def product_view(request):
     pro = Product.objects.all()
     context = {
-        'product': pro,
-        'objects': paginator_page(Product.objects.all(), 5, request),
+        'product': paginator_page(pro, 5, request),
         'category': Category.objects.all()
     }
     for i in pro:
@@ -313,8 +311,7 @@ def staff_view(request):
 def food_view(request):
     context = {
         'category': Category.objects.all(),
-        'food': Food.objects.all(),
-        'objects': paginator_page(Food.objects.all(), 5, request)
+        'food': paginator_page(Food.objects.all(), 5, request)
     }
     if request.method == 'POST':
         name = request.POST.get('name')
@@ -511,7 +508,7 @@ def add_order_item(request, pk):
                 order=order,
                 food=fd,
                 quantity=quantity)
-        return redirect('order-item')
+        return redirect('order')
     context = {
         'food': Food.objects.all(),
         'product': Product.objects.all(),

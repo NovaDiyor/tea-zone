@@ -68,11 +68,56 @@
                                                 <tr>
                                                     <td class="text-nowrap align-middle">{{ i.name }}</td>
                                                     {% if user.role == 1 %}
-                                                        <td class="text-nowrap align-middle"><a href="#"><i class="fe fe-edit-2"></i></a></td>
+                                                        <td class="text-nowrap align-middle"><a class="modal-effect" data-bs-effect="effect-flip-vertical" data-bs-toggle="modal" href="#update_category{{ i.id }}"><i class="fe fe-edit-2"></i></a></td>
+                                                        <div class="modal fade" id="update_category{{ i.id }}">
+                                                            <div class="modal-dialog modal-dialog-centered text-center" role="document">
+                                                                <div class="modal-content modal-content-demo">
+                                                                    <form action="{% url 'update-category' i.id %}" method="post">
+                                                                        {% csrf_token %}
+                                                                            <div class="modal-body">
+                                                                                <input type="text" class="form-control" value="{{ i.name }}" name="name" placeholder="Name" required>
+                                                                            </div>
+                                                                            <div class="modal-footer">
+                                                                                <button class="btn btn-success">Update Category</button>
+                                                                    </form>
+                                                                                <button class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                                                                            </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
                                                         <td class="text-nowrap align-middle"><a href="#"><i class="fe fe-trash"></i></a></td>
                                                     {% elif user.role == 3 %}
-                                                        <td class="text-nowrap align-middle"><a href="#"><i class="fe fe-edit-2"></i></a></td>
-                                                        <td class="text-nowrap align-middle"><a href="#"><i class="fe fe-trash"></i></a></td>
+                                                        <td class="text-nowrap align-middle"><a class="modal-effect" data-bs-effect="effect-flip-vertical" data-bs-toggle="modal" href="#update_category{{ i.id }}"><i class="fe fe-edit-2"></i></a></td>
+                                                        <div class="modal fade" id="update_category{{ i.id }}">
+                                                            <div class="modal-dialog modal-dialog-centered text-center" role="document">
+                                                                <div class="modal-content modal-content-demo">
+                                                                    <form action="{% url 'update-category' i.id %}" method="post">
+                                                                        {% csrf_token %}
+                                                                            <div class="modal-body">
+                                                                                <input type="text" class="form-control" value="{{ i.name }}" name="name" placeholder="Name" required>
+                                                                            </div>
+                                                                            <div class="modal-footer">
+                                                                                <button class="btn btn-success">Update Category</button>
+                                                                    </form>
+                                                                                <button class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                                                                            </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <td class="text-nowrap align-middle"><a class="modal-effect" data-bs-effect="effect-flip-vertical" data-bs-toggle="modal" href="#delete_category{{ i.id }}"><i class="fe fe-trash"></i></a></td>
+                                                        <div class="modal fade" id="delete_category{{ i.id }}">
+                                                            <div class="modal-dialog modal-dialog-centered text-center" role="document">
+                                                                <div class="modal-content modal-content-demo">
+                                                                    <div class="modal-body">
+                                                                        <h2 class="text-danger">Warning: If You Delete Category You Cant Restore It!</h2>
+                                                                    </div>
+                                                                    <div class="modal-footer">
+                                                                        <a href="{% url 'delete-category' i.id %}"><button class="btn btn-danger"><i class="fe fe-trash"></i></button></a>
+                                                                        <button class="btn btn-success" data-bs-dismiss="modal">Close</button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
                                                     {% endif %}
                                                 </tr>
                                             {% endfor %}

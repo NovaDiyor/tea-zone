@@ -48,53 +48,28 @@ def delete_order(request, pk):
 
 
 def delete_category(request, pk):
-    usr = request.user
-    if usr.role == 1:
-        Category.objects.get(id=pk).delete()
-        return redirect('category')
-    elif usr.role == 3:
-        Category.objects.get(id=pk).delete()
-        return redirect('category')
-    else:
-        return redirect('404')
+    Category.objects.get(id=pk).delete()
+    return redirect('category')
 
 
 def change_food(request, pk):
-    usr = request.user
-    if usr.role == 1:
-        Food.objects.get(id=pk).delete()
-        return redirect('food')
-    elif usr.role == 3:
-        Food.objects.get(id=pk).delete()
-        return redirect('food')
-    elif usr.role == 4:
-        food = Food.objects.get(id=pk)
-        if food.available == True:
-            food.available = False
-        else:
-            food.available = True
-        food.save()
-        return redirect('food')
+    food = Food.objects.get(id=pk)
+    if food.available == True:
+        food.available = False
     else:
-        return redirect('404')
+        food.available = True
+    food.save()
+    return redirect('food')
+
+
+def delete_food(request, pk):
+    Food.objects.get(id=pk).delete()
+    return redirect('food')
 
 
 def delete_product(request, pk):
-    usr = request.user
-    if usr.role == 1:
-        Product.objects.get(id=pk).delete()
-        return redirect('product')
-    elif usr.role == 3:
-        Product.objects.get(id=pk).delete()
-        return redirect('product')
-    elif usr.role == 4:
-        pro = Product.objects.get(id=pk)
-        pro.quantity = 0
-        pro.available = False
-        pro.save()
-        return redirect('product')
-    else:
-        return redirect('404')
+    Product.objects.get(id=pk).delete()
+    return redirect('product')
 
 
 def change_order(request, pk):
@@ -146,44 +121,91 @@ def update_order(request, pk):
     return redirect('order')
 
 
+def update_category(request, pk):
+    category = Category.objects.get(id=pk)
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        category.name = name
+        category.save()
+        return redirect('category')
+
+
+def update_room(request, pk):
+    room = Rooms.objects.get(id=pk)
+    if request.method == 'POST':
+        number = request.POST.get('number')
+        place = request.POST.get('place')
+        room.number = number
+        room.places = place
+        room.save()
+        return redirect('room')
+
+
 def update_order_item(request, pk):
     item = OrderItem.objects.get(id=pk)
     if request.method == 'POST':
-        order = request.POST.get('order')
-        food = request.POST.get('food')
-        product = request.POST.get('product')
+        order_id = request.POST.get('order')
+        food_id = request.POST.get('food')
+        product_id = request.POST.get('product')
         quantity = request.POST.get('quantity')
-        item.order_id = order
+        item.order_id = order_id
+        if food_id == 'None':
+            pro_get = Product.objects.get(id=product_id)
+            product = item.product
+            item_quantity = int(item.quantity)
+            product.quantity += item_quantity
+            if int(quantity) > pro_get.quantity:
+                quantity = pro_get.quantity
+            pro_get.quantity -= int(quantity)
+            pro_get.save()
+            product.save()
+            item.product = pro_get
+            item.food = None
+            item.quantity = quantity
+            item.save()
+        if product_id == 'None':
+            order = Order.objects.get(id=order_id)
+            food_get = Food.objects.get(id=food_id)
+            food = item.food
+            item_quantity = int(item.quantity)
+            order.bill -= food.price * item_quantity
+            order.bill += food_get.price * int(quantity)
+            order.save()
+            item.product = None
+            item.food = food_get
+            item.quantity = quantity
+            item.save()
+        return redirect('order-item')
 
 
-def update_food(request,pk):
-    user = request.user
-    if user.role == 1:
-        if request.method == 'POST':
-            f = Food.objects.get(id=pk)
-            price = request.POST.get('price')
-            f.price = price
-            f.save()
-            return redirect('food')
-        return render(request, 'food-update.html')
-    elif user.role == 3:
-        if request.method == 'POST':
-            f = Food.objects.get(id=pk)
-            price = request.POST.get('price')
-            f.price = price
-            f.save()
-            return redirect('food')
-        return render(request, 'food-update.html')
-    else:
-        return redirect('404')
+def update_food(request, pk):
+    f = Food.objects.get(id=pk)
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        price = request.POST.get('price')
+        category = request.POST.get('category')
+        f.name = name
+        f.price = price
+        f.category_id = category
+        f.save()
+        return redirect('food')
 
 
 def update_product(request, pk):
-    user = request.user
     if request.method == 'POST':
         pr = Product.objects.get(id=pk)
+        name = request.POST.get('name')
+        category = request.POST.get('category')
         price = request.POST.get('price')
         quantity = request.POST.get('quantity')
+        if name:
+            pr.name = name
+        else:
+            pr.name = name
+        if category:
+            pr.category_id = category
+        else:
+            pr.category = category
         if price:
             pr.price = price
         else:

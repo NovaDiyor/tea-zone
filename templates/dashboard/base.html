@@ -537,12 +537,28 @@
                                         <li class="slide">
                                             <a class="side-menu__item active" data-bs-toggle="slide" href="javascript:void(0)">
                                                 <i class="side-menu__icon fa fa-street-view"></i>
-                                                <span class="side-menu__label">Product</span>
+                                                <span class="side-menu__label">Room</span>
                                                 <i class="angle fe fe-chevron-right"></i>
                                             </a>
                                             <ul class="slide-menu">
                                                 <li class="side-menu-label1"><a href="javascript:void(0)">Product</a></li>
                                                 <li><a href="{% url 'room' %}" class="slide-item">Rooms</a></li>
+                                                <li><a href="{% url 'category' %}" class="slide-item">Category For &darr;</a></li>
+                                                <li><a href="{% url 'food' %}" class="slide-item">Foods</a></li>
+                                                <li><a href="{% url 'product' %}" class="slide-item">Product</a></li>
+                                            </ul>
+                                        </li>
+                                    {% elif request.path == '/category/' %}
+                                        <li class="slide">
+                                            <a class="side-menu__item active" data-bs-toggle="slide" href="javascript:void(0)">
+                                                <i class="side-menu__icon fa fa-reorder"></i>
+                                                <span class="side-menu__label">Category</span>
+                                                <i class="angle fe fe-chevron-right"></i>
+                                            </a>
+                                            <ul class="slide-menu">
+                                                <li class="side-menu-label1"><a href="javascript:void(0)">Product</a></li>
+                                                <li><a href="{% url 'room' %}" class="slide-item">Rooms</a></li>
+                                                <li><a href="{% url 'category' %}" class="slide-item">Category For &darr;</a></li>
                                                 <li><a href="{% url 'food' %}" class="slide-item">Foods</a></li>
                                                 <li><a href="{% url 'product' %}" class="slide-item">Product</a></li>
                                             </ul>
@@ -551,12 +567,13 @@
                                         <li class="slide">
                                             <a class="side-menu__item active" data-bs-toggle="slide" href="javascript:void(0)">
                                                 <i class="side-menu__icon fa fa-cutlery"></i>
-                                                <span class="side-menu__label">Product</span>
+                                                <span class="side-menu__label">Food</span>
                                                 <i class="angle fe fe-chevron-right"></i>
                                             </a>
                                             <ul class="slide-menu">
                                                 <li class="side-menu-label1"><a href="javascript:void(0)">Product</a></li>
                                                 <li><a href="{% url 'room' %}" class="slide-item">Rooms</a></li>
+                                                <li><a href="{% url 'category' %}" class="slide-item">Category For &darr;</a></li>
                                                 <li><a href="{% url 'food' %}" class="slide-item">Foods</a></li>
                                                 <li><a href="{% url 'product' %}" class="slide-item">Product</a></li>
                                             </ul>
@@ -571,6 +588,7 @@
                                             <ul class="slide-menu">
                                                 <li class="side-menu-label1"><a href="javascript:void(0)">Product</a></li>
                                                 <li><a href="{% url 'room' %}" class="slide-item">Rooms</a></li>
+                                                <li><a href="{% url 'category' %}" class="slide-item">Category For &darr;</a></li>
                                                 <li><a href="{% url 'food' %}" class="slide-item">Foods</a></li>
                                                 <li><a href="{% url 'product' %}" class="slide-item">Product</a></li>
                                             </ul>
@@ -578,13 +596,14 @@
                                     {% else %}
                                         <li class="slide">
                                             <a class="side-menu__item" data-bs-toggle="slide" href="javascript:void(0)">
-                                                <i class="side-menu__icon fa fa-reorder"></i>
-                                                <span class="side-menu__label">Product</span>
+                                                <i class="side-menu__icon fa fa-tasks"></i>
+                                                <span class="side-menu__label">Products</span>
                                                 <i class="angle fe fe-chevron-right"></i>
                                             </a>
                                             <ul class="slide-menu">
                                                 <li class="side-menu-label1"><a href="javascript:void(0)">Product</a></li>
                                                 <li><a href="{% url 'room' %}" class="slide-item">Rooms</a></li>
+                                                <li><a href="{% url 'category' %}" class="slide-item">Category For &darr;</a></li>
                                                 <li><a href="{% url 'food' %}" class="slide-item">Foods</a></li>
                                                 <li><a href="{% url 'product' %}" class="slide-item">Product</a></li>
                                             </ul>
@@ -782,7 +801,6 @@
         </footer>
     </div>
     <a href="#top" id="back-to-top"><i class="fa fa-angle-up"></i></a>
-    <script src="{% static 'assets/js/main.js' %}"></script>
     <script src="{% static 'assets/js/jquery.min.js' %}"></script>
     <script src="{% static 'assets/plugins/bootstrap/js/popper.min.js' %}"></script>
     <script src="{% static 'assets/plugins/bootstrap/js/bootstrap.min.js' %}"></script>
@@ -805,7 +823,6 @@
     <script src="{% static 'assets/plugins/select2/select2.full.min.js' %}"></script>
     <script src="{% static 'assets/js/select2.js' %}"></script>
     <script src="{% static 'assets/plugins/bootstrap-daterangepicker/moment.min.js' %}"></script>
-    <script src="{% static 'assets/plugins/bootstrap-daterangepicker/daterangepicker.js' %}"></script>
     <script src="{% static 'assets/plugins/bootstrap-datepicker/bootstrap-datepicker.js' %}"></script>
     <script src="{% static 'assets/plugins/sumoselect/jquery.sumoselect.js' %}"></script>
     <script src="{% static 'assets/plugins/time-picker/jquery.timepicker.js' %}"></script>
@@ -827,24 +844,26 @@
     <script src="{% static 'assets/js/themeColors.js' %}"></script>
     <script src="{% static 'assets/js/sticky.js' %}"></script>
     <script src="{% static 'assets/js/custom.js' %}"></script>
-    <script src="{% static 'assets/js/jquery.min.js' %}"></script>
-    <script src="{% static 'assets/plugins/bootstrap/js/popper.min.js' %}"></script>
-    <script src="{% static 'assets/plugins/bootstrap/js/bootstrap.min.js' %}"></script>
     <script src="{% static 'assets/js/jquery.sparkline.min.js' %}"></script>
     <script src="{% static 'assets/js/circle-progress.min.js' %}"></script>
-    <script src="{% static 'assets/plugins/input-mask/jquery.mask.min.js' %}"></script>
-    <script src="{% static 'assets/plugins/sidemenu/sidemenu.js' %}"></script>
-	<script src="{% static 'assets/plugins/bootstrap5-typehead/autocomplete.js' %}"></script>
-    <script src="{% static 'assets/js/typehead.js' %}"></script>
     <script src="{% static 'assets/plugins/chart/Chart.bundle.js' %}"></script>
     <script src="{% static 'assets/js/chart.js' %}"></script>
-    <script src="{% static 'assets/plugins/sidebar/sidebar.js' %}"></script>
-    <script src="{% static 'assets/plugins/p-scroll/perfect-scrollbar.js' %}"></script>
-    <script src="{% static 'assets/plugins/p-scroll/pscroll.js' %}"></script>
-    <script src="{% static 'assets/plugins/p-scroll/pscroll-1.js' %}"></script>
-    <script src="{% static 'assets/js/themeColors.js' %}"></script>
-    <script src="{% static 'assets/plugins/select2/select2.full.min.js' %}"></script>
     <script src="{% static 'assets/js/select2.js' %}"></script>
-    <script src="{% static 'assets/js/themeColors.js' %}"></script>
+    <script src="{% static 'assets/js/index1.js' %}"></script>
+    <script src="{% static 'assets/plugins/peitychart/jquery.peity.min.js' %}"></script>
+    <script src="{% static 'assets/plugins/peitychart/peitychart.init.js' %}"></script>
+    <script src="{% static 'assets/plugins/chart/rounded-barchart.js' %}"></script>
+    <script src="{% static 'assets/plugins/chart/utils.js' %}"></script>
+    <script src="{% static 'assets/plugins/datatable/js/jquery.dataTables.min.js' %}"></script>
+    <script src="{% static 'assets/plugins/datatable/js/dataTables.bootstrap5.js' %}"></script>
+    <script src="{% static 'assets/plugins/datatable/dataTables.responsive.min.js' %}"></script>
+    <script src="{% static 'assets/js/apexcharts.js' %}"></script>
+    <script src="{% static 'assets/plugins/apexchart/irregular-data-series.js' %}"></script>
+    <script src="{% static 'assets/plugins/flot/jquery.flot.js' %}"></script>
+    <script src="{% static 'assets/plugins/flot/jquery.flot.fillbetween.js' %}"></script>
+    <script src="{% static 'assets/plugins/flot/chart.flot.sampledata.js' %}"></script>
+    <script src="{% static 'assets/plugins/flot/dashboard.sampledata.js' %}"></script>
+    <script src="{% static 'assets/plugins/jvectormap/jquery-jvectormap-2.0.2.min.js' %}"></script>
+    <script src="{% static 'assets/plugins/jvectormap/jquery-jvectormap-world-mill-en.js' %}"></script>
 </body>
 </html>
