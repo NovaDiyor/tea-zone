@@ -97,6 +97,7 @@ def dashboard_waiter(request):
             'done': order.count(),
             'in_proces': proces.count(),
             'month': month.count(),
+            'out_of_service':Order.objects.filter(user=None, done=False).count()
         }
         return render(request, 'dashboard/dashboard-waiter.html', context)
     else:
