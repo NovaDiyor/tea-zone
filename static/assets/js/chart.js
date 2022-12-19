@@ -2,67 +2,6 @@ $(function() {
 	"use strict";
 
     /*LIne-Chart */
-    var ctx = document.getElementById("chartLine").getContext('2d');
-    var myChart = new Chart(ctx, {
-        type: 'line',
-        data: {
-            labels: ["Sun", "Mon", "Tus", "Wed", "Thu", "Fri", "Sat"],
-            datasets: [{
-                label: 'Profits',
-                data: [100, 420, 210, 420, 210, 320, 350],
-                borderWidth: 2,
-                backgroundColor: 'transparent',
-                borderColor: '#6c5ffc',
-                borderWidth: 3,
-                pointBackgroundColor: '#ffffff',
-                pointRadius: 2
-            }, {
-                label: 'Expenses',
-                data: [450, 200, 350, 250, 480, 200, 400],
-                borderWidth: 2,
-                backgroundColor: 'transparent',
-                borderColor: '#05c3fb',
-                borderWidth: 3,
-                pointBackgroundColor: '#ffffff',
-                pointRadius: 2
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-
-            scales: {
-                xAxes: [{
-                    ticks: {
-                        fontColor: "#9ba6b5",
-                    },
-                    display: true,
-                    gridLines: {
-                        color: 'rgba(119, 119, 142, 0.2)'
-                    }
-                }],
-                yAxes: [{
-                    ticks: {
-                        fontColor: "#9ba6b5",
-                    },
-                    display: true,
-                    gridLines: {
-                        color: 'rgba(119, 119, 142, 0.2)'
-                    },
-                    scaleLabel: {
-                        display: false,
-                        labelString: 'Thousands',
-                        fontColor: 'rgba(119, 119, 142, 0.2)'
-                    }
-                }]
-            },
-            legend: {
-                labels: {
-                    fontColor: "#9ba6b5"
-                },
-            },
-        }
-    });
 
     /* Bar-Chart1 */
     var ctx = document.getElementById("chartBar1").getContext('2d');
