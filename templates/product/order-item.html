@@ -19,7 +19,7 @@
                                                             <div class="mb-4">
                                                                 <select class="form-control select2 form-select mb-4" name="order" data-placeholder="Choose one" required>
                                                                     {% for i in order %}
-                                                                        <option value="{{ i.id }}">{{ i.owner.name }}</option>
+                                                                        <option value="{{ i.id }}">{{ i.room.number }}</option>
                                                                     {% endfor %}
                                                                 </select>
                                                             </div>
@@ -50,6 +50,49 @@
                                         </div>
                                     </div>
                                 </div>
+                            {% elif user.role == 2 %}
+                                <div class="card-header">
+                                    <a class="modal-effect d-grid mb-3" data-bs-effect="effect-flip-vertical" data-bs-toggle="modal" href="#add_order_item"><button class="btn btn-sm btn-primary badge" type="button">Add Order Item</button></a>
+                                    <div class="modal fade" id="add_order_item">
+                                        <div class="modal-dialog modal-dialog-centered text-center" role="document">
+                                            <div class="modal-content modal-content-demo">
+                                                <form action="{% url 'order-item' %}" method="post">
+                                                    {% csrf_token %}
+                                                         <div class="modal-body">
+                                                            <div class="mb-4">
+                                                                <select class="form-control select2 form-select mb-4" name="order" data-placeholder="Choose one" required>
+                                                                    {% for i in order %}
+                                                                        <option value="{{ i.id }}">{{ i.room.number }}</option>
+                                                                    {% endfor %}
+                                                                </select>
+                                                            </div>
+                                                             <div class="mb-4">
+                                                                 <select class="form-control select2 form-select mb-4" name="food" data-placeholder="Choose one">
+                                                                     <option class="form-control">Nothing</option>
+                                                                     {% for i in food %}
+                                                                         <option value="{{ i.id }}">{{ i.name }}&emsp;{{ i.category.name }}</option>
+                                                                     {% endfor %}
+                                                                 </select>
+                                                             </div>
+                                                             <div class="mb-4">
+                                                                 <select class="form-control select2 form-select mb-4" name="product" data-placeholder="Choose one">
+                                                                     <option>Nothing</option>
+                                                                     {% for i in product %}
+                                                                         <option value="{{ i.id }}">{{ i.name }}&emsp;{{ i.category.name }}</option>
+                                                                     {% endfor %}
+                                                                 </select>
+                                                             </div>
+                                                            <input type="number" class="form-control mb-4" name="quantity" placeholder="Quantity" required>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button class="btn btn-success">Add Order Item</button>
+                                                </form>
+                                                            <button class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                                                        </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             {% elif user.role == 5 %}
                                 <div class="card-header">
                                     <a class="modal-effect d-grid mb-3" data-bs-effect="effect-flip-vertical" data-bs-toggle="modal" href="#add_order_item"><button class="btn btn-sm btn-primary badge" type="button">Add Order Item</button></a>
@@ -62,21 +105,21 @@
                                                             <div class="mb-4">
                                                                 <select class="form-control select2 form-select mb-4" name="order" data-placeholder="Choose one" required>
                                                                     {% for i in order %}
-                                                                        <option value="{{ i.id }}">{{ i.owner.name }}</option>
+                                                                        <option value="{{ i.id }}">{{ i.room.number }}</option>
                                                                     {% endfor %}
                                                                 </select>
                                                             </div>
                                                              <div class="mb-4">
-                                                                 <select class="form-control select2 form-select mb-4" name="food" data-placeholder="Choose one" required>
-                                                                     <option class="form-control"></option>
+                                                                 <select class="form-control select2 form-select mb-4" name="food" data-placeholder="Choose one">
+                                                                     <option class="form-control">Nothing</option>
                                                                      {% for i in food %}
                                                                          <option value="{{ i.id }}">{{ i.name }}&emsp;{{ i.category.name }}</option>
                                                                      {% endfor %}
                                                                  </select>
                                                              </div>
                                                              <div class="mb-4">
-                                                                 <select class="form-control select2 form-select mb-4" name="product" data-placeholder="Choose one" required>
-                                                                     <option></option>
+                                                                 <select class="form-control select2 form-select mb-4" name="product" data-placeholder="Choose one">
+                                                                     <option>Nothing</option>
                                                                      {% for i in product %}
                                                                          <option value="{{ i.id }}">{{ i.name }}&emsp;{{ i.category.name }}</option>
                                                                      {% endfor %}

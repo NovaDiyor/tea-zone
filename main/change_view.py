@@ -152,16 +152,25 @@ def update_order_item(request, pk):
         if food_id == 'None':
             pro_get = Product.objects.get(id=product_id)
             product = item.product
+            order = Order.objects.get(id=order_id)
             item_quantity = int(item.quantity)
             product.quantity += item_quantity
             if int(quantity) > pro_get.quantity:
                 quantity = pro_get.quantity
-            pro_get.quantity -= int(quantity)
-            pro_get.save()
-            product.save()
+            if product == pro_get:
+                if int(quantity) > product.quantity:
+                    quantity = product.quantity
+                product.quantity -= int(quantity)
+                order.bill = product.price * int(quantity)
+            else:
+                pro_get.quantity -= int(quantity)
+                order.bill = pro_get.price * int(quantity)
             item.product = pro_get
             item.food = None
             item.quantity = quantity
+            order.save()
+            pro_get.save()
+            product.save()
             item.save()
         if product_id == 'None':
             order = Order.objects.get(id=order_id)
