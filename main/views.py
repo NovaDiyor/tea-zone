@@ -377,26 +377,18 @@ def add_order(request):
             client = request.POST.get('owner')
             phone = request.POST.get('phone')
             day = OrderDay.objects.last().day
-            print(client, user, room, phone)
-            print(day)
             f = 0
             for i in Client.objects.all():
                 if i.phone == int(phone):
                     f += 1
                 else:
                     f += 0
-            print(f)
             if f == 1:
                 cl = Client.objects.get(phone=phone)
-                print(cl, day)
                 Order.objects.create(user_id=user, room_id=room, owner=cl, delivery=False, date=day, bill=0)
                 return redirect('order')
             elif f == 0:
                 cl = Client.objects.create(name=client, phone=phone)
-                print(cl)
-                usr = User.objects.get(id=user)
-                rm = Rooms.objects.get(id=room)
-                print(usr, rm, day)
                 Order.objects.create(user_id=user, room_id=room, owner=cl, delivery=False, date=day, bill=0)
                 return redirect('order')
         context = {
@@ -420,21 +412,25 @@ def delivery_view(request):
     }
     try:
         if request.method == 'POST':
-            owner = request.POST.get('owner')
+            user = request.POST.get('user')
+            client = request.POST.get('owner')
             phone = request.POST.get('phone')
             day = datetime.strptime(request.POST.get('date'), "%m/%d/%Y").date()
             f = 0
-            for i in Client.objects.filter(phone=phone):
-                if i.count() > 0:
+            for i in Client.objects.all():
+                if i.phone == int(phone):
                     f += 1
-                    cl = i
                 else:
                     f += 0
-            if f == 0:
-                c = Client.objects.create(name=owner, phone=phone)
-                Order.objects.create(delivery=True, date=day, bill=0, owner=c)
-            else:
-                Order.objects.create(delivery=True, date=day, bill=0, owner=cl)
+            if f == 1:
+                cl = Client.objects.get(phone=phone)
+                Order.objects.create(user_id=user, owner=cl, delivery=True, date=day, bill=0)
+                return redirect('delivery')
+            elif f == 0:
+                cl = Client.objects.create(name=client, phone=phone)
+                Order.objects.create(user_id=user, owner=cl, delivery=True, date=day, bill=0)
+                return redirect('order')
+        return render(request, 'product/delivery.html', context)
     except Exception as err:
         print(err)
 

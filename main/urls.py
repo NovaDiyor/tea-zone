@@ -25,6 +25,7 @@ urlpatterns = [
     path('category/', category_view, name='category'),
     path('food/', food_view, name='food'),
     path('order/', order_view, name='order'),
+    path('order/delivery/', delivery_view, name='delivery'),
     path('order/item/', order_item_view, name='order-item'),
     path('order/item/cooker/', order_item_cooker, name='cooker-item'),
     # Add
