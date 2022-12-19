@@ -97,6 +97,7 @@ def dashboard_waiter(request):
             'done': order.count(),
             'in_proces': proces.count(),
             'month': month.count(),
+            'out_of_service':Order.objects.filter(user=None, done=False).count()
         }
         return render(request, 'dashboard/dashboard-waiter.html', context)
     else:
@@ -139,11 +140,18 @@ def dashboard(request):
         order = Order.objects.filter(done=True)
         total = 0
         revenue = 0
+        orders = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        prices = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        for i in order:
+            orders[i.date.month - 1] += 1
+            prices[i.date.month - 1] += i.bill
         context = {
             'client': client.count(),
             'staff': staff.count(),
             'total': order.count(),
-            'revenue': revenue
+            'revenue': revenue,
+            "orders": orders,
+            "prices": prices
         }
         return render(request, 'dashboard/dashboard.html', context)
     elif usr.role == 2:

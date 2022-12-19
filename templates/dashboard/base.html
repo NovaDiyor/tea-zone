@@ -849,6 +849,7 @@
     <script src="{% static 'assets/plugins/chart/Chart.bundle.js' %}"></script>
     <script src="{% static 'assets/js/chart.js' %}"></script>
     <script src="{% static 'assets/js/select2.js' %}"></script>
+<<<<<<< HEAD
     <script src="{% static 'assets/js/index1.js' %}"></script>
     <script src="{% static 'assets/plugins/peitychart/jquery.peity.min.js' %}"></script>
     <script src="{% static 'assets/plugins/peitychart/peitychart.init.js' %}"></script>
@@ -865,5 +866,71 @@
     <script src="{% static 'assets/plugins/flot/dashboard.sampledata.js' %}"></script>
     <script src="{% static 'assets/plugins/jvectormap/jquery-jvectormap-2.0.2.min.js' %}"></script>
     <script src="{% static 'assets/plugins/jvectormap/jquery-jvectormap-world-mill-en.js' %}"></script>
+=======
+    <script src="{% static 'assets/js/themeColors.js' %}"></script>
+    <script>
+        var ctx = document.getElementById("chartArea").getContext('2d');
+    var myChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+            datasets: [{
+                label: 'Profits',
+                data: {{ orders }},
+                borderWidth: 2,
+                backgroundColor: 'transparent',
+                borderColor: '#6c5ffc',
+                borderWidth: 3,
+                pointBackgroundColor: '#ffffff',
+                pointRadius: 2
+            }, {
+                label: 'Expenses',
+                data: {{ prices }},
+                borderWidth: 2,
+                backgroundColor: 'transparent',
+                borderColor: '#05c3fb',
+                borderWidth: 3,
+                pointBackgroundColor: '#ffffff',
+                pointRadius: 2
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+
+            scales: {
+                xAxes: [{
+                    ticks: {
+                        fontColor: "#9ba6b5",
+                    },
+                    display: true,
+                    gridLines: {
+                        color: 'rgba(119, 119, 142, 0.2)'
+                    }
+                }],
+                yAxes: [{
+                    ticks: {
+                        fontColor: "#9ba6b5",
+                    },
+                    display: true,
+                    gridLines: {
+                        color: 'rgba(119, 119, 142, 0.2)'
+                    },
+                    scaleLabel: {
+                        display: false,
+                        labelString: 'Thousands',
+                        fontColor: 'rgba(119, 119, 142, 0.2)'
+                    }
+                }]
+            },
+            legend: {
+                labels: {
+                    fontColor: "#9ba6b5"
+                },
+            },
+        }
+    });
+    </script>
+>>>>>>> 4e334925244bb396c37508ab2df6b2179f84f27b
 </body>
 </html>
