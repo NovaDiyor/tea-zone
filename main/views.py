@@ -83,21 +83,11 @@ def dashboard_waiter(request):
         order = Order.objects.filter(done=True, date__day=day.day, user=usr)
         month = Order.objects.filter(done=True, date__month=day.month, user=usr)
         proces = Order.objects.filter(done=False, date__day=day.day, user=usr)
-        total = 0
-        if order.count() > 0:
-            print(order.count())
-            for i in order:
-                item = OrderItem.objects.get(order=i)
-                if item.count() > 0:
-                    total += item.quantity * item.price % 8
-                else:
-                    pass
         context = {
-            'total': total,
             'done': order.count(),
             'in_proces': proces.count(),
             'month': month.count(),
-            'out_of_service':Order.objects.filter(user=None, done=False).count()
+            'out_of_service': Order.objects.filter(user=None, done=False).count()
         }
         return render(request, 'dashboard/dashboard-waiter.html', context)
     else:

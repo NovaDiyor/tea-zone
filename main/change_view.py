@@ -72,27 +72,6 @@ def delete_product(request, pk):
     return redirect('product')
 
 
-def change_order(request, pk):
-    usr = request.user
-    if usr.role == 2:
-        order = Order.objects.get(id=pk)
-        order.done = True
-        item = OrderItem.objects.filer(order=order)
-        for i in item:
-            order.bill += i.food.price * i.quantity
-        order.save()
-        context = {
-            'order': order,
-            'item': item,
-        }
-        return render(request, 'product/order.html', context)
-    elif usr.role == 5:
-        Order.objects.get(id=pk).delete()
-        return redirect('order')
-    else:
-        return redirect('404')
-
-
 def update_director(request, pk):
     director = User.objects.get(id=pk)
     if request.method == 'POST':
@@ -238,5 +217,12 @@ def update_client(request, pk):
         return redirect('client')
     return render(request, 'staff/client.html')
 
+
+def add_user_order(request, pk):
+    user = request.user
+    order = Order.objects.get(id=pk)
+    order.user = user
+    order.save()
+    return redirect('order')
 
 
