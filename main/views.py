@@ -522,3 +522,9 @@ def order_item_cooker(request):
     }
     return render(request, 'product/cooker-item.html', context)
 
+def out_of_service_view(request):
+    day = date.today()
+    context = {
+        'orders':Order.objects.filter(done=False, date__day=day.day, user=None)
+    }
+    return render(request, 'staff/unserved-orders.html', context)

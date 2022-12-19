@@ -28,6 +28,7 @@ urlpatterns = [
     path('order/delivery/', delivery_view, name='delivery'),
     path('order/item/', order_item_view, name='order-item'),
     path('order/item/cooker/', order_item_cooker, name='cooker-item'),
+    path('unserved-orders/', out_of_service_view, name='unserved-orders'),
     # Add
     path('order/add/', add_order, name='add-order'),
     path('staff/add/', add_staff, name='add-staff'),

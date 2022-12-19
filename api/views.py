@@ -21,7 +21,7 @@ class Get_product(APIView):
 
 class Get_food(APIView):
     def get(self,request):
-        food = Food.objects.filter(available=True)
+        food = Food.objects.filter(is_yes=True)
         foods = []
         for i in food:
             data = {
@@ -34,9 +34,24 @@ class Get_food(APIView):
             return Response(foods)
 
 
-@api_view(['GET'])
+@api_view(['POST'])
 def get_rooms(request):
-    room = Rooms.objects.filter(busy=False)
+    date = request.POST['date']
+    order = Order.objects.filter(done=False, date=date)
+    room = []
+    if order:
+        for x in Rooms.objects.all():
+            for i in order:
+                if x == i.room:
+                    pass
+                else:
+                    if x in room:
+                        pass
+                    else:
+                        room.append(x)
+    else:
+        for i in Rooms.objects.all():
+            room.append(i)
     return Response(Rooms_serializer(room, many=True).data)
 
 
@@ -55,16 +70,44 @@ def create_order(request):
         name = request.POST.get("name")
         room = request.POST.get('room')
         phone = request.POST.get('phone')
-        if Client.objects.filter(name=name, phone=phone).count() == 0:
-            Client.objects.create(name=name, phone=phone)
+        date = request.POST.get("date")
+        if Client.objects.filter(phone=phone).count() == 0:
+            client = Client.objects.create(name=name, phone=phone)
+        else:
+            client = Client.objects.get(phone=phone)
         r = Rooms.objects.get(number=room)
         r.busy = True
         r.save()
         Order.objects.create(
             room=Rooms.objects.get(number=room),
             delivery=False,
-            owner=Client.objects.last(),
-            date=datetime.datetime.now(),
+            owner=client,
+            date=date
+        )
+        return Response({"status": 200})
+    except Exception as err:
+        return Response({"status": 500})
+
+
+@api_view(['POST'])
+def create_delivery(request):
+    try:
+        name = request.POST.get("name")
+        room = request.POST.get('room')
+        phone = request.POST.get('phone')
+        date = request.POST.get("date")
+        if Client.objects.filter(phone=phone).count() == 0:
+            client = Client.objects.create(name=name, phone=phone)
+        else:
+            client = Client.objects.get(phone=phone)
+        r = Rooms.objects.get(number=room)
+        r.is_yes = True
+        r.save()
+        Order.objects.create(
+            room=Rooms.objects.get(number=room),
+            delivery=False,
+            owner=client,
+            date=date
         )
         return Response({"status": 200})
     except Exception as err:
@@ -73,7 +116,7 @@ def create_order(request):
 
 @api_view(['GET'])
 def get_info(request):
-    info = BotInfo.objects.last()
+    info = Bot.objects.last()
     return Response(BotInfoSerializer(info).data)
 
 

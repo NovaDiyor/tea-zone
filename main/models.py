@@ -83,3 +83,15 @@ class OrderItem(models.Model):
 
 class OrderDay(models.Model):
     day = models.DateField(null=True, blank=True)
+
+
+class Bot(models.Model):
+    text = models.TextField()
+    name = models.CharField(max_length=2323)
+
+class BotDetail(models.Model):
+    text = models.TextField()
+    phone = models.CharField(max_length=255)
+    lat = models.CharField(max_length=255)
+    lng = models.CharField(max_length=255)
+
