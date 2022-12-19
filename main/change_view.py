@@ -110,7 +110,7 @@ def change_order(request, pk):
             'order': order,
             'item': item,
         }
-        return render(request, 'order.html', context)
+        return render(request, 'product/order.html', context)
     elif usr.role == 5:
         Order.objects.get(id=pk).delete()
         return redirect('order')
@@ -165,7 +165,7 @@ def update_food(request,pk):
             f.price = price
             f.save()
             return redirect('food')
-        return render(request,'food-update.html')
+        return render(request, 'food-update.html')
     elif user.role == 3:
         if request.method == 'POST':
             f = Food.objects.get(id=pk)
