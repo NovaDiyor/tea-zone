@@ -608,14 +608,14 @@
                                     {% endif %}
                                     {% if request.path == '/order/item/' %}
                                         <li class="slide">
-                                            <a class="side-menu__item active" data-bs-toggle="slide" href="{% url 'order-item' %}">
+                                            <a class="side-menu__item active" data-bs-toggle="slide" href="{% url 'cooker-item' %}">
                                                 <i class="side-menu__icon fa fa-shopping-basket"></i>
                                                 <span class="side-menu__label">Orders</span>
                                             </a>
                                         </li>
                                     {% else %}
                                         <li class="slide">
-                                            <a class="side-menu__item" data-bs-toggle="slide" href="{% url 'order-item' %}">
+                                            <a class="side-menu__item" data-bs-toggle="slide" href="{% url 'cooker-item' %}">
                                                 <i class="side-menu__icon fa fa-shopping-basket"></i>
                                                 <span class="side-menu__label">Orders</span>
                                             </a>
@@ -842,6 +842,9 @@
     <script src="{% static 'assets/plugins/p-scroll/perfect-scrollbar.js' %}"></script>
     <script src="{% static 'assets/plugins/p-scroll/pscroll.js' %}"></script>
     <script src="{% static 'assets/plugins/p-scroll/pscroll-1.js' %}"></script>
+    <script src="{% static 'assets/js/themeColors.js' %}"></script>
+    <script src="{% static 'assets/plugins/select2/select2.full.min.js' %}"></script>
+    <script src="{% static 'assets/js/select2.js' %}"></script>
     <script src="{% static 'assets/js/themeColors.js' %}"></script>
 </body>
 </html>

@@ -451,7 +451,7 @@ def order_item_view(request):
         'order': Order.objects.filter(done=False),
         'item': paginator_page(OrderItem.objects.all(), 5, request),
         'product': Product.objects.filter(available=True),
-        'food': Food.objects.filter(available=True)
+        'food': Food.objects.filter(available=True),
     }
     if request.method == 'POST':
         order = request.POST.get('order')
@@ -517,3 +517,17 @@ def add_order_item(request, pk):
         'product': Product.objects.all(),
     }
     return render(request, 'product/order.html', context)
+
+
+@login_required(login_url='login')
+def order_item_cooker(request):
+    item = OrderItem.objects.all()
+    order = []
+    for i in item:
+        if i.order.done == False:
+            order.append(i)
+    context = {
+        'item': paginator_page(order, 5, request),
+    }
+    return render(request, 'product/cooker-item.html', context)
+
