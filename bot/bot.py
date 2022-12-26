@@ -23,8 +23,9 @@ def send_welcome(message):
 def echo_all(message):
 	if message.text == "Biz haqimizda":
 		query = requests.get(f'{base_url}/detail/').json()
-		text = f"<b>Tea-House choyhonasi</b>\n{query['text']}\nTelefon nomer: <b>{query['phone']}</b>"
+		text = f"Tea-House choyhonasi\n{query['text']}\nTelefon nomer: {query['phone']}"
 		bot.send_location(message.from_user.id, latitude=query['lat'], longitude=query['lng'], reply_markup=markup)
+		bot.send_message(message.from_user.id, text)
 	elif message.text == "Buyurtma berish":
 		bot_message = bot.send_message(message.from_user.id, 'Ismingizni kiriting!',
 									   reply_markup=types.ReplyKeyboardRemove())
