@@ -36,7 +36,7 @@ urlpatterns = [
     path('order/item/add/<int:pk>/', add_order_item, name='add-order-item'),
     # Update
     path('order/update/<int:pk>/', update_order, name='update-order'),
-    path('director/update/<int:pk>/', update_director, name='update-director'),
+    path('director/update/<int:pk>/', update_user, name='update-director'),
     path('category/update/<int:pk>/', update_category, name='update-category'),
     path('order/item/update/<int:pk>/', update_order_item, name='update-order-item'),
     path('product/update/<int:pk>/', update_product, name='update-product'),
@@ -45,7 +45,7 @@ urlpatterns = [
     path('food/update/<int:pk>/', update_food, name='update-food'),
     path('food/change/<int:pk>/', change_food, name='change-food'),
     # Delete
-    path('user/delete/<int:pk>/', delete_manager, name='delete-user'),
+    path('user/delete/<int:pk>/', delete_user, name='delete-user'),
     path('room/delete/<int:pk>/', delete_room, name='delete-room'),
     path('order/delete/<int:pk>/', delete_order, name='delete-order'),
     path('order/item/delete/<int:pk>/', delete_order_item, name='delete-order-item'),

@@ -161,12 +161,14 @@ def manager_view(request):
     usr = request.user
     if usr.role == 1:
         context = {
-            'manager': User.objects.filter(role=3)
+            'total': User.objects.filter(role=3).count(),
+            'manager': paginator_page(User.objects.filter(role=3), 5, request)
         }
         return render(request, 'staff/manager.html', context)
     elif usr.role == 3:
         context = {
-            'manager': User.objects.filter(role=3)
+            'total': User.objects.filter(role=3).count(),
+            'manager': paginator_page(User.objects.filter(role=3), 5, request)
         }
         return render(request, 'staff/manager.html', context)
     else:
@@ -177,15 +179,15 @@ def manager_view(request):
 def cooker_view(request):
     usr = request.user
     if usr.role == 1:
-        cookers = User.objects.filter(role=4)
         context = {
-            'cooker': cookers
+            'total': User.objects.filter(role=4).count(),
+            'cooker': paginator_page(User.objects.filter(role=4), 5, request)
         }
         return render(request, 'staff/cooker.html', context)
     elif usr.role == 3:
-        cookers = User.objects.filter(role=4)
         context = {
-            'cooker': cookers
+            'total': User.objects.filter(role=4).count(),
+            'cooker': paginator_page(User.objects.filter(role=4), 5, request)
         }
         return render(request, 'staff/cooker.html', context)
     else:
@@ -198,13 +200,13 @@ def director_view(request):
     if user.role == 1:
         context = {
             'total': User.objects.filter(role=1).count(),
-            'director': User.objects.filter(role=1),
+            'director': paginator_page(User.objects.filter(role=1), 5, request)
         }
         return render(request, 'staff/director.html', context)
     elif user.role == 3:
         context = {
             'total': User.objects.filter(role=1).count(),
-            'director': User.objects.filter(role=1),
+            'director': paginator_page(User.objects.filter(role=1), 5, request)
         }
         return render(request, 'staff/director.html', context)
     else:
@@ -215,15 +217,15 @@ def director_view(request):
 def waiters_view(request):
     user = request.user
     if user.role == 1:
-        waiter = User.objects.filter(role=2)
         context = {
-            'waiters': waiter,
+            'total': User.objects.filter(role=2).count(),
+            'waiter': paginator_page(User.objects.filter(role=2), 5, request)
         }
         return render(request, 'staff/waiter.html', context)
     elif user.role == 3:
-        waiter = User.objects.filter(role=2)
         context = {
-            'waiters': waiter,
+            'total': User.objects.filter(role=2).count(),
+            'waiter': paginator_page(User.objects.filter(role=2), 5, request)
         }
         return render(request, 'staff/waiter.html', context)
     else:
@@ -235,14 +237,14 @@ def call_center_view(request):
     usr = request.user
     if usr.role == 1:
         context = {
-            'call_canter': User.objects.filter(role=5),
-            'objects': paginator_page(User.objects.filter(role=5), 5, request)
+            'total': User.objects.filter(role=5).count(),
+            'call_center': paginator_page(User.objects.filter(role=5), 5, request)
         }
         return render(request, 'staff/call-canter.html', context)
     elif usr.role == 3:
         context = {
-            'call_center': User.objects.filter(role=5),
-            'objects': paginator_page(User.objects.filter(role=5), 5, request)
+            'total': User.objects.filter(role=5).count(),
+            'call_center': paginator_page(User.objects.filter(role=5), 5, request)
         }
         return render(request, 'staff/call-canter.html', context)
     else:
@@ -252,6 +254,7 @@ def call_center_view(request):
 @login_required(login_url='login')
 def client_view(request):
     context = {
+        'total': Client.objects.all().count(),
         'client': paginator_page(Client.objects.all(), 5, request),
     }
     return render(request, 'staff/client.html', context)
@@ -261,6 +264,7 @@ def client_view(request):
 def product_view(request):
     pro = Product.objects.all()
     context = {
+        'total': pro.count(),
         'product': paginator_page(pro, 5, request),
         'category': Category.objects.all()
     }
@@ -286,8 +290,8 @@ def product_view(request):
 @login_required(login_url='login')
 def category_view(request):
     context = {
-        'category': Category.objects.all(),
-        'objects': paginator_page(Category.objects.all(), 5, request)
+        'total': Category.objects.all().count(),
+        'category': paginator_page(Category.objects.all(), 5, request)
     }
     if request.method == 'POST':
         name = request.POST.get('name')
@@ -309,6 +313,7 @@ def staff_view(request):
 def food_view(request):
     context = {
         'category': Category.objects.all(),
+        'total': Food.objects.all().count(),
         'food': paginator_page(Food.objects.all(), 5, request)
     }
     if request.method == 'POST':
@@ -327,8 +332,8 @@ def food_view(request):
 @login_required(login_url='login')
 def room_view(request):
     context = {
-        'room': Rooms.objects.all(),
-        'objects': paginator_page(Rooms.objects.all(), 5, request)
+        'total': Rooms.objects.all().count(),
+        'room': paginator_page(Rooms.objects.all(), 5, request)
     }
     if request.method == 'POST':
         number = request.POST.get('number')
@@ -522,9 +527,11 @@ def order_item_cooker(request):
     }
     return render(request, 'product/cooker-item.html', context)
 
+
+@login_required(login_url='login')
 def out_of_service_view(request):
     day = date.today()
     context = {
-        'orders':Order.objects.filter(done=False, date__day=day.day, user=None)
+        'orders': Order.objects.filter(done=False, date__day=day.day, user=None)
     }
-    return render(request, 'staff/unserved-orders.html', context)
+    return render(request, 'product/unserved-orders.html', context)
