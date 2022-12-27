@@ -6,6 +6,7 @@ urlpatterns = [
     path('', login_view, name='login'),
     path('logout/', logout_view, name='logout'),
     path('error/role', error_view, name='404'),
+    path('error/password', error_password, name='error_password'),
     # Dashboard
     path('dashboard/director/', dashboard, name='dashboard'),
     path('dashboard/manager/', dashboard_manager, name='dashboard-m'),
@@ -29,6 +30,7 @@ urlpatterns = [
     path('order/item/', order_item_view, name='order-item'),
     path('order/item/cooker/', order_item_cooker, name='cooker-item'),
     path('unserved-orders/', out_of_service_view, name='unserved-orders'),
+    path('search/user/', search_user, name='search'),
     # Add
     path('order/add/', add_order, name='add-order'),
     path('staff/add/', add_staff, name='add-staff'),

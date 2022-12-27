@@ -44,7 +44,7 @@ def delete_user(request, pk):
             else:
                 return redirect('404')
         else:
-            return redirect('404')
+            return redirect('error_password')
 
 
 def delete_room(request, pk):

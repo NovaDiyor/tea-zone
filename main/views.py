@@ -29,7 +29,7 @@ def login_view(request):
                 login(request, usr)
                 return redirect('dashboard')
             else:
-                return redirect('404')
+                return redirect('error_password')
     return render(request, 'login.html')
 
 
@@ -40,6 +40,10 @@ def logout_view(request):
 
 
 def error_view(request):
+    return render(request, '404.html')
+
+
+def error_password(request):
     return render(request, '404.html')
 
 
@@ -535,3 +539,24 @@ def out_of_service_view(request):
         'orders': Order.objects.filter(done=False, date__day=day.day, user=None)
     }
     return render(request, 'product/unserved-orders.html', context)
+
+
+@login_required(login_url='login')
+def search_user(request):
+    if request.method == 'POST':
+        total = 0
+        username = request.POST.get('username')
+        user = User.objects.filter(username=username)
+        name = User.objects.filter(first_name=username)
+        l_name = User.objects.filter(last_name=username)
+        total += user.count()
+        total += name.count()
+        total += l_name.count()
+    result = {
+        'usr': user,
+        'name': name,
+        'l_name': l_name,
+        'total': total
+    }
+    return render(request, 'search.html', result)
+
