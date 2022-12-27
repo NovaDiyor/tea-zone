@@ -560,3 +560,25 @@ def search_user(request):
     }
     return render(request, 'search.html', result)
 
+
+@login_required(login_url='login')
+def search(request):
+    if request.method == 'POST':
+        total = 0
+        name = request.POST.get('name')
+        category = Category.objects.filter(name__icontains=name)
+        food = Food.objects.filter(name__icontains=name)
+        product = Product.objects.filter(name__icontains=name)
+        room = Rooms.objects.filter(number__icontains=name)
+        total += category.count()
+        total += food.count()
+        total += product.count()
+        total += room.count()
+    context = {
+        'category': category,
+        'food': food,
+        'product': product,
+        'room': room,
+        'total': total
+    }
+    return render(request, 'product/search.html', context)

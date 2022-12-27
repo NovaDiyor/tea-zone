@@ -31,6 +31,7 @@ urlpatterns = [
     path('order/item/cooker/', order_item_cooker, name='cooker-item'),
     path('unserved-orders/', out_of_service_view, name='unserved-orders'),
     path('search/user/', search_user, name='search'),
+    path('search/stuff/', search, name='search_stuff'),
     # Add
     path('order/add/', add_order, name='add-order'),
     path('staff/add/', add_staff, name='add-staff'),
@@ -46,6 +47,9 @@ urlpatterns = [
     path('room/update/<int:pk>/', update_room, name='update-room'),
     path('food/update/<int:pk>/', update_food, name='update-food'),
     path('food/change/<int:pk>/', change_food, name='change-food'),
+    path('single/room/<int:pk>/', single_room, name='single-room'),
+    path('single/product/<int:pk>/', single_product, name='single-product'),
+    path('single/food/<int:pk>/', single_food, name='single-food'),
     # Delete
     path('user/delete/<int:pk>/', delete_user, name='delete-user'),
     path('room/delete/<int:pk>/', delete_room, name='delete-room'),

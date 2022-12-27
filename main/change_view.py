@@ -256,6 +256,7 @@ def update_client(request, pk):
     return render(request, 'staff/client.html')
 
 
+@login_required(login_url='login')
 def add_user_order(request, pk):
     user = request.user
     order = Order.objects.get(id=pk)
@@ -264,4 +265,17 @@ def add_user_order(request, pk):
     return redirect('order')
 
 
+@login_required(login_url='login')
+def single_room(request, pk):
+    return render(request, 'single/single-room.html', {'room': Rooms.objects.get(id=pk)})
+
+
+@login_required(login_url='login')
+def single_product(request, pk):
+    return render(request, 'single/single-product.html', {'product': Product.objects.get(id=pk)})
+
+
+@login_required(login_url='login')
+def single_food(request, pk):
+    return render(request, 'single/single-food.html', {'food': Food.objects.get(id=pk)})
 
