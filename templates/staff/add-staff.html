@@ -17,27 +17,16 @@
                                             <input class="form-control  mb-4" name="name" placeholder="Name" type="text" required>
                                             <input class="form-control  mb-4" name="last-name" placeholder="Last Name" type="text" required>
                                             <input class="form-control  mb-4" name="number" placeholder="Number" type="number" required>
-                                            {% if user.role == 1 %}
-                                                <div class="mb-4">
-                                                    <select class="form-control select2 form-select mb-4" name="status" data-placeholder="Choose one">
-                                                        <option value="2">Waiter</option>
-                                                        <option value="5">Call Center</option>
-                                                        <option value="4">Cooker</option>
-                                                        <option value="3">Manager</option>
-                                                        <option value="1">Director</option>
-                                                    </select>
-                                                </div>
-                                                <button class="btn btn-success mb-0">Add</button>
-                                            {% elif user.role == 3 %}
-                                                <div class="mb-4">
-                                                    <select class="form-control select2 form-select" name="status" data-placeholder="Choose one">
-                                                        <option value="2">Waiter</option>
-                                                        <option value="5">Call Center</option>
-                                                        <option value="4">Cooker</option>
-                                                    </select>
-                                                </div>
-                                                <button class="btn btn-success mb-0">Add</button>
-                                            {% endif %}
+                                            <div class="mb-4">
+                                                <select class="form-control select2 form-select mb-4" name="status" data-placeholder="Choose one">
+                                                    <option value="2">Waiter</option>
+                                                    <option value="5">Call Center</option>
+                                                    <option value="4">Cooker</option>
+                                                    <option value="3">Manager</option>
+                                                    <option value="1">Director</option>
+                                                </select>
+                                            </div>
+                                            <button class="btn btn-success mb-0">Add</button>
                                     </form>
                                 {% elif user.role == 3 %}
                                     <form class="form-group" action="{% url 'add-staff' %}" method="post">
@@ -48,28 +37,14 @@
                                             <input class="form-control  mb-4" name="name" placeholder="Name" type="text" required>
                                             <input class="form-control  mb-4" name="last-name" placeholder="Last Name" type="text" required>
                                             <input class="form-control  mb-4" name="number" placeholder="Number" type="number" required>
-                                            {% if user.role == 1 %}
-                                                <div class="mb-4">
-                                                    <select class="form-control select2 form-select mb-4" name="status" data-placeholder="Choose one">
-                                                        <option value="2">Waiter</option>
-                                                        <option value="5">Call Center</option>
-                                                        <option value="4">Cooker</option>
-                                                        <option value="3">Manager</option>
-                                                        <option value="1">Director</option>
-                                                    </select>
-                                                </div>
-                                                <button class="btn btn-success mb-0">Add</button>
-                                            {% elif user.role == 3 %}
-                                                <div class="mb-4">
-                                                    <select class="form-control select2 form-select" name="status" data-placeholder="Choose one">
-                                                        <option value="2">Waiter</option>
-                                                        <option value="5">Call Center</option>
-                                                        <option value="4">Cooker</option>
-                                                        <option value="3">Manager</option>
-                                                    </select>
-                                                </div>
-                                                <button class="btn btn-success mb-0">Add</button>
-                                            {% endif %}
+                                            <div class="mb-4">
+                                                <select class="form-control select2 form-select" name="status" data-placeholder="Choose one">
+                                                    <option value="2">Waiter</option>
+                                                    <option value="5">Call Center</option>
+                                                    <option value="4">Cooker</option>
+                                                </select>
+                                            </div>
+                                            <button class="btn btn-success mb-0">Add</button>
                                     </form>
                                 {% else %}
                                     <h2 class="text-danger-gradient text-center">You Can't Add User Because You Only {{ user.get_role_display }}</h2>

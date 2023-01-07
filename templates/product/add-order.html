@@ -29,29 +29,27 @@
                                 </form>
                                 <a href="{% url 'order' %}"><button class="btn btn-info mb-4" style="margin-left: 1.5rem">Back</button></a>
                             {% elif user.role == 5 %}
-                                <div class="card-header">
-                                    <form action="{% url 'add-order' %}" method="post">
-                                        {% csrf_token %}
-                                            <div class="mb-4">
-                                                <select class="form-control select2 form-select col-12" name="user" data-placeholder="Choose one" required>
-                                                    {% for i in waiter %}
-                                                        <option value="{{ i.id }}">{{ i.first_name }}&emsp;{{ i.last_name }}</option>
-                                                    {% endfor %}
-                                                </select>
-                                            </div>
-                                            <div class="mb-4">
-                                                <select class="form-control select2 form-select mb-4" name="room" data-placeholder="Choose one" required>
-                                                    {% for i in room %}
-                                                        <option value="{{ i.id }}">{{ i.number }}&emsp;{{ i.places }}</option>
-                                                    {% endfor %}
-                                                </select>
-                                            </div>
-                                            <input type="text" class="form-control mb-4" name="owner" placeholder="Customer" required>
-                                            <input type="number" class="form-control mb-4" name="phone" placeholder="Phone" required>
-                                            <button class="btn btn-success">Add Order</button>
-                                    </form>
-                                    <a href="{% url 'order' %}"><button class="btn btn-danger">Back</button></a>
-                                </div>
+                                <form action="{% url 'add-order' %}" method="post">
+                                    {% csrf_token %}
+                                        <div class="mb-4 mt-4" style="margin-right: 1.5rem; margin-left: 1.5rem">
+                                            <select class="form-control select2 form-select col-12" name="user" data-placeholder="Choose one" required>
+                                                {% for i in waiter %}
+                                                    <option value="{{ i.id }}">{{ i.first_name }}&emsp;{{ i.last_name }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                        <div class="mb-4" style="margin-right: 1.5rem; margin-left: 1.5rem">
+                                            <select class="form-control select2 form-select pb-5" name="room" data-placeholder="Choose one" required>
+                                                {% for i in room %}
+                                                    <option value="{{ i.id }}">{{ i.number }}&emsp;{{ i.places }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                        <input type="text" class="form-control mb-4 col-12" style="margin-right: 1.5rem; margin-left: 1.5rem" name="owner" placeholder="Customer" required>
+                                        <input type="number" class="form-control mb-4" style="margin-right: 1.5rem; margin-left: 1.5rem" name="phone" placeholder="Phone" required>
+                                        <button class="btn btn-success mb-4" style="margin-left: 1.5rem">Add Order</button>
+                                </form>
+                                <a href="{% url 'order' %}"><button class="btn btn-info mb-4" style="margin-left: 1.5rem">Back</button></a>
                             {% endif %}
                         </div>
                     </div>

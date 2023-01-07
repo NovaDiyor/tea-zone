@@ -79,6 +79,7 @@ class OrderItem(models.Model):
     food = models.ForeignKey(Food, on_delete=models.CASCADE, null=True, blank=True)
     product = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True, blank=True)
     quantity = models.IntegerField()
+    done = models.BooleanField(default=False)
 
 
 class OrderDay(models.Model):
@@ -89,9 +90,4 @@ class Bot(models.Model):
     text = models.TextField()
     name = models.CharField(max_length=2323)
 
-class BotDetail(models.Model):
-    text = models.TextField()
-    phone = models.CharField(max_length=255)
-    lat = models.CharField(max_length=255)
-    lng = models.CharField(max_length=255)
 

@@ -5,11 +5,11 @@
     <div class="side-app">
         <div class="main-container container-fluid">
             <div class="page-header">
-                <h1 class="page-title">CRM Dashboard ChoyXona</h1>
+                <h1 class="page-title">CRM Waiter Dashboard</h1>
                 <div>
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Home</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">CRM For ChoyXona</li>
+                        <li class="breadcrumb-item active" aria-current="page">{{ revenue }}</li>
                     </ol>
                 </div>
             </div>
@@ -21,18 +21,15 @@
                                 <div class="card-body">
                                     <div class="d-flex">
                                         <div class="mt-2">
-                                            <h6 class="">Total Orders</h6>
-                                            <h2 class="mb-0 number-font">{{ month }}</h2>
+                                            <h6 class="card-title">Close Orders</h6>
+                                            <a href="#" style="color: black"><h2 class="mb-2 number-font">{{ closed }}</h2></a>
                                         </div>
                                         <div class="ms-auto">
                                             <div class="chart-wrapper mt-1">
-                                                <canvas id="saleschart" class="h-8 w-9 chart-dropshadow"></canvas>
+                                                <img src="{% static 'assets/images/waiter/closed.png' %}" height="110px" width="110px">
                                             </div>
                                         </div>
                                     </div>
-                                    <span class="text-muted fs-12">
-                                        Current Month
-                                    </span>
                                 </div>
                             </div>
                         </div>
@@ -41,18 +38,15 @@
                                 <div class="card-body">
                                     <div class="d-flex">
                                         <div class="mt-2">
-                                            <h6 class="">Closed Order</h6>
-                                            <h2 class="mb-0 number-font">{{ done }}</h2>
+                                            <h6 class="card-title">Open Orders</h6>
+                                            <a href="#" style="color: black"><h2 class="mb-0 number-font">{{ open }}</h2></a>
                                         </div>
                                         <div class="ms-auto">
                                             <div class="chart-wrapper mt-1">
-                                                <canvas id="leadschart" class="h-8 w-9 chart-dropshadow"></canvas>
+                                                <img src="{% static 'assets/images/waiter/open.png' %}" width="110px" height="110px">
                                             </div>
                                         </div>
                                     </div>
-                                    <span class="text-muted fs-12">
-                                        Today
-                                    </span>
                                 </div>
                             </div>
                         </div>
@@ -61,18 +55,15 @@
                                 <div class="card-body">
                                     <div class="d-flex">
                                         <div class="mt-2">
-                                            <h6 class="">Open Orders</h6>
-                                            <h2 class="mb-0 number-font">{{ in_proces }}</h2>
+                                            <h6 class="card-title">Free Orders</h6>
+                                            <a href="#" style="color: black"><h2 class="mb-0 number-font">{{ free }}</h2></a>
                                         </div>
                                         <div class="ms-auto">
                                             <div class="chart-wrapper mt-1">
-                                                <canvas id="profitchart" class="h-8 w-9 chart-dropshadow"></canvas>
+                                                <img src="{% static 'assets/images/waiter/free.png' %}" height="110px" width="110px">
                                             </div>
                                         </div>
                                     </div>
-                                    <span class="text-muted fs-12">
-                                        Today
-                                    </span>
                                 </div>
                             </div>
                         </div>
@@ -81,18 +72,15 @@
                                 <div class="card-body">
                                     <div class="d-flex">
                                         <div class="mt-2">
-                                            <h6 class="">Orders</h6>
-                                            <h2 class="mb-0 number-font">{{ out_of_service }}</h2>
+                                            <h6 class="card-title">Today Revenue</h6>
+                                            <h2 class="number-font">${{ revenue }}</h2>
                                         </div>
                                         <div class="ms-auto">
                                             <div class="chart-wrapper mt-1">
-                                                <canvas id="costchart" class="h-8 w-9 chart-dropshadow"></canvas>
+                                                <img src="{% static 'assets/images/director/revenue.png' %}" width="110px" height="110px">
                                             </div>
                                         </div>
                                     </div>
-                                    <span class="text-muted fs-12">
-                                        Today
-                                    </span>
                                 </div>
                             </div>
                         </div>

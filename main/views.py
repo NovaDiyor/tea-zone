@@ -29,7 +29,7 @@ def login_view(request):
                 login(request, usr)
                 return redirect('dashboard')
             else:
-                return redirect('404')
+                return redirect('error_password')
     return render(request, 'login.html')
 
 
@@ -40,6 +40,10 @@ def logout_view(request):
 
 
 def error_view(request):
+    return render(request, '404.html')
+
+
+def error_password(request):
     return render(request, '404.html')
 
 
@@ -80,14 +84,19 @@ def dashboard_waiter(request):
     usr = request.user
     if usr.role == 2:
         day = date.today()
-        order = Order.objects.filter(done=True, date__day=day.day, user=usr)
-        month = Order.objects.filter(done=True, date__month=day.month, user=usr)
-        proces = Order.objects.filter(done=False, date__day=day.day, user=usr)
+        order = Order.objects.filter(date__day=day.day, user=usr, done=True)
+        closed = Order.objects.filter(done=True, user=usr)
+        available = Order.objects.filter(done=False, user=usr)
+        free = Order.objects.filter(done=False, user=None)
+        total = 0
+        for i in order:
+            total += i.bill / 100
+        total = total * 4
         context = {
-            'done': order.count(),
-            'in_proces': proces.count(),
-            'month': month.count(),
-            'out_of_service': Order.objects.filter(user=None, done=False).count()
+            'closed': closed.count(),
+            'open': available.count(),
+            'free': free.count(),
+            'revenue': total
         }
         return render(request, 'dashboard/dashboard-waiter.html', context)
     else:
@@ -98,7 +107,19 @@ def dashboard_waiter(request):
 def dashboard_manager(request):
     usr = request.user
     if usr.role == 3:
-        return render(request, 'dashboard/dashboard-manager.html')
+        day = date.today()
+        orders = Order.objects.filter(date__month=day.month, done=True)
+        total = 0
+        for i in orders:
+            total += i.bill / 100
+        total = total * 8
+        context = {
+            'salary': total,
+            'product': Product.objects.filter(available=True).count(),
+            'food': Food.objects.filter(available=True).count(),
+            'room': Rooms.objects.all().count()
+        }
+        return render(request, 'dashboard/dashboard-manager.html', context)
     else:
         return redirect('dashboard')
 
@@ -107,7 +128,20 @@ def dashboard_manager(request):
 def dashboard_cooker(request):
     usr = request.user
     if usr.role == 4:
-        return render(request, 'dashboard/dashboard-cooker.html')
+        day = date.today()
+        order = Order.objects.filter(done=True, date__month=day.month)
+        close = OrderItem.objects.filter(order__date__day=day.day, done=True)
+        usable = OrderItem.objects.filter(order__date__day=day.day, done=False)
+        total = 0
+        for i in order:
+            total += i.bill / 100
+            total = total * 3
+        context = {
+            'salary': total,
+            'open': usable.count(),
+            'close': close.count(),
+        }
+        return render(request, 'dashboard/dashboard-cooker.html', context)
     else:
         return redirect('dashboard')
 
@@ -116,7 +150,27 @@ def dashboard_cooker(request):
 def dashboard_call_center(request):
     usr = request.user
     if usr.role == 5:
-        return render(request, 'dashboard/dashboard-call.html')
+        day = date.today()
+        order = Order.objects.filter(done=True, date__month=day.month)
+        client = Client.objects.all()
+        room = Rooms.objects.filter(busy=False)
+        available = Order.objects.filter(done=False, date__day=day.day)
+        total = 0
+        print(order.count())
+        for i in order:
+            percent = i.bill / 100
+            salary = percent * 5
+            if order.count() > 1:
+                if salary < 1:
+                    salary += 0.000000000000001
+            total += salary
+        context = {
+            'client': client.count(),
+            'salary': total,
+            'room': room.count(),
+            'available': available.count()
+        }
+        return render(request, 'dashboard/dashboard-call.html', context)
     else:
         return redirect('dashboard')
 
@@ -125,20 +179,31 @@ def dashboard_call_center(request):
 def dashboard(request):
     usr = request.user
     if usr.role == 1:
-        client = Client.objects.all()
-        staff = User.objects.all()
-        order = Order.objects.filter(done=True)
+        day = date.today()
+        client = Client.objects.all().count()
+        staff = User.objects.all().count()
+        order = Order.objects.filter(done=True, date__day=day.day)
         total = 0
-        revenue = 0
+        for i in order:
+            total += i.bill
+        revenue = total
+        percent = total / 100
+        three = percent * 3
+        four = percent * 4
+        five = percent * 5
+        eight = percent * 8
+        overall = three + four + five + eight
+        print(three, four, five, eight, overall)
+        revenue -= overall
         orders = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
         prices = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
         for i in order:
             orders[i.date.month - 1] += 1
             prices[i.date.month - 1] += i.bill
         context = {
-            'client': client.count(),
-            'staff': staff.count(),
-            'total': order.count(),
+            'client': client,
+            'staff': staff,
+            'total': total,
             'revenue': revenue,
             "orders": orders,
             "prices": prices
@@ -161,12 +226,14 @@ def manager_view(request):
     usr = request.user
     if usr.role == 1:
         context = {
-            'manager': User.objects.filter(role=3)
+            'total': User.objects.filter(role=3).count(),
+            'manager': paginator_page(User.objects.filter(role=3), 5, request)
         }
         return render(request, 'staff/manager.html', context)
     elif usr.role == 3:
         context = {
-            'manager': User.objects.filter(role=3)
+            'total': User.objects.filter(role=3).count(),
+            'manager': paginator_page(User.objects.filter(role=3), 5, request)
         }
         return render(request, 'staff/manager.html', context)
     else:
@@ -177,15 +244,15 @@ def manager_view(request):
 def cooker_view(request):
     usr = request.user
     if usr.role == 1:
-        cookers = User.objects.filter(role=4)
         context = {
-            'cooker': cookers
+            'total': User.objects.filter(role=4).count(),
+            'cooker': paginator_page(User.objects.filter(role=4), 5, request)
         }
         return render(request, 'staff/cooker.html', context)
     elif usr.role == 3:
-        cookers = User.objects.filter(role=4)
         context = {
-            'cooker': cookers
+            'total': User.objects.filter(role=4).count(),
+            'cooker': paginator_page(User.objects.filter(role=4), 5, request)
         }
         return render(request, 'staff/cooker.html', context)
     else:
@@ -198,13 +265,13 @@ def director_view(request):
     if user.role == 1:
         context = {
             'total': User.objects.filter(role=1).count(),
-            'director': User.objects.filter(role=1),
+            'director': paginator_page(User.objects.filter(role=1), 5, request)
         }
         return render(request, 'staff/director.html', context)
     elif user.role == 3:
         context = {
             'total': User.objects.filter(role=1).count(),
-            'director': User.objects.filter(role=1),
+            'director': paginator_page(User.objects.filter(role=1), 5, request)
         }
         return render(request, 'staff/director.html', context)
     else:
@@ -215,15 +282,15 @@ def director_view(request):
 def waiters_view(request):
     user = request.user
     if user.role == 1:
-        waiter = User.objects.filter(role=2)
         context = {
-            'waiters': waiter,
+            'total': User.objects.filter(role=2).count(),
+            'waiter': paginator_page(User.objects.filter(role=2), 5, request)
         }
         return render(request, 'staff/waiter.html', context)
     elif user.role == 3:
-        waiter = User.objects.filter(role=2)
         context = {
-            'waiters': waiter,
+            'total': User.objects.filter(role=2).count(),
+            'waiter': paginator_page(User.objects.filter(role=2), 5, request)
         }
         return render(request, 'staff/waiter.html', context)
     else:
@@ -235,14 +302,14 @@ def call_center_view(request):
     usr = request.user
     if usr.role == 1:
         context = {
-            'call_canter': User.objects.filter(role=5),
-            'objects': paginator_page(User.objects.filter(role=5), 5, request)
+            'total': User.objects.filter(role=5).count(),
+            'call_center': paginator_page(User.objects.filter(role=5), 5, request)
         }
         return render(request, 'staff/call-canter.html', context)
     elif usr.role == 3:
         context = {
-            'call_center': User.objects.filter(role=5),
-            'objects': paginator_page(User.objects.filter(role=5), 5, request)
+            'total': User.objects.filter(role=5).count(),
+            'call_center': paginator_page(User.objects.filter(role=5), 5, request)
         }
         return render(request, 'staff/call-canter.html', context)
     else:
@@ -252,6 +319,7 @@ def call_center_view(request):
 @login_required(login_url='login')
 def client_view(request):
     context = {
+        'total': Client.objects.all().count(),
         'client': paginator_page(Client.objects.all(), 5, request),
     }
     return render(request, 'staff/client.html', context)
@@ -261,6 +329,7 @@ def client_view(request):
 def product_view(request):
     pro = Product.objects.all()
     context = {
+        'total': pro.count(),
         'product': paginator_page(pro, 5, request),
         'category': Category.objects.all()
     }
@@ -286,8 +355,8 @@ def product_view(request):
 @login_required(login_url='login')
 def category_view(request):
     context = {
-        'category': Category.objects.all(),
-        'objects': paginator_page(Category.objects.all(), 5, request)
+        'total': Category.objects.all().count(),
+        'category': paginator_page(Category.objects.all(), 5, request)
     }
     if request.method == 'POST':
         name = request.POST.get('name')
@@ -309,6 +378,7 @@ def staff_view(request):
 def food_view(request):
     context = {
         'category': Category.objects.all(),
+        'total': Food.objects.all().count(),
         'food': paginator_page(Food.objects.all(), 5, request)
     }
     if request.method == 'POST':
@@ -327,8 +397,8 @@ def food_view(request):
 @login_required(login_url='login')
 def room_view(request):
     context = {
-        'room': Rooms.objects.all(),
-        'objects': paginator_page(Rooms.objects.all(), 5, request)
+        'total': Rooms.objects.all().count(),
+        'room': paginator_page(Rooms.objects.all(), 5, request)
     }
     if request.method == 'POST':
         number = request.POST.get('number')
@@ -522,9 +592,80 @@ def order_item_cooker(request):
     }
     return render(request, 'product/cooker-item.html', context)
 
+
+@login_required(login_url='login')
 def out_of_service_view(request):
     day = date.today()
     context = {
-        'orders':Order.objects.filter(done=False, date__day=day.day, user=None)
+        'orders': Order.objects.filter(done=False, date__day=day.day, user=None)
     }
-    return render(request, 'staff/unserved-orders.html', context)
+    return render(request, 'product/unserved-orders.html', context)
+
+
+@login_required(login_url='login')
+def search_user(request):
+    if request.method == 'POST':
+        total = 0
+        username = request.POST.get('username')
+        user = User.objects.filter(username=username)
+        name = User.objects.filter(first_name=username)
+        l_name = User.objects.filter(last_name=username)
+        total += user.count()
+        total += name.count()
+        total += l_name.count()
+    result = {
+        'usr': user,
+        'name': name,
+        'l_name': l_name,
+        'total': total
+    }
+    return render(request, 'search.html', result)
+
+
+@login_required(login_url='login')
+def search(request):
+    if request.method == 'POST':
+        total = 0
+        name = request.POST.get('name')
+        category = Category.objects.filter(name__icontains=name)
+        food = Food.objects.filter(name__icontains=name)
+        product = Product.objects.filter(name__icontains=name)
+        room = Rooms.objects.filter(number__icontains=name)
+        total += category.count()
+        total += food.count()
+        total += product.count()
+        total += room.count()
+    context = {
+        'category': category,
+        'food': food,
+        'product': product,
+        'room': room,
+        'total': total
+    }
+    return render(request, 'product/search.html', context)
+
+
+@login_required(login_url='login')
+def close_items(request):
+    return render(request, 'single/close-item.html', {'close': paginator_page(OrderItem.objects.filter(done=True), 5, request)})
+
+
+@login_required(login_url='login')
+def open_items(request):
+    return render(request, 'single/open-item.html', {'open': paginator_page(OrderItem.objects.filter(done=False), 5, request)})
+
+
+@login_required(login_url='login')
+def free_room(request):
+    return render(request, 'single/free-room.html', {'room': paginator_page(Rooms.objects.filter(busy=False), 5, request)})
+
+
+@login_required(login_url='login')
+def open_order(request):
+    context = {
+        'product': Product.objects.filter(available=True),
+        'food': Food.objects.filter(available=True),
+        'order': paginator_page(Order.objects.filter(done=False), 5, request)
+    }
+    return render(request, 'single/open-order.html', context)
+

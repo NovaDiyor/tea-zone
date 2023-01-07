@@ -1,21 +1,50 @@
 from datetime import date, datetime
+
+from django.contrib.auth import authenticate
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from .models import *
 
 
-def delete_manager(request, pk):
+def delete_user(request, pk):
     usr = request.user
-    if usr.role == 1:
-        if request.method == 'POST':
-            password = request.POST.get('password')
-            if usr.password == password:
-                User.objects.get(id=pk).delete()
-                return redirect('manager')
+    user = User.objects.get(id=pk)
+    print(user, usr)
+    if request.method == 'POST':
+        password = request.POST.get('password')
+        print(password, usr.password)
+        director = authenticate(username=usr.username, password=password)
+        if director:
+            if director.role == 1:
+                if user.role == 1:
+                    user.delete()
+                    return redirect('director')
+                elif user.role == 2:
+                    user.delete()
+                    return redirect('waiter')
+                elif user.role == 3:
+                    user.delete()
+                    return redirect('manager')
+                elif user.role == 4:
+                    user.delete()
+                    return redirect('cooker')
+                elif user.role == 5:
+                    user.delete()
+                    return redirect('call')
+            elif director.role == 3:
+                if user.role == 2:
+                    user.delete()
+                    return redirect('waiter')
+                elif user.role == 4:
+                    user.delete()
+                    return redirect('cooker')
+                elif user.role == 5:
+                    user.delete()
+                    return redirect('call')
             else:
                 return redirect('404')
-    else:
-        return redirect('404')
+        else:
+            return redirect('error_password')
 
 
 def delete_room(request, pk):
@@ -72,17 +101,26 @@ def delete_product(request, pk):
     return redirect('product')
 
 
-def update_director(request, pk):
-    director = User.objects.get(id=pk)
+def update_user(request, pk):
+    user = User.objects.get(id=pk)
     if request.method == 'POST':
         name = request.POST.get('name')
         l_name = request.POST.get('l-name')
         phone = request.POST.get('phone')
-        director.first_name = name
-        director.last_name = l_name
-        director.number = phone
-        director.save()
-        return redirect('director')
+        user.first_name = name
+        user.last_name = l_name
+        user.number = phone
+        user.save()
+        if user.role == 1:
+            return redirect('director')
+        elif user.role == 2:
+            return redirect('waiter')
+        elif user.role == 3:
+            return redirect('manager')
+        elif user.role == 4:
+            return redirect('cooker')
+        elif user.role == 5:
+            return redirect('call')
 
 
 def update_order(request, pk):
@@ -218,6 +256,7 @@ def update_client(request, pk):
     return render(request, 'staff/client.html')
 
 
+@login_required(login_url='login')
 def add_user_order(request, pk):
     user = request.user
     order = Order.objects.get(id=pk)
@@ -226,4 +265,28 @@ def add_user_order(request, pk):
     return redirect('order')
 
 
+@login_required(login_url='login')
+def change_item(request, pk):
+    item = OrderItem.objects.get(id=pk)
+    if item.done == False:
+        item.done = True
+    else:
+        item.done = False
+    item.save()
+    return redirect('cooker-item')
+
+
+@login_required(login_url='login')
+def single_room(request, pk):
+    return render(request, 'single/single-room.html', {'room': Rooms.objects.get(id=pk)})
+
+
+@login_required(login_url='login')
+def single_product(request, pk):
+    return render(request, 'single/single-product.html', {'product': Product.objects.get(id=pk)})
+
+
+@login_required(login_url='login')
+def single_food(request, pk):
+    return render(request, 'single/single-food.html', {'food': Food.objects.get(id=pk)})
 

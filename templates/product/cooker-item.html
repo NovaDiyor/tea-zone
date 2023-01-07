@@ -16,6 +16,8 @@
                                                 <th>Food</th>
                                                 <th>Product</th>
                                                 <th>Quantity</th>
+                                                <th>Status</th>
+                                                <th>Change</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -27,7 +29,7 @@
                                                         <td class="text-nowrap align-middle">Delivery</td>
                                                     {% endif %}
                                                     {% if i.food %}
-                                                        <td class="text-nowrap align-middle">{{ i.food.name  }}</td>
+                                                        <td class="text-nowrap align-middle">{{ i.food.name }}</td>
                                                     {% elif i.food == None %}
                                                         <td class="text-nowrap align-middle">{{ i.food }}</td>
                                                     {% endif %}
@@ -36,7 +38,34 @@
                                                     {% else %}
                                                         <td class="text-nowrap align-middle">{{ i.product }}</td>
                                                     {% endif %}
-                                                    <td class="text-nowrap align-middle">{{ i.quantity  }}</td>
+                                                    <td class="text-nowrap align-middle">{{ i.quantity }}</td>
+                                                    {% if i.done == False %}
+                                                        <td class="text-nowrap align-middle">Done</td>
+                                                    {% else %}
+                                                        <td class="text-nowrap align-middle">In Proces</td>
+                                                    {% endif %}
+                                                    <td><a href="#change_item{{ i.id }}" class="modal-effect" data-bs-effect="effect-flip-vertical" data-bs-toggle="modal" ><i class="fe fe-edit-2"></i></a></td>
+                                                    <div class="modal fade" id="change_item{{ i.id }}">
+                                                        <div class="modal-dialog modal-dialog-centered text-center" role="document">
+                                                            <div class="modal-content modal-content-demo">
+                                                                <div class="modal-body">
+                                                                    {% if i.done == False %}
+                                                                        <h2 class="text-success">If Order Is Ready Press Done</h2>
+                                                                    {% else %}
+                                                                        <h2 class="text-success">If You Made Mistake It Isn't Problem We Can Change It Again</h2>
+                                                                    {% endif %}
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    {% if i.done == False %}
+                                                                        <a href="{% url 'change-item' i.id %}"><button class="btn btn-success">Done</button></a>
+                                                                    {% else %}
+                                                                        <a href="{% url 'change-item' i.id %}"><button class="btn btn-success">In Proces</button></a>
+                                                                    {% endif %}
+                                                                    <button class="btn btn-info" data-bs-dismiss="modal">Close</button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                 </tr>
                                             {% endfor %}
                                         </tbody>
