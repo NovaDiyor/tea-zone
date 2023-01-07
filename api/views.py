@@ -4,8 +4,11 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+
+
+
 class Get_product(APIView):
-    def get(self,request):
+    def get(self, request):
         product = Product.objects.filter(available=True)
         products = []
         for i in product:
@@ -20,7 +23,7 @@ class Get_product(APIView):
 
 
 class Get_food(APIView):
-    def get(self,request):
+    def get(self, request):
         food = Food.objects.filter(is_yes=True)
         foods = []
         for i in food:
@@ -93,24 +96,24 @@ def create_order(request):
 def create_delivery(request):
     try:
         name = request.POST.get("name")
-        room = request.POST.get('room')
         phone = request.POST.get('phone')
         date = request.POST.get("date")
+        print(name)
         if Client.objects.filter(phone=phone).count() == 0:
             client = Client.objects.create(name=name, phone=phone)
         else:
             client = Client.objects.get(phone=phone)
-        r = Rooms.objects.get(number=room)
-        r.is_yes = True
-        r.save()
+        print('else')
         Order.objects.create(
-            room=Rooms.objects.get(number=room),
-            delivery=False,
+            delivery=True,
             owner=client,
-            date=date
+            delivery_date=date,
+
         )
+        print('zurrr')
         return Response({"status": 200})
     except Exception as err:
+        print(err)
         return Response({"status": 500})
 
 
@@ -124,4 +127,9 @@ def get_info(request):
 def get_detail(request):
     info = BotDetail.objects.last()
     return Response(BotDetailSerializer(info).data)
+
+
+
+
+
 

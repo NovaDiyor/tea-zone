@@ -74,7 +74,7 @@ def dastavka_phone_controller(message):
 			contact_button = types.ReplyKeyboardMarkup(row_width=1, resize_keyboard=True)
 			contact_button.add(types.KeyboardButton("Raqam jo'natish", request_contact=True))
 			bot_message = bot.send_message(message.from_user.id, 'Raqamingizni yuboring!', reply_markup=contact_button)
-			bot.register_next_step_handler(bot_message, date_controller, name)
+			bot.register_next_step_handler(bot_message, dastavka_date_controller, name)
 		except Exception as err:
 			print(err)
 
@@ -83,10 +83,16 @@ def dastavka_date_controller(message, name):
 	if message.text == "Ortga":
 		send_welcome(message)
 	else:
-		bot_message = bot.send_message(message.from_user.id, 'Sanani kiriting Masalan:(2022-12-18)!',reply_markup=types.ReplyKeyboardRemove())
-		phone = message.text
-		print(phone)
-		bot.register_next_step_handler(bot_message, All_controller, phone, name)
+		if 'contact' in message.content_type:
+
+			phone = message.contact.phone_number
+			bot_message = bot.send_message(message.from_user.id, 'Sanani kiriting Masalan:(2022-12-18)!',
+										   reply_markup=types.ReplyKeyboardRemove())
+
+			bot.register_next_step_handler(bot_message, order_delivery_controller,phone, name)
+		else:
+			bot.send_message(message.from_user.id, 'Raqamingiz notogri')
+
 
 
 
@@ -150,28 +156,24 @@ def order_controller(message, date, phone, name):
 			bot.send_message(message.from_user.id, 'Hatolik!', reply_markup=markup)
 
 
-def order_delivery_controller(message, room, name):
+def order_delivery_controller(message, phone,  name):
 	if message.text == "Ortga":
 		send_welcome(message)
-	elif 'contact' in message.content_type:
-		phone = message.contact.phone_number
-		print(room, name, phone)
+	else:
 		data = {
 			"name": name,
-			"room": room,
+			'date':message.text,
 			"phone": phone,
 		}
-		query = requests.post(f'{base_url}/create-order/', data=data).json()
+		query = requests.post(f'{base_url}/create-delivery/', data=data).json()
 		print(query)
+		print(query['status'])
 		if query['status'] == 200:
 			bot.send_message(message.from_user.id, 'Buyurtmangiz muvofaqiyatli berildi!', reply_markup=markup)
 		elif query['status'] == 500:
 			bot.send_message(message.from_user.id, 'Buyurtmangiz berishdagi hatolik!', reply_markup=markup)
 		else:
 			bot.send_message(message.from_user.id, 'Hatolik!', reply_markup=markup)
-	else:
-		bot.send_message(message.from_user.id, 'Raqam Notogri!', reply_markup=markup)
-		send_welcome(message)
 
 
 bot.infinity_polling()
