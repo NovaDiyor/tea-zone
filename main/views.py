@@ -84,14 +84,19 @@ def dashboard_waiter(request):
     usr = request.user
     if usr.role == 2:
         day = date.today()
-        order = Order.objects.filter(done=True, date__day=day.day, user=usr)
-        month = Order.objects.filter(done=True, date__month=day.month, user=usr)
-        proces = Order.objects.filter(done=False, date__day=day.day, user=usr)
+        order = Order.objects.filter(date__day=day.day, user=usr, done=True)
+        closed = Order.objects.filter(done=True, user=usr)
+        available = Order.objects.filter(done=False, user=usr)
+        free = Order.objects.filter(done=False, user=None)
+        total = 0
+        for i in order:
+            total += i.bill / 100
+        total = total * 4
         context = {
-            'done': order.count(),
-            'in_proces': proces.count(),
-            'month': month.count(),
-            'out_of_service': Order.objects.filter(user=None, done=False).count()
+            'closed': closed.count(),
+            'open': available.count(),
+            'free': free.count(),
+            'revenue': total
         }
         return render(request, 'dashboard/dashboard-waiter.html', context)
     else:
@@ -102,7 +107,19 @@ def dashboard_waiter(request):
 def dashboard_manager(request):
     usr = request.user
     if usr.role == 3:
-        return render(request, 'dashboard/dashboard-manager.html')
+        day = date.today()
+        orders = Order.objects.filter(date__month=day.month, done=True)
+        total = 0
+        for i in orders:
+            total += i.bill / 100
+        total = total * 8
+        context = {
+            'salary': total,
+            'product': Product.objects.filter(available=True).count(),
+            'food': Food.objects.filter(available=True).count(),
+            'room': Rooms.objects.all().count()
+        }
+        return render(request, 'dashboard/dashboard-manager.html', context)
     else:
         return redirect('dashboard')
 
@@ -111,7 +128,20 @@ def dashboard_manager(request):
 def dashboard_cooker(request):
     usr = request.user
     if usr.role == 4:
-        return render(request, 'dashboard/dashboard-cooker.html')
+        day = date.today()
+        order = Order.objects.filter(done=True, date__month=day.month)
+        close = OrderItem.objects.filter(order__date__day=day.day, done=True)
+        usable = OrderItem.objects.filter(order__date__day=day.day, done=False)
+        total = 0
+        for i in order:
+            total += i.bill / 100
+            total = total * 3
+        context = {
+            'salary': total,
+            'open': usable.count(),
+            'close': close.count(),
+        }
+        return render(request, 'dashboard/dashboard-cooker.html', context)
     else:
         return redirect('dashboard')
 
@@ -120,7 +150,27 @@ def dashboard_cooker(request):
 def dashboard_call_center(request):
     usr = request.user
     if usr.role == 5:
-        return render(request, 'dashboard/dashboard-call.html')
+        day = date.today()
+        order = Order.objects.filter(done=True, date__month=day.month)
+        client = Client.objects.all()
+        room = Rooms.objects.filter(busy=False)
+        available = Order.objects.filter(done=False, date__day=day.day)
+        total = 0
+        print(order.count())
+        for i in order:
+            percent = i.bill / 100
+            salary = percent * 5
+            if order.count() > 1:
+                if salary < 1:
+                    salary += 0.000000000000001
+            total += salary
+        context = {
+            'client': client.count(),
+            'salary': total,
+            'room': room.count(),
+            'available': available.count()
+        }
+        return render(request, 'dashboard/dashboard-call.html', context)
     else:
         return redirect('dashboard')
 
@@ -129,20 +179,31 @@ def dashboard_call_center(request):
 def dashboard(request):
     usr = request.user
     if usr.role == 1:
-        client = Client.objects.all()
-        staff = User.objects.all()
-        order = Order.objects.filter(done=True)
+        day = date.today()
+        client = Client.objects.all().count()
+        staff = User.objects.all().count()
+        order = Order.objects.filter(done=True, date__day=day.day)
         total = 0
-        revenue = 0
+        for i in order:
+            total += i.bill
+        revenue = total
+        percent = total / 100
+        three = percent * 3
+        four = percent * 4
+        five = percent * 5
+        eight = percent * 8
+        overall = three + four + five + eight
+        print(three, four, five, eight, overall)
+        revenue -= overall
         orders = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
         prices = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
         for i in order:
             orders[i.date.month - 1] += 1
             prices[i.date.month - 1] += i.bill
         context = {
-            'client': client.count(),
-            'staff': staff.count(),
-            'total': order.count(),
+            'client': client,
+            'staff': staff,
+            'total': total,
             'revenue': revenue,
             "orders": orders,
             "prices": prices
@@ -582,3 +643,29 @@ def search(request):
         'total': total
     }
     return render(request, 'product/search.html', context)
+
+
+@login_required(login_url='login')
+def close_items(request):
+    return render(request, 'single/close-item.html', {'close': paginator_page(OrderItem.objects.filter(done=True), 5, request)})
+
+
+@login_required(login_url='login')
+def open_items(request):
+    return render(request, 'single/open-item.html', {'open': paginator_page(OrderItem.objects.filter(done=False), 5, request)})
+
+
+@login_required(login_url='login')
+def free_room(request):
+    return render(request, 'single/free-room.html', {'room': paginator_page(Rooms.objects.filter(busy=False), 5, request)})
+
+
+@login_required(login_url='login')
+def open_order(request):
+    context = {
+        'product': Product.objects.filter(available=True),
+        'food': Food.objects.filter(available=True),
+        'order': paginator_page(Order.objects.filter(done=False), 5, request)
+    }
+    return render(request, 'single/open-order.html', context)
+

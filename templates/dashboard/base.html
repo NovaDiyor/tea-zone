@@ -37,7 +37,7 @@
                         <form action="{% url 'search_stuff' %}" method="post">
                             {% csrf_token %}
                             <div class="main-header-center ms-3 d-none d-lg-block">
-                                <input type="text" name="name" class="form-control" id="typehead" placeholder="Search for results...">
+                                <input type="text" name="name" class="form-control" id="typehead" placeholder="Search for results..." required>
                                 <button class="btn px-0 pt-2"><i class="fe fe-search" aria-hidden="true"></i></button>
                             </div>
                         </form>
@@ -878,7 +878,6 @@
             datasets: [{
                 label: 'Profits',
                 data: {{ orders }},
-                borderWidth: 2,
                 backgroundColor: 'transparent',
                 borderColor: '#6c5ffc',
                 borderWidth: 3,
@@ -887,7 +886,6 @@
             }, {
                 label: 'Expenses',
                 data: {{ prices }},
-                borderWidth: 2,
                 backgroundColor: 'transparent',
                 borderColor: '#05c3fb',
                 borderWidth: 3,

@@ -266,6 +266,17 @@ def add_user_order(request, pk):
 
 
 @login_required(login_url='login')
+def change_item(request, pk):
+    item = OrderItem.objects.get(id=pk)
+    if item.done == False:
+        item.done = True
+    else:
+        item.done = False
+    item.save()
+    return redirect('cooker-item')
+
+
+@login_required(login_url='login')
 def single_room(request, pk):
     return render(request, 'single/single-room.html', {'room': Rooms.objects.get(id=pk)})
 
