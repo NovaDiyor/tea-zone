@@ -3,6 +3,7 @@ from main.models import *
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from datetime import date, datetime
 
 
 
@@ -42,6 +43,7 @@ def get_rooms(request):
     date = request.POST['date']
     order = Order.objects.filter(done=False, date=date)
     room = []
+    busy = []
     if order:
         for x in Rooms.objects.all():
             for i in order:
@@ -53,7 +55,7 @@ def get_rooms(request):
                     else:
                         room.append(x)
     else:
-        for i in Rooms.objects.all():
+        for i in Rooms.objects.filter(busy=False):
             room.append(i)
     return Response(Rooms_serializer(room, many=True).data)
 
@@ -65,27 +67,31 @@ def client_create(request):
     Client.objects.create(name=name, number=number)
     return Response('')
 
-import datetime
 
 @api_view(['POST'])
-def create_order(request):
+def create_order(request, day=date.today()):
     try:
+        day = day
         name = request.POST.get("name")
         room = request.POST.get('room')
         phone = request.POST.get('phone')
-        date = request.POST.get("date")
+        month = request.POST.get("date")
         if Client.objects.filter(phone=phone).count() == 0:
             client = Client.objects.create(name=name, phone=phone)
         else:
             client = Client.objects.get(phone=phone)
         r = Rooms.objects.get(number=room)
-        r.busy = True
+        if month == day:
+            r.busy = True
+        else:
+            r.busy = False
         r.save()
         Order.objects.create(
             room=Rooms.objects.get(number=room),
             delivery=False,
             owner=client,
-            date=date
+            date=month,
+            bill=0
         )
         return Response({"status": 200})
     except Exception as err:
@@ -108,7 +114,7 @@ def create_delivery(request):
             delivery=True,
             owner=client,
             delivery_date=date,
-
+            bill=0
         )
         print('zurrr')
         return Response({"status": 200})

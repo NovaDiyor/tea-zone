@@ -193,7 +193,6 @@ def dashboard(request):
         five = percent * 5
         eight = percent * 8
         overall = three + four + five + eight
-        print(three, four, five, eight, overall)
         revenue -= overall
         orders = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
         prices = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
