@@ -25,7 +25,7 @@ class Get_product(APIView):
 
 class Get_food(APIView):
     def get(self, request):
-        food = Food.objects.filter(is_yes=True)
+        food = Food.objects.filter(available=True)
         foods = []
         for i in food:
             data = {
@@ -48,12 +48,17 @@ def get_rooms(request):
         for x in Rooms.objects.all():
             for i in order:
                 if x == i.room:
-                    pass
+                    busy.append(x)
                 else:
                     if x in room:
+
                         pass
                     else:
+
                         room.append(x)
+        for i in busy:
+            if i in room:
+                room.remove(i)
     else:
         for i in Rooms.objects.filter(busy=False):
             room.append(i)
@@ -76,6 +81,8 @@ def create_order(request, day=date.today()):
         room = request.POST.get('room')
         phone = request.POST.get('phone')
         month = request.POST.get("date")
+        print(month)
+        print(day)
         if Client.objects.filter(phone=phone).count() == 0:
             client = Client.objects.create(name=name, phone=phone)
         else:

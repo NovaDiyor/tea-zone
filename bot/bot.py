@@ -107,17 +107,21 @@ def room_controller(message, phone, name):
 		query = requests.post(f'{base_url}/room/', data=qwer).json()
 		room_markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=2)
 		buttons = []
-		for i in query:
-			buttons.append(types.KeyboardButton(f"{i['number']}"))
-			if len(buttons) == 2:
-				room_markup.add(buttons[0], buttons[1])
+		if query == []:
+			bot.send_message(message.from_user.id,'Bu kunga afsuski bosh xona yoq',reply_markup=markup)
+
+		else:
+			for i in query:
+				buttons.append(types.KeyboardButton(f"{i['number']}"))
+				if len(buttons) == 2:
+					room_markup.add(buttons[0], buttons[1])
+					buttons.clear()
+			if len(buttons) == 1:
+				room_markup.add(buttons[0])
 				buttons.clear()
-		if len(buttons) == 1:
-			room_markup.add(buttons[0])
-			buttons.clear()
-		room_markup.add(types.KeyboardButton("Ortga"))
-		bot_message = bot.send_message(message.from_user.id,'Hozirdagi bosh honalar Buyurtma berish uchun honani tanlang!', reply_markup=room_markup)
-		bot.register_next_step_handler(bot_message, order_controller, date, phone, name)
+			room_markup.add(types.KeyboardButton("Ortga"))
+			bot_message = bot.send_message(message.from_user.id,'Hozirdagi bosh honalar Buyurtma berish uchun honani tanlang!', reply_markup=room_markup)
+			bot.register_next_step_handler(bot_message, order_controller, date, phone, name)
 
 
 
