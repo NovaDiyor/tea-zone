@@ -38,6 +38,9 @@ class Client(models.Model):
 class Category(models.Model):
     name = models.CharField(max_length=210)
 
+    def __str__(self):
+        return self.name
+
 
 class Food(models.Model):
     name = models.CharField(max_length=23232)
