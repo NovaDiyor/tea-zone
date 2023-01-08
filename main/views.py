@@ -168,7 +168,7 @@ def dashboard_call_center(request):
             'client': client.count(),
             'salary': total,
             'room': room.count(),
-            'available': available.count()
+            'available': available.count(),
         }
         return render(request, 'dashboard/dashboard-call.html', context)
     else:
@@ -182,7 +182,7 @@ def dashboard(request):
         day = date.today()
         client = Client.objects.all().count()
         staff = User.objects.all().count()
-        order = Order.objects.filter(done=True, date__day=day.day)
+        order = Order.objects.filter(done=True, date__month=day.month)
         total = 0
         for i in order:
             total += i.bill
