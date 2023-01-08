@@ -21,7 +21,7 @@
                                             {% for i in client %}
                                                 <tr>
                                                     <td class="text-nowrap align-middle">{{ i.name }}</td>
-                                                    <td class="text-nowrap align-middle">{{ i.phone  }}</td>
+                                                    <td class="text-nowrap align-middle">+{{ i.phone  }}</td>
                                                     <td><a href="#update_client{{ i.id }}" class="modal-effect" data-bs-effect="effect-flip-vertical" data-bs-toggle="modal"><i class="fe fe-edit-2"></i></a></td>
                                                     <div class="modal fade" id="update_client{{ i.id }}">
                                                         <div class="modal-dialog modal-dialog-centered text-center" role="document">

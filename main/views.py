@@ -159,7 +159,7 @@ def dashboard_call_center(request):
         print(order.count())
         for i in order:
             percent = i.bill / 100
-            salary = percent * 5
+            salary = percent * 1
             if order.count() > 1:
                 if salary < 1:
                     salary += 0.000000000000001
@@ -192,20 +192,65 @@ def dashboard(request):
         four = percent * 4
         five = percent * 5
         eight = percent * 8
+        print(eight, five, four, three)
         overall = three + four + five + eight
-        revenue -= overall
-        orders = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-        prices = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-        for i in order:
-            orders[i.date.month - 1] += 1
-            prices[i.date.month - 1] += i.bill
+        print(overall)
+        revenue -= int(overall)
+        chart = Order.objects.filter(done=True, date__year=day.year)
+        jan = [0]
+        feb = [0]
+        mar = [0]
+        apr = [0]
+        may = [0]
+        june = [0]
+        july = [0]
+        avg = [0]
+        sep = [0]
+        ocb = [0]
+        nov = [0]
+        dec = [0]
+        for i in chart:
+            if i.date.month == 1:
+                jan[0-0] += 1
+            elif i.date.month == 2:
+                feb[0-0] += 1
+            elif i.date.monht == 3:
+                mar[0-0] += 1
+            elif i.date.month == 4:
+                apr[0-0] += 1
+            elif i.date.month == 5:
+                may[0-0] += 1
+            elif i.date.month == 6:
+                june[0-0] += 1
+            elif i.date.monht == 7:
+                july[0-0] += 1
+            elif i.date.month == 8:
+                avg[0-0] += 1
+            elif i.date.month == 9:
+                sep[0-0] += 1
+            elif i.date.monht == 10:
+                ocb[0-0] += 1
+            elif i.date.month == 11:
+                nov[0-0] += 1
+            elif i.date.month == 12:
+                dec[0-0] += 1
         context = {
             'client': client,
             'staff': staff,
             'total': total,
             'revenue': revenue,
-            "orders": orders,
-            "prices": prices
+            'jan': jan,
+            'feb': feb,
+            'mar': mar,
+            'apr': apr,
+            'may': may,
+            'june': june,
+            'july': july,
+            'aug': avg,
+            'sep': sep,
+            'oct': ocb,
+            'nov': nov,
+            'dec': dec,
         }
         return render(request, 'dashboard/dashboard.html', context)
     elif usr.role == 2:

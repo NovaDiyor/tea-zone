@@ -48,7 +48,7 @@
                                                     <td class="text-nowrap align-middle">{{ i.username }}</td>
                                                     <td class="text-nowrap align-middle">{{ i.first_name  }}</td>
                                                     <td class="text-nowrap align-middle">{{ i.last_name  }}</td>
-                                                    <td class="text-nowrap align-middle">{{ i.number  }}</td>
+                                                    <td class="text-nowrap align-middle">+{{ i.number  }}</td>
                                                     <td class="text-nowrap align-middle"><span>{{ i.date_joined  }}</span></td>
                                                     {% if user == i %}
                                                         <td><a class="modal-effect d-grid" data-bs-effect="effect-flip-vertical" data-bs-toggle="modal" href="#update_manager{{ i.id }}"><i class="fe fe-edit-2"></i></a></td>
