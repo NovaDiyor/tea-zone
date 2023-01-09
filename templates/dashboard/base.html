@@ -876,18 +876,20 @@
             data: {
                 labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
                 datasets: [{
-                    label: 'Sales',
+                    label: 'Orders',
                     data: [{{ jan }}, {{ feb }}, {{ mar }}, {{ apr }}, {{ jun }}, {{ jul }}, {{ aug }}, {{ sep }}, {{ sep }}, {{ oct }}, {{ nov }}, {{ dec }}],
                     backgroundColor: '#6c5ffc',
                     borderColor: '#6c5ffc',
                     pointBackgroundColor: '#ffffff',
-
                 }]
             },
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
                 legend: {
+                    labels: {
+                        fontColor: "#9ba6b5"
+                    },
                     display: true
                 },
                 scales: {
@@ -905,7 +907,7 @@
                         barPercentage: 0.4,
                         barValueSpacing: 0,
                         barDatasetSpacing: 0,
-                        barRadius: 0,
+                        barRadius: false,
                         ticks: {
                             display: true,
                             fontColor: "#9ba6b5",
@@ -915,11 +917,6 @@
                             color: 'rgba(119, 119, 142, 0.2)'
                         }
                     }]
-                },
-                legend: {
-                    labels: {
-                        fontColor: "#9ba6b5"
-                    },
                 },
             }
         });
