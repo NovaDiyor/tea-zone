@@ -516,19 +516,17 @@ def add_order(request):
 
 @login_required(login_url='login')
 def delivery_view(request):
-    d = datetime.today()
-    order = Order.objects.filter(delivery_date__hour=d.hour)
-    for i in order:
-        i.done = True
-        i.save()
     context = {
         'delivery': paginator_page(Order.objects.filter(delivery=True), 5, request),
+        'waiter': User.objects.filter(role=2)
     }
+    print(context)
     try:
         if request.method == 'POST':
             user = request.POST.get('user')
             client = request.POST.get('owner')
             phone = request.POST.get('phone')
+            address = request.POST.get('address')
             day = datetime.strptime(request.POST.get('date'), "%m/%d/%Y").date()
             f = 0
             for i in Client.objects.all():
@@ -538,12 +536,12 @@ def delivery_view(request):
                     f += 0
             if f == 1:
                 cl = Client.objects.get(phone=phone)
-                Order.objects.create(user_id=user, owner=cl, delivery=True, date=day, bill=0)
+                Order.objects.create(user_id=user, owner=cl, address=address, delivery=True, date=day, bill=0)
                 return redirect('delivery')
             elif f == 0:
                 cl = Client.objects.create(name=client, phone=phone)
-                Order.objects.create(user_id=user, owner=cl, delivery=True, date=day, bill=0)
-                return redirect('order')
+                Order.objects.create(user_id=user, owner=cl, address=address, delivery=True, date=day, bill=0)
+                return redirect('delivery')
         return render(request, 'product/delivery.html', context)
     except Exception as err:
         print(err)

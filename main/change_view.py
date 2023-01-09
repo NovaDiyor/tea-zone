@@ -1,5 +1,4 @@
 from datetime import date, datetime
-
 from django.contrib.auth import authenticate
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
@@ -74,6 +73,20 @@ def delete_order_item(request, pk):
 def delete_order(request, pk):
     Order.objects.get(id=pk).delete()
     return redirect('order')
+
+
+def delete_delivery(request, pk):
+    Order.objects.get(id=pk).delete()
+    return redirect('delivery')
+
+
+def update_delivery(request, pk):
+    delivery = Order.objects.get(id=pk)
+    if request.method == 'POST':
+        address = request.POST.get('address')
+        delivery.address = address
+        delivery.save()
+        return redirect('delivery')
 
 
 def delete_category(request, pk):
